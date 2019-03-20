@@ -1,1 +1,1 @@
-redoc-cli bundle open_api_spec.yaml --options.hideHostname --options.noAutoAuth --options.pathInMiddlePanel
+redoc-cli bundle open_api_spec.yaml --options.hideHostname --options.noAutoAuth --options.pathInMiddlePanel --output=index.html
