@@ -42,7 +42,7 @@ info:
 host: localhost
 schemes:
   - https
-basePath: /api/v1/metering  # Maybe this should be changed??
+basePath: /v1/metering  # Maybe this should be changed??
 consumes:
   - application/json
 produces:
