@@ -1,0 +1,2073 @@
+swagger: '2.0'
+info:
+  title: Utilitarian API
+
+  termsOfService: https://www.pwit.se
+  x-logo:
+    url: "https://pwit.se/static/images/logo_optimized.svg"
+    backgroundColor: "#FFFFFF"
+    altText: "PWIT logo"
+  contact:
+    name: Dev Team
+    url: https://www.pwit.se
+    email: info@pwit.se
+  version: 1.0.0
+  license:
+    name: BSD-3-Clause
+    url: https://opensource.org/licenses/BSD-3-Clause
+  description: |
+    Utilitarian API is a software for Multi Utility AMR (Automatic Meter
+    Reading) built by Palmlund Wahlgren Innovative Technology AB and
+    is targeted to utility organisations that require a more open solution for
+    their AMR Operations.
+
+    The source for this documentation can be found on
+    [github.com](https://www.github.com/pwitab/utilitarian-api-docs). If you
+    find any errors in the documentation or you have suggestions on how to make
+    it better please create an issue on Github.
+
+    # Introduction
+
+    Utilitarian API is a RESTful API that exposes endpoint for AMR Operations.
+
+    The common part deals with general aspects of the API.
+
+    Under the Metering part all endpoints for the management of Meter Devices
+    and Meter Readings are gathered.
+
+    Under the Jobs part all endpoint for managing the pulling meter data and
+    communication to with Meter Devices are gathered. (Ongoing work)
+
+
+host: localhost
+schemes:
+  - https
+basePath: /api/v1/metering  # Maybe this should be changed??
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+  api_key:
+    name: API Key
+    description: >
+      Each User is given an API Key.
+    type: apiKey
+    in: header
+
+  basic:
+    description: >
+      All users are allowed to use basic auth but it is not recommended.
+    type: basic
+    name: basic
+    in: header
+
+tags:
+  # Metering
+  - name: meter-devices
+    description: |
+      Operations on Meter Devices
+
+      ### Meter Devices
+
+      Meter Devices are the entity that represents a physical (or logical)
+      meter deployed in the field. They handle all information about how to
+      communicate with the meter and how to interpret the data from the
+      meter.
+
+
+    x-displayName: Meter Devices
+
+  - name: meter-device-configs
+    description: |
+      Operations on Meter Device Configs
+
+      ### Meter Device Configs
+
+      A Meter Device Config stores the configurations of a Meter Device Type.
+      As of now this stores mainly what MeteringSeries it has.
+      The metering series list is used to validate if a meter reading from a
+      meter device is allowed to be saved.
+
+      The plan later on is have information about what, for example COSEM
+      objects a meter has, or what MBus Vifes etc the meter has. For example can
+      an IDIS complient meter share configuration with other meters of different
+      make. An OMS compliant Mbus meter can also share configuration between
+      different manufacturers.
+
+
+    x-displayName: Meter Device Configs
+
+  - name: meter-device-types
+    description: |
+      Operations on Meter Device Types
+
+      ### Meter Device Types
+
+      It is possible to have a meter that is of same make and model but
+      differently configured. By adding a different meter type we can have a
+      several different setups of the same manufacturer model.
+
+    x-displayName: Meter Device Types
+
+  - name: sim-cards
+    description: |
+      Operations on SIM Cards
+
+      ### SIM Cards
+
+      Utilitarian is focused on IP communication with meters. Many meter have
+      internal or external modems that are used for cellular communications.
+      This require a SIM-card. Many SIM-cards in IoT data plans will give a
+      fixed IP. It is possible to store all your SIM cards in Utiltarian and
+      link them to your meter devices for an easy way of finding the IP for a
+      meter device. If you switch a SIM cards in the field you need to switch
+      it in Utilitarian so that the system can find the meter device.
+
+      > Tips: It is possible to save a link to the managing software, for
+      > example Jasper, of the SIM cards. In future Utilitarian UI this will be
+      > rendered as an external link to quickly get access to logs and other SIM
+      > cards operations that are not in the scope of Utilitarian.
+
+
+    x-displayName: SIM Cards
+
+  - name: new-meter-readings
+    description: |
+      Operation on new meter readings
+
+      ### New Meter Readings
+
+      This enpoint is used by the different distributed AMR services that send
+      data.
+      It is not always knows by the external service what the database ID is
+      for meter device or meter readings series. This endpoint will do lookups
+      based on the names of the meter device and meter reading series.
+
+    x-displayName: New Meter Readings
+
+  - name: meter-security-keys
+    description: |
+      Operations on Meter Security Key Collection
+
+      ### Meter Security Key Collection
+
+      A Meter Security Key Collection holds all passwords, secrets and
+      encryption keys for a meter device.
+
+      The `dlms_master_key` will never be returned in any of the responses for security reasons.
+
+      > Note: DLMS Keys are stored in hexadecimal strings. 128 bit key = 32 hex
+      > characters, 256 bit key = 64 hex characters.
+
+    x-displayName: Meter Security Key Collections
+
+  - name: meter-readings
+    description: |
+      Operations on Meter Readings
+
+      ### Meter Readings
+
+      Meter Readings are the raw data we receive from meter devices.
+      They are limited to numerical data.
+      Meter Readings table is designed for short term storage of meter values.
+
+    x-displayName: Meter Readings
+
+  - name: meter-reading-series
+    description: |
+      Operations on Meter Reading Series
+
+      ### Meter Reading Series
+
+      A MeterReadingSeries is used for grouping all meter values that should be
+      viewed as a time series of values. It also adds "metadata" about the series
+      so that it is possible to know more about the values contained in it.
+
+      In Utilitarian we aim to use OBIS codes as series identifier but there is
+      nothing preventing the use of any identifier for a series. Simple string
+      values like "energy" and "power" could be used or more complex identifiers
+      like from the CIM standard.
+
+      Since we might have electricity meters that have current and voltage
+      transformers in their measurement loops we need to specify if the series
+      is affected by either the current transformer and/or the voltage
+      transformer ratio.
+
+    x-displayName: Meter Reading Series
+
+  - name: meter-system-events
+    description: |
+      Operations on Meter System Events
+
+      ### Meter System Events
+
+      A MeterSystemEvent is some form of event occurring in a MeterDevice. It
+      could be an indication that something is wrong (Alarm) or an just a log
+      entry that the meter switched to summer time.
+
+    x-displayName: Meter System Events
+
+  - name: network-interfaces
+    description: |
+      Operations on Network Interfaces.
+
+      ### Network Interfaces
+
+      A NetworkInterface is an object holding information needed for
+      communication to a meter device. You can connect SIM cards to a network
+      interface. Several meter devices can share the same network interface,
+      for example an MBus gateway. It is also possbile for several network
+      interfaces to share the same SIM Card, for example if using the same
+      IP/SIM-card but different devices are under different ports. Then each
+      meter device would have its own network interface specifiying the port
+      but they would all share the same SIM Card to get the IP address.
+
+      Some network interfaces only allows for one open connection and when the
+      network interface is used by communication software we want to make sure
+      that no other job is trying to communicate with the meter devcice. This
+      is done by blocking the network interface. When the communication is done
+      the network interface should be unblocked so that other jobs can connect
+      to it.
+
+      > Tips: The `host` parameter is only returned in responses and will contain
+      > the following data:
+      >
+      >  1. FQDN. If a meter has a DNS compliant name attached to it we assume
+      >     we want to use that firstly
+      >  2. Static IP Address. If no FQDN is set on the meter it will return the
+      >     static ip address associated with it.
+      >  3. IP of SIM Card. If no static ip address or FQDN is set the meter
+      >     will return the IP of the SIM Card attached to it.
+
+    x-displayName: Network Interfaces
+
+
+
+
+  # Common
+  - name: Pagination
+    x-traitTag: true
+    description: |
+      The Pagination scheme used for Utiltiarian API is a Limit/Offset scheme.
+
+      By using a limit indicates the maximum number of items to return and the
+      offset indicates the starting position of the query in relation to the
+      complete set of unpaginated items. This makes for a very extensible
+      pagination scheme where the client have better control of the returned
+      values. In all responses the total count of items in the compleate set of
+      unpaginated items are returned to be able to know where in the set a
+      pagination response is located.
+
+      The limit and offset is applied in query parameters like:
+
+      ```
+      GET https://api.example.org/accounts/?limit=100&offset=400
+      ```
+
+
+      The following example shows a common result set.
+
+      ``` json
+      {
+        "count": 1023
+        "next": "https://api.example.org/accounts/?limit=100&offset=500",
+        "previous": "https://api.example.org/accounts/?limit=100&offset=300",
+        "results": [
+          …
+        ]
+      }
+      ```
+      > Note: Having very large result sets can lead to significant performance
+      > issues.
+
+  - name: Authentication
+    x-traitTag: true
+    description: |
+      Each user is given a unique API Key Token to interact with the API. It is also
+      possible to use basic auth but not recomended.
+
+      For clients to authenticate, the token key should be included in the
+      `Authorization` HTTP header. The key should be prefixed by the string
+      literal "Token", with whitespace separating the two strings. For example:
+
+      ```
+      Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+      ```
+
+      Unauthenticated responses that are denied permission will result in an
+      `HTTP 401 Unauthorized` response with an appropriate
+       WWW-Authenticate header. For example:
+
+      ```
+      WWW-Authenticate: Token
+      ```
+
+      > Note: If you are running an instance of Utilitarian API that is
+      > accessable over the Internet you need to make sure that the API is
+      > only served under `https`.
+
+
+
+
+# Structuring the tags in the x-tagGroup also controls their order, so generated
+# API specs doesn't scramble the order.
+x-tagGroups:
+  - name: Common
+    tags:
+      - Authentication
+      - Pagination
+
+
+  - name: Metering
+    tags:
+      - meter-devices
+      - network-interfaces
+      - sim-cards
+      - meter-device-types
+      - meter-device-configs
+      - meter-reading-series
+      - meter-readings
+      - new-meter-readings
+      - meter-system-events
+      - meter-security-keys
+
+
+
+
+paths:
+  /meter-device-configs:
+    get:
+      operationId: meter-device-configs_list
+      description: Returns a list of MeterDeviceConfigs
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterDeviceConfig'
+      tags:
+        - meter-device-configs
+    post:
+      operationId: meter-device-configs_create
+      description: Creates a MeterDeviceConfig
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      tags:
+        - meter-device-configs
+    parameters: []
+  /meter-device-configs/{id}:
+    get:
+      operationId: meter-device-configs_read
+      description: Returns a single MeterDeviceConfig
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      tags:
+        - meter-device-configs
+    put:
+      operationId: meter-device-configs_update
+      description: Updates a single MeterDeviceConfig
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      tags:
+        - meter-device-configs
+    patch:
+      operationId: meter-device-configs_partial_update
+      description: Partially updates a single MeterDeviceConfig
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceConfig'
+      tags:
+        - meter-device-configs
+    delete:
+      operationId: meter-device-configs_delete
+      description: Deletes a single MeterDeviceConfig
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-device-configs
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this meter device config.
+        required: true
+        type: string
+        format: uuid
+  /meter-device-types:
+    get:
+      operationId: meter-device-types_list
+      description: Returns a list of MeterDeviceTypess
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterDeviceType'
+      tags:
+        - meter-device-types
+    post:
+      operationId: meter-device-types_create
+      description: Creates a MeterDeviceType
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      tags:
+        - meter-device-types
+    parameters: []
+  /meter-device-types/{id}:
+    get:
+      operationId: meter-device-types_read
+      description: Returns a single MeterDeviceType
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      tags:
+        - meter-device-types
+    put:
+      operationId: meter-device-types_update
+      description: Updates a single MeterDeviceType
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      tags:
+        - meter-device-types
+    patch:
+      operationId: meter-device-types_partial_update
+      description: Partially updates a single MeterDeviceType
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDeviceType'
+      tags:
+        - meter-device-types
+    delete:
+      operationId: meter-device-types_delete
+      description: Deletes a single MeterDeviceType
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-device-types
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this meter device type.
+        required: true
+        type: string
+        format: uuid
+  /meter-devices:
+    get:
+      operationId: meter-devices_list
+      description: Returns a list of MeterDevices
+      parameters:
+        - name: type
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: protocol
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterDevice'
+      tags:
+        - meter-devices
+    post:
+      operationId: meter-devices_create
+      description: Creates a MeterDevice
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      tags:
+        - meter-devices
+    parameters: []
+  /meter-devices/{id}:
+    get:
+      operationId: meter-devices_read
+      description: Returns a single MeterDevice
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      tags:
+        - meter-devices
+    put:
+      operationId: meter-devices_update
+      description: Updates a single MeterDevice
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      tags:
+        - meter-devices
+    patch:
+      operationId: meter-devices_partial_update
+      description: Partially updates a single MeterDevice
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterDevice'
+      tags:
+        - meter-devices
+    delete:
+      operationId: meter-devices_delete
+      description: Deletes a single MeterDevice
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-devices
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this meter device.
+        required: true
+        type: string
+        format: uuid
+  /meter-reading-series:
+    get:
+      operationId: meter-reading-series_list
+      description: Returns a list of MeterReadingSeries
+      parameters:
+        - name: name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: unit
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterReadingsSeries'
+      tags:
+        - meter-reading-series
+    post:
+      operationId: meter-reading-series_create
+      description: Create a MeterReadingSeries
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      tags:
+        - meter-reading-series
+    parameters: []
+  /meter-reading-series/{id}:
+    get:
+      operationId: meter-reading-series_read
+      description: Returns a single MeterReadingSeries
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      tags:
+        - meter-reading-series
+    put:
+      operationId: meter-reading-series_update
+      description: Updates a single MeterReadingSeries
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      tags:
+        - meter-reading-series
+    patch:
+      operationId: meter-reading-series_partial_update
+      description: Partially updates a single MeterReadingSeries
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadingsSeries'
+      tags:
+        - meter-reading-series
+    delete:
+      operationId: meter-reading-series_delete
+      description: Deletes a single MeterReadingsSeries
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-reading-series
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this meter reading series.
+        required: true
+        type: string
+        format: uuid
+  /meter-readings:
+    get:
+      operationId: meter-readings_list
+      description: "Returns a list of MeterReadings. Supply both meter_id and series_id\
+        \ in\n    query parameters to get a complete series. Returns a list of only\n\
+        \    values and timestamps. If the series and meter is omitted the values\n\
+        \    will be mixed."
+      parameters:
+        - name: meter_device
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: series
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: start_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: end_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterReadingsOut'
+      tags:
+        - meter-readings
+    post:
+      operationId: meter-readings_create
+      description: Creates a MeterReading
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterReadings'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadings'
+      tags:
+        - meter-readings
+    parameters: []
+  /meter-readings/{id}:
+    get:
+      operationId: meter-readings_read
+      description: Returns a single MeterReading
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterReadings'
+      tags:
+        - meter-readings
+    delete:
+      operationId: meter-readings_delete
+      description: Deletes a single MeterReading
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-readings
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this meter reading.
+        required: true
+        type: integer
+  /meter-security-keys:
+    get:
+      operationId: meter-security-keys_list
+      description: Returns list of MeterSecurityCollections
+      parameters:
+        - name: meter
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: meter_name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: meter_external_system_reference
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: meter_manufacturer_serial
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: meter_dlms_system_title
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: meter_dlms_logical_device_name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterSecurityKeyCollectionOut'
+      tags:
+        - meter-security-keys
+    post:
+      operationId: meter-security-keys_create
+      description: Creates a MeterSecurityKeyCollection
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterSecurityKeyCollectionIn'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterSecurityKeyCollectionIn'
+      tags:
+        - meter-security-keys
+    parameters: []
+  /meter-security-keys/{id}:
+    get:
+      operationId: meter-security-keys_read
+      description: Returns a single MeterSecurityKeyCollection
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterSecurityKeyCollectionOut'
+      tags:
+        - meter-security-keys
+    delete:
+      operationId: meter-security-keys_delete
+      description: Deletes a single MeterSecurityKeyCollection
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-security-keys
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this meter security key collection.
+        required: true
+        type: string
+        format: uuid
+  /meter-system-events:
+    get:
+      operationId: meter-system-events_list
+      description: Returns a list of MeterSystemEvents
+      parameters:
+        - name: meter_device
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: start_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: end_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/MeterSystemEvent'
+      tags:
+        - meter-system-events
+    post:
+      operationId: meter-system-events_create
+      description: Creates a MeterSystemEvents
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MeterSystemEvent'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterSystemEvent'
+      tags:
+        - meter-system-events
+    parameters: []
+  /meter-system-events/{id}:
+    get:
+      operationId: meter-system-events_read
+      description: Returns a single MeterSystemEvent
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MeterSystemEvent'
+      tags:
+        - meter-system-events
+    delete:
+      operationId: meter-system-events_delete
+      description: Deletes a single MeterSystemEvent
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - meter-system-events
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this meter system event.
+        required: true
+        type: integer
+  /network-interfaces:
+    get:
+      operationId: network-interfaces_list
+      description: returns list of NetworkInterfaces
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/NetworkInterface'
+      tags:
+        - network-interfaces
+    post:
+      operationId: network-interfaces_create
+      description: Create a new Network Interface
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      tags:
+        - network-interfaces
+    parameters: []
+  /network-interfaces/{id}:
+    get:
+      operationId: network-interfaces_read
+      description: Returns a single NetworkInterface
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      tags:
+        - network-interfaces
+    put:
+      operationId: network-interfaces_update
+      description: Updates a single Network Interface
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      tags:
+        - network-interfaces
+    patch:
+      operationId: network-interfaces_partial_update
+      description: Partially updates a single Network Interface
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/NetworkInterface'
+      tags:
+        - network-interfaces
+    delete:
+      operationId: network-interfaces_delete
+      description: Deletes a single Network Interface
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - network-interfaces
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this network interface.
+        required: true
+        type: string
+        format: uuid
+  /new-meter-readings:
+    post:
+      operationId: new-meter-readings_create
+      description: Creates a MeterReading via the NewMeterReading serializer taking
+        meter.
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewMeterReadingIn'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/NewMeterReadingIn'
+      tags:
+        - new-meter-readings
+    parameters: []
+  /sim-cards:
+    get:
+      operationId: sim-cards_list
+      description: Returns a list of SimCards
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/SimCard'
+      tags:
+        - sim-cards
+    post:
+      operationId: sim-cards_create
+      description: Creates a new SimCard
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SimCard'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SimCard'
+      tags:
+        - sim-cards
+    parameters: []
+  /sim-cards/{id}:
+    get:
+      operationId: sim-cards_read
+      description: Returns a single SimCard
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/SimCard'
+      tags:
+        - sim-cards
+    put:
+      operationId: sim-cards_update
+      description: Updates a single SimCard
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SimCard'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/SimCard'
+      tags:
+        - sim-cards
+    patch:
+      operationId: sim-cards_partial_update
+      description: Partially updates a single SimCard
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SimCard'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/SimCard'
+      tags:
+        - sim-cards
+    delete:
+      operationId: sim-cards_delete
+      description: Deletes a single SimCard
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - sim-cards
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this sim card.
+        required: true
+        type: string
+        format: uuid
+definitions:
+  MeterDeviceConfig:
+    required:
+      - name
+      - series
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Device Config Name
+        type: string
+        maxLength: 50
+        minLength: 1
+      series:
+        type: array
+        items:
+          type: string
+          format: uuid
+        uniqueItems: true
+      series_info:
+        title: Series info
+        type: string
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterDeviceType:
+    required:
+      - name
+      - description
+      - manufacturer
+      - manufacturer_model
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Type name of Meter
+        type: string
+        maxLength: 50
+        minLength: 1
+      description:
+        title: Description of Meter Device Type
+        type: string
+        maxLength: 500
+        minLength: 1
+      manufacturer:
+        title: Manufacturer name
+        type: string
+        maxLength: 100
+        minLength: 1
+      manufacturer_model:
+        title: Manufacturer model name
+        type: string
+        maxLength: 50
+        minLength: 1
+      config:
+        title: Config
+        type: string
+        format: uuid
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterDevice:
+    required:
+      - name
+      - protocol
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Unique Name/Identification of Meter
+        type: string
+        maxLength: 50
+        minLength: 1
+      external_system_reference:
+        title: Reference in external systems. Used for export
+        type: string
+        maxLength: 50
+        x-nullable: true
+      manufacturer_serial:
+        title: Meter Serial Number from manufacturer
+        type: string
+        maxLength: 50
+        x-nullable: true
+      protocol:
+        title: The communication protocol used by the meter device
+        type: string
+        enum:
+          - dlms-cosem
+          - iec62056-21
+          - i-flag
+          - mbus
+          - modbus
+          - lis-200
+      iec62056_21_address:
+        title: Meter Address used for IEC62056-21 communication
+        type: string
+        maxLength: 8
+        minLength: 1
+        x-nullable: true
+      dlms_logical_device_name:
+        title: Logical device name used in DLMS Communication
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 32
+        minLength: 1
+        x-nullable: true
+      dlms_system_title:
+        title: System title of meter used in DLMS communication
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 16
+        minLength: 1
+        x-nullable: true
+      type:
+        title: Type
+        type: string
+        format: uuid
+        x-nullable: true
+      network_interface:
+        title: Network interface
+        type: string
+        format: uuid
+        x-nullable: true
+      network_interface_info:
+        title: Network interface info
+        type: string
+        readOnly: true
+      has_current_transformer:
+        title: Meter has a current transformer in its measurement loop
+        type: boolean
+      current_transformer_ratio:
+        title: Ratio of current transformer
+        type: integer
+        maximum: 2147483647
+        minimum: -2147483648
+      has_voltage_transformer:
+        title: Meter has a voltage transformer in its measurement loop
+        type: boolean
+      voltage_transformer_ratio:
+        title: Ratio of voltage transformer
+        type: integer
+        maximum: 2147483647
+        minimum: -2147483648
+      has_disconnector:
+        title: Has disconnector
+        type: boolean
+      disconnector_status:
+        title: Disconnector status
+        type: integer
+        enum:
+          - 0
+          - 1
+          - 2
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterReadingsSeries:
+    required:
+      - name
+      - description
+      - unit
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Name of the series. Used to group meter readings.
+        type: string
+        maxLength: 50
+        minLength: 1
+      description:
+        title: Description of the series
+        type: string
+        maxLength: 250
+        minLength: 1
+      unit:
+        title: 'Unit characters of the series, ex: kWh'
+        type: string
+        maxLength: 10
+        minLength: 1
+      unit_description:
+        title: Longer description of unit
+        type: string
+        maxLength: 250
+        minLength: 1
+        x-nullable: true
+      si_multiplier:
+        title: Multiplier to get series unit in SI unit.
+        type: string
+        format: decimal
+      affected_by_ct_ratio:
+        title: Series is affected by the current transformer of the meter
+        type: boolean
+      affected_by_vt_ratio:
+        title: Series is affected by the voltage transformer of the meter
+        type: boolean
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterReadingsOut:
+    required:
+      - timestamp
+      - value
+    type: object
+    properties:
+      timestamp:
+        title: Time when the reading was registered in the meter.
+        type: string
+        format: date-time
+      value:
+        title: Value of the reading
+        type: string
+        format: decimal
+  MeterReadings:
+    required:
+      - timestamp
+      - value
+    type: object
+    properties:
+      id:
+        title: Id
+        type: integer
+        readOnly: true
+      meter_device:
+        title: Meter device
+        type: string
+        format: uuid
+        x-nullable: true
+      series:
+        title: Series
+        type: string
+        format: uuid
+        x-nullable: true
+      timestamp:
+        title: Time when the reading was registered in the meter.
+        type: string
+        format: date-time
+      value:
+        title: Value of the reading
+        type: string
+        format: decimal
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterSecurityKeyCollectionOut:
+    required:
+      - dlms_global_unicast_encryption_key
+      - dlms_global_broadcast_encryption_key
+      - dlms_global_authentication_key
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      iec62056_21_password:
+        title: Password for use in IEC 62056-21 communication
+        type: string
+        maxLength: 8
+        minLength: 1
+        x-nullable: true
+      dlms_global_unicast_encryption_key:
+        title: Global Unicast Encryption Key, GUEK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      dlms_global_broadcast_encryption_key:
+        title: Global Broadcast Encryption Key, GBEK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      dlms_global_authentication_key:
+        title: Global Authentication Key, GAK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      meter:
+        required:
+          - name
+          - protocol
+        type: object
+        properties:
+          id:
+            title: Primary Key
+            type: string
+            format: uuid
+            readOnly: true
+          name:
+            title: Unique Name/Identification of Meter
+            type: string
+            maxLength: 50
+            minLength: 1
+          external_system_reference:
+            title: Reference in external systems. Used for export
+            type: string
+            maxLength: 50
+            x-nullable: true
+          manufacturer_serial:
+            title: Meter Serial Number from manufacturer
+            type: string
+            maxLength: 50
+            x-nullable: true
+          protocol:
+            title: The communication protocol used by the meter device
+            type: string
+            enum:
+              - dlms-cosem
+              - iec62056-21
+              - i-flag
+              - mbus
+              - modbus
+              - lis-200
+          iec62056_21_address:
+            title: Meter Address used for IEC62056-21 communication
+            type: string
+            maxLength: 8
+            minLength: 1
+            x-nullable: true
+          dlms_logical_device_name:
+            title: Logical device name used in DLMS Communication
+            type: string
+            pattern: ^[abcdefABCDEF1234567890]*$
+            maxLength: 32
+            minLength: 1
+            x-nullable: true
+          dlms_system_title:
+            title: System title of meter used in DLMS communication
+            type: string
+            pattern: ^[abcdefABCDEF1234567890]*$
+            maxLength: 16
+            minLength: 1
+            x-nullable: true
+          has_current_transformer:
+            title: Meter has a current transformer in its measurement loop
+            type: boolean
+          current_transformer_ratio:
+            title: Ratio of current transformer
+            type: integer
+            maximum: 2147483647
+            minimum: -2147483648
+          has_voltage_transformer:
+            title: Meter has a voltage transformer in its measurement loop
+            type: boolean
+          voltage_transformer_ratio:
+            title: Ratio of voltage transformer
+            type: integer
+            maximum: 2147483647
+            minimum: -2147483648
+          has_disconnector:
+            title: Has disconnector
+            type: boolean
+          disconnector_status:
+            title: Disconnector status
+            type: integer
+            enum:
+              - 0
+              - 1
+              - 2
+            x-nullable: true
+          created_at:
+            title: Created at
+            type: string
+            format: date-time
+            readOnly: true
+          updated_at:
+            title: Updated at
+            type: string
+            format: date-time
+            readOnly: true
+          type:
+            title: Type
+            type: string
+            format: uuid
+            x-nullable: true
+          network_interface:
+            title: Network interface
+            type: string
+            format: uuid
+            x-nullable: true
+        readOnly: true
+  MeterSecurityKeyCollectionIn:
+    required:
+      - meter
+      - dlms_global_unicast_encryption_key
+      - dlms_global_broadcast_encryption_key
+      - dlms_master_key
+      - dlms_global_authentication_key
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      meter:
+        title: Meter
+        type: string
+        format: uuid
+      iec62056_21_password:
+        title: Password for use in IEC 62056-21 communication
+        type: string
+        maxLength: 8
+        minLength: 1
+        x-nullable: true
+      dlms_global_unicast_encryption_key:
+        title: Global Unicast Encryption Key, GUEK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      dlms_global_broadcast_encryption_key:
+        title: Global Broadcast Encryption Key, GBEK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      dlms_master_key:
+        title: Master Key or Key Encrypting Key, KEK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      dlms_global_authentication_key:
+        title: Global Authentication Key, GAK
+        type: string
+        pattern: ^[abcdefABCDEF1234567890]*$
+        maxLength: 64
+        minLength: 1
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  MeterSystemEvent:
+    required:
+      - timestamp
+      - title
+      - content
+    type: object
+    properties:
+      id:
+        title: Id
+        type: integer
+        readOnly: true
+      meter_device:
+        title: Meter device
+        type: string
+        format: uuid
+        x-nullable: true
+      timestamp:
+        title: Timestamp
+        type: string
+        format: date-time
+      title:
+        title: Title of the event
+        type: string
+        maxLength: 50
+        minLength: 1
+      content:
+        title: Additional information about the meter system event.
+        type: string
+        maxLength: 500
+        minLength: 1
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  NetworkInterface:
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      static_ip_address:
+        title: IP Address of meter that is not bound to SIM
+        type: string
+        minLength: 1
+        x-nullable: true
+      host:
+        title: Host
+        type: string
+        readOnly: true
+      fqdn:
+        title: FQDN, if you are using DNS to lookup IP of meters
+        type: string
+        maxLength: 200
+        x-nullable: true
+      port:
+        title: Port used for IP communication
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+        x-nullable: true
+      sim:
+        title: Sim
+        type: string
+        format: uuid
+        x-nullable: true
+      can_block:
+        title: It is possible to block the network interface
+        type: boolean
+      is_blocked:
+        title: Indicates if the network interface is currently blocked
+        type: boolean
+        readOnly: true
+      block_time:
+        title: Time when block was initiated
+        type: string
+        format: date-time
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  NewMeterReadingIn:
+    required:
+      - meter_device_name
+      - series_name
+      - timestamp
+      - value
+    type: object
+    properties:
+      meter_device_name:
+        title: Meter device name
+        type: string
+        maxLength: 50
+        minLength: 1
+      series_name:
+        title: Series name
+        type: string
+        maxLength: 50
+        minLength: 1
+      timestamp:
+        title: Timestamp
+        type: string
+        format: date-time
+      value:
+        title: Value
+        type: string
+        format: decimal
+  SimCard:
+    required:
+      - iccid
+      - imsi
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      iccid:
+        title: ICCID of the SIM
+        type: string
+        pattern: ^[0123456789]*$
+        maxLength: 20
+        minLength: 1
+      imsi:
+        title: IMSI of the SIM
+        type: string
+        pattern: ^[0123456789]*$
+        maxLength: 15
+        minLength: 1
+      ip_address:
+        title: IP Address associated with the SIM
+        type: string
+        minLength: 1
+        x-nullable: true
+      phone_number:
+        title: Telephone number associated with the SIM
+        type: string
+        maxLength: 30
+        minLength: 1
+        x-nullable: true
+      external_system_link:
+        title: Link to external system for management of the SIM
+        type: string
+        format: uri
+        maxLength: 200
+        minLength: 1
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
