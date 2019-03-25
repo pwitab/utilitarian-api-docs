@@ -1,0 +1,50 @@
+site_name: Utilitarian Docs
+site_description: 'Utilitarian Documentation'
+site_author: 'Henrik Palmlund Wahlgren'
+
+nav:
+  - 'Home': 'index.md'
+  - Architecture:
+    - Overview: 'architecture.md'
+    - Components: 'components.md'
+  - Protocols: 'protocols.md'
+  - Meters: 'meters.md'
+  - Providers: 'providers.md'
+  - Open Source: 'open_source.md'
+  - On Premise:
+    - Installation: 'installation.md'
+    - Use HTTPS: 'using_https_on_api.md'
+  - 'Utilitarian API Reference':
+    - 'v1.0.0': 'api_docs/v_1_0_0.html'
+  - PWIT AB: 'pwit.md'
+
+theme:
+  name: 'material'
+  logo:
+    icon: 'cloud'
+  font:
+    text: 'Open Sans'
+
+
+# repo_name: 'pwitab/utilitarian-api-docs'
+# repo_url: 'https://github.com/pwitab/utilitarian-api-docs'
+edit_uri: ''  # disable the edit feature.
+
+
+# Copyright
+copyright: 'Copyright &copy; 2019 Palmlund Wahlgren Innovative Technology AB'
+
+
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/pwitab'
+
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: '#'
