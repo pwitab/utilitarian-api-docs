@@ -11,6 +11,10 @@ We provide a [REST API](api_docs/v_1_0_0.html) to manage the data and jobs.
 docker pull quay.io/pwitab/utilitarian:version
 ```
 
+See [component settings](component_settings.md#utilitarian-api) on how to 
+configure Utilitarian API
+ 
+
 ## DLMS UDP Server
 
 A high throughput UDP server to receive DLMS DataNotifications from meters.
@@ -46,7 +50,7 @@ docker pull quay.io/pwitab/utilitarian-poster:version
 
 ## Database
 
-Utilitarian user PostgreSQL as database.
+Utilitarian uses PostgreSQL as database.
 
 
 ## Message Broker

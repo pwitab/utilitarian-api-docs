@@ -13,7 +13,10 @@ nav:
   - Open Source: 'open_source.md'
   - On Premise:
     - Installation: 'installation.md'
+    - Component Configuration: 'component_settings.md'
+    - Setup using Docker Compose: 'docker_compose.md'
     - Use HTTPS: 'using_https_on_api.md'
+    - Messaging: 'amr_um.md'
   - 'Utilitarian API Reference':
     - 'v1.0.0': 'api_docs/v_1_0_0.html'
   - PWIT AB: 'pwit.md'
