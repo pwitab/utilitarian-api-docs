@@ -40,7 +40,7 @@
     
     
       
-        <title>Overview - Utilitarian Docs</title>
+        <title>Messaging - Utilitarian Docs</title>
       
     
     
@@ -79,7 +79,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#architecture" tabindex="1" class="md-skip">
+      <a href="#unified-messaging-for-automatic-meter-readings" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -104,7 +104,7 @@
               Utilitarian Docs
             </span>
             <span class="md-header-nav__topic">
-              Overview
+              Messaging
             </span>
           
         </div>
@@ -182,12 +182,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
     <label class="md-nav__link" for="nav-2">
       Architecture
@@ -203,20 +201,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-    <a href="./" title="Overview" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../architecture/" title="Overview" class="md-nav__link">
       Overview
     </a>
-    
   </li>
 
         
@@ -289,10 +278,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
     
     <label class="md-nav__link" for="nav-7">
       On Premise
@@ -356,11 +347,69 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../amr_um/" title="Messaging" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Messaging
+      </label>
+    
+    <a href="./" title="Messaging" class="md-nav__link md-nav__link--active">
       Messaging
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#message-types" title="Message Types" class="md-nav__link">
+    Message Types
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dlms-push-message" title="DLMS Push Message" class="md-nav__link">
+    DLMS Push Message
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-meter-reading" title="New Meter Reading" class="md-nav__link">
+    New Meter Reading
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -434,6 +483,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#message-types" title="Message Types" class="md-nav__link">
+    Message Types
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dlms-push-message" title="DLMS Push Message" class="md-nav__link">
+    DLMS Push Message
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-meter-reading" title="New Meter Reading" class="md-nav__link">
+    New Meter Reading
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -445,9 +530,51 @@
               
                 
                 
-                <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h1>
-<p><em>About architecture</em></p>
-<p><strong>TODO</strong></p>
+                <h1 id="unified-messaging-for-automatic-meter-readings">Unified Messaging for Automatic Meter Readings<a class="headerlink" href="#unified-messaging-for-automatic-meter-readings" title="Permanent link">#</a></h1>
+<p>AMR UM is a project trying to define clearer messages that are focused on
+AMR operations. In metering it is common to use CIM (IEC 61968) to model your 
+business processes and define messages for different type of operations. </p>
+<p>But it is all on quite high level. It is also a bit ambiguous how to use the 
+models. There are several possiblities for the DSO (Distribution System Operators) to
+model the same data so focusing to comply with CIM in messages within 
+Utilitarian would not be beneficial.</p>
+<p>Instead we are focusing on making clearly defined messages and document the usage 
+well. We will if needed, provide translation services for CIM or other formats. 
+But as of now it is up to the user to hook in to the message stream and get 
+the data they need.</p>
+<p>We plan on sending all messages serialized using Avro and have a schema server 
+for deserialization so that we can handle versioning of schemas. But this is a 
+work in progress and for now we send messages in json format.</p>
+<p>We have developed a helper library in Python to build objects and make payloads 
+for AMR UM messages: <a href="https://www.github.com/pwitab/amr-um">Check it out on GitHub</a> </p>
+<h2 id="message-types">Message Types<a class="headerlink" href="#message-types" title="Permanent link">#</a></h2>
+<h3 id="dlms-push-message">DLMS Push Message<a class="headerlink" href="#dlms-push-message" title="Permanent link">#</a></h3>
+<p>Contains a push message (DataNotification) from a DLMS Meter</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;payload&quot;</span><span class="p">:</span> <span class="s2">&quot;base64encodedbytes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;transport&quot;</span><span class="p">:</span> <span class="s2">&quot;udp&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;source_address&quot;</span><span class="p">:</span> <span class="err">&#39;ip_address_of_origin&#39;</span><span class="p">,</span>
+    <span class="nt">&quot;source_port&quot;</span><span class="p">:</span> <span class="mi">5678</span><span class="p">,</span>
+    <span class="nt">&quot;application_context&quot;</span><span class="p">:</span> <span class="s2">&quot;dsmr&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;dlms_wrapper&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;source_wport&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;destiniation_wport&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="mi">1</span>
+      <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="new-meter-reading">New Meter Reading<a class="headerlink" href="#new-meter-reading" title="Permanent link">#</a></h3>
+<p>Message containing a single meter reading</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;meter&quot;</span><span class="p">:</span> <span class="s2">&quot;FIOR78464920374&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;series&quot;</span><span class="p">:</span> <span class="s2">&quot;7-0-13-26-0-101&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-02-24T06:00:00T+01:00&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;14567.000&quot;</span>
+
+<span class="p">}</span>
+</pre></div>
                 
                   
                 
@@ -468,7 +595,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../using_https_on_api/" title="Use HTTPS" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -477,19 +604,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Home
+                Use HTTPS
               </span>
             </div>
           </a>
         
         
-          <a href="../components/" title="Components" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../api_docs/v_1_0_0.html" title="v1.0.0" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Components
+                v1.0.0
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

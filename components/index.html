@@ -386,8 +386,44 @@
 
 
   <li class="md-nav__item">
+    <a href="../component_settings/" title="Component Configuration" class="md-nav__link">
+      Component Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docker_compose/" title="Setup using Docker Compose" class="md-nav__link">
+      Setup using Docker Compose
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../using_https_on_api/" title="Use HTTPS" class="md-nav__link">
       Use HTTPS
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../amr_um/" title="Messaging" class="md-nav__link">
+      Messaging
     </a>
   </li>
 
@@ -533,6 +569,8 @@ We provide a <a href="../api_docs/v_1_0_0.html">REST API</a> to manage the data 
 </pre></div>
 
 
+<p>See <a href="../component_settings/#utilitarian-api">component settings</a> on how to 
+configure Utilitarian API</p>
 <h2 id="dlms-udp-server">DLMS UDP Server<a class="headerlink" href="#dlms-udp-server" title="Permanent link">#</a></h2>
 <p>A high throughput UDP server to receive DLMS DataNotifications from meters.</p>
 <div class="codehilite"><pre><span></span>docker pull quay.io/pwitab/utilitarian-dlms-udp-server:version
@@ -557,7 +595,7 @@ saved in the Utilitarian API and send it over HTTP to the correct endpoint.</p>
 
 
 <h2 id="database">Database<a class="headerlink" href="#database" title="Permanent link">#</a></h2>
-<p>Utilitarian user PostgreSQL as database.</p>
+<p>Utilitarian uses PostgreSQL as database.</p>
 <h2 id="message-broker">Message Broker<a class="headerlink" href="#message-broker" title="Permanent link">#</a></h2>
 <p>Utilitarian uses RabbitMQ as message broker.</p>
                 
