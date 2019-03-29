@@ -54,8 +54,8 @@
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700|">
-        <style>body,input{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"","Courier New",Courier,monospace}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
     <link rel="stylesheet" href="../assets/fonts/material-icons.css">
@@ -561,26 +561,7 @@ just the connection string as input to the other services. </p>
       <span class="c1"># General settings</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DATABASE_URL=postgres://postgres/dbname</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECRET_KEY=verysecretkey</span>  
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ALLOWED_HOSTS=example.com,dev.example.com</span>
-
-      <span class="c1"># Security! CHECK THESE SETTINGS FOR PRODUCTION</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECURE_SSL_REDIRECT=false</span>  <span class="c1"># Better to use DNS for this task, but you can use redirect</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECURE_HSTS_SECONDS=60</span>  <span class="c1"># when working set to high number</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECURE_HSTS_INCLUDE_SUBDOMAINS=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECURE_CONTENT_TYPE_NOSNIFF=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECURE_BROWSER_XSS_FILTER=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SESSION_COOKIE_SECURE=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SESSION_COOKIE_HTTPONLY=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">CSRF_COOKIE_SECURE=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">CSRF_COOKIE_HTTPONLY=false</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">X_FRAME_OPTIONS=SAMEORIGIN</span>  <span class="c1"># To turn off use DENY</span>
-
-      <span class="c1"># Accounts</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ACCOUNT_ALLOW_REGISTRATION=false</span>
-
-      <span class="c1"># Messaging</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672//</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_PUBLISH_TO=utilitarian</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ALLOWED_HOSTS=utilitarian_api</span>
 
   <span class="l l-Scalar l-Scalar-Plain">dlms_processor</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwitab/utilitarian-dlms-processor:vX.X.X</span>
