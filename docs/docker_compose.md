@@ -63,26 +63,7 @@ services:
       # General settings
       - DATABASE_URL=postgres://postgres/dbname
       - SECRET_KEY=verysecretkey  
-      - ALLOWED_HOSTS=example.com,dev.example.com
-
-      # Security! CHECK THESE SETTINGS FOR PRODUCTION
-      - SECURE_SSL_REDIRECT=false  # Better to use DNS for this task, but you can use redirect
-      - SECURE_HSTS_SECONDS=60  # when working set to high number
-      - SECURE_HSTS_INCLUDE_SUBDOMAINS=false
-      - SECURE_CONTENT_TYPE_NOSNIFF=false
-      - SECURE_BROWSER_XSS_FILTER=false
-      - SESSION_COOKIE_SECURE=false
-      - SESSION_COOKIE_HTTPONLY=false
-      - CSRF_COOKIE_SECURE=false
-      - CSRF_COOKIE_HTTPONLY=false
-      - X_FRAME_OPTIONS=SAMEORIGIN  # To turn off use DENY
-
-      # Accounts
-      - ACCOUNT_ALLOW_REGISTRATION=false
-      
-      # Messaging
-      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672//
-      - AMQP_PUBLISH_TO=utilitarian
+      - ALLOWED_HOSTS=utilitarian_api
 
   dlms_processor:
     image: quay.io/pwitab/utilitarian-dlms-processor:vX.X.X

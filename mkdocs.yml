@@ -25,8 +25,8 @@ theme:
   name: 'material'
   logo:
     icon: 'cloud'
-  font:
-    text: 'Open Sans'
+  # font:
+    # text: 'Open Sans'
 
 
 # repo_name: 'pwitab/utilitarian-api-docs'
@@ -51,3 +51,4 @@ markdown_extensions:
       guess_lang: false
   - toc:
       permalink: '#'
+  - def_list
