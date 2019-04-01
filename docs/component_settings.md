@@ -133,7 +133,7 @@
     Defaults to `False`.
     
     
-#### `USE_X_FORWARDED_HOST`
+#### `USE_X_FORWARDED_PORT`
 
 :   A boolean that specifies whether to use the X-Forwarded-Port header in 
     preference to the SERVER_PORT META variable. This should only be enabled 
@@ -180,12 +180,146 @@
     
 ## DLMS UDP Server
 
-* LOGLEVEL
+#### `DLMS_UDP_SERVER_DEBUG`
+
+:   Will set the loglevel to debug.
+
+    Defaults to `False`
 
 
+#### `AMQP_CONNECTION_STRING`
+
+:   AMQP Connection string to RabbitMQ broker. Example: 
+    `amqp://guest:guest@rabbitmq:5672//`.
+
+#### `AMQP_EXCHANGE_NAME`
+
+:   The exchange where messages will be published.
+    
+    Defaults to `utilitarian`
+
+#### `AMQP_DEFAULT_QUEUE_NAME`
+
+:   To ensure that the broker always have a queue that will receive our 
+    messages we declare in both publishers and subscribers. This is the name of
+    the queue.
+    
+    Defaults to `utilitarian.dlms_push_messages`
+
+#### `AMQP_DEFAULT_QUEUE_ROUTING_KEY`
+
+:   The routing key we want to bind to the default key.
+    
+    Defaults to new_dlms_push_message.#"`
+
+#### `UTILITARIAN_APPLICATION_CONTEXT`
+
+:   Since there are a few different variations (companion standards) to 
+    DLMS/COSEM and some implements some things differntly we add the application 
+    context of receiving server to add it to any outgoing messages.
+     
+    You should run a separate instance of the UDP server for each different 
+    application context. It is not possible to see in the messages what 
+    companion standard the meter is using so we separate them by setting them up 
+    against different server.
+    
+    Defaults to `units11291`
+    
+    
 ## DLMS PROCESSOR
 
-* LOGLEVEL
+#### `DLMS_CONSUMER_DEBUG`
+
+:   Will set the loglevel to debug.
+
+    Defaults to `False`
+
+#### `AMQP_CONNECTION_STRING`
+
+:   AMQP Connection string to RabbitMQ broker. Example: 
+    `amqp://guest:guest@rabbitmq:5672//`.
+
+#### `DLMS_CONSUMER_CONSUME_FROM`
+
+:   The queue from where to consume messages. 
+
+    Defaults to `utilitarian.dlms_push_messages`
+
+#### `DLMS_CONSUMER_PREFETCH_COUNT`
+
+:   The consumer prefetch count, how many unacknowledged messages the consumer 
+    is allowed to have in memory.  
+    
+    Default to `100`
+
+#### `DLMS_CONSUMER_PUBLISH_TO` 
+
+:   Exchange to publish meter readings to.
+
+    Defaults to `utilitarian`
+
+#### `UTILITARIAN_BASE_URL`
+
+:   The base url for Utilitarian API. Example: 
+    `https://utilitarian.example.com:8000`
+
+
+#### `UTILITARIAN_AUTH_TOKEN` 
+
+:   Token for authentication to Utilitarian API. Example: 
+    `9c72cba03f4920dcb4b62c4d2723fe5718990024`
+
+#### `UTILITARIAN_REQUEST_TIMEOUT`
+
+:   Request timeout for HTTP calls to Utilitarian API. IF you start seeing a 
+    high rate of `TimeoutErrors` your database might not have enough resources or 
+    you need to load balance the API. But increasing the timeout could solve 
+    you problems short-term. Defined in seconds
+    
+    Defaults to `15`
 
 ## Utilitarian Poster
 
+#### `POSTER_DEBUG`
+
+:   Enables debug. Sets loglevel to `debug`
+
+    Defaults to `False`
+      
+
+#### `AMQP_CONNECTION_STRING`
+
+:   AMQP Connection string to RabbitMQ broker. Example: 
+    `amqp://guest:guest@rabbitmq:5672//`.
+
+#### `POSTER_CONSUME_FROM`
+
+:   Name of the queues to consume from.
+    
+    Defaults to `utilitarian.new_meter_readings`
+
+#### `POSTER_PREFETCH_COUNT` 
+
+:   The consumer prefetch count, how many unacknowledged messages the consumer 
+    is allowed to have in memory.  
+    
+    Default to `100`
+
+#### `UTILITARIAN_BASE_URL`
+
+:   The base url for Utilitarian API. Example: 
+    `https://utilitarian.example.com:8000`
+
+#### `UTILITARIAN_AUTH_TOKEN`
+
+:   Token for authentication to Utilitarian API. Example: 
+    `9c72cba03f4920dcb4b62c4d2723fe5718990024`
+
+#### `UTILITARIAN_REQUEST_TIMEOUT`
+
+:   Request timeout for HTTP calls to Utilitarian API. IF you start seeing a 
+    high rate of `TimeoutErrors` your database might not have enough resources or 
+    you need to load balance the API. But increasing the timeout could solve 
+    you problems short-term. Defined in seconds
+    
+    Defaults to `15`

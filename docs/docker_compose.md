@@ -1,6 +1,5 @@
 # Setting up with docker-compose
 
-`docker-compose`
 
 ## Install docker-compose
 

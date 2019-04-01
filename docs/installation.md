@@ -137,3 +137,37 @@ There are several solutions to application and log monitoring. For example
 Elastic Stack or Splunk. [Contact](index.md#get-in-contact) us if you want help setting this up for your 
 installation.
 
+
+## Initial setup Utilitarian API
+
+
+### Migrate the database
+
+The first time you set up Utilitarian API you will need to migrate the database 
+so all tables are present. 
+
+Assuming you have started all services via `docker-compose` run the following 
+command:
+
+```bash
+
+docker-compose exec utilitarian_api sh -c "python manage.py migrate"
+
+```
+
+
+### Create Superuser
+
+Assuming you have started all services via `docker-compose` you should run the
+following command
+
+
+```bash
+
+docker-compose exec utilitarian_api sh -c "python manage.py createsuperuser"
+
+```
+
+
+
+
