@@ -382,6 +382,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#initial-setup-utilitarian-api" title="Initial setup Utilitarian API" class="md-nav__link">
+    Initial setup Utilitarian API
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-database" title="Migrate the database" class="md-nav__link">
+    Migrate the database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-superuser" title="Create Superuser" class="md-nav__link">
+    Create Superuser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -569,6 +596,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#initial-setup-utilitarian-api" title="Initial setup Utilitarian API" class="md-nav__link">
+    Initial setup Utilitarian API
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-database" title="Migrate the database" class="md-nav__link">
+    Migrate the database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-superuser" title="Create Superuser" class="md-nav__link">
+    Create Superuser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -687,6 +741,21 @@ logging drivers, see the <a href="https://docs.docker.com/config/containers/logg
 <p>There are several solutions to application and log monitoring. For example 
 Elastic Stack or Splunk. <a href="..#get-in-contact">Contact</a> us if you want help setting this up for your 
 installation.</p>
+<h2 id="initial-setup-utilitarian-api">Initial setup Utilitarian API<a class="headerlink" href="#initial-setup-utilitarian-api" title="Permanent link">#</a></h2>
+<h3 id="migrate-the-database">Migrate the database<a class="headerlink" href="#migrate-the-database" title="Permanent link">#</a></h3>
+<p>The first time you set up Utilitarian API you will need to migrate the database 
+so all tables are present. </p>
+<p>Assuming you have started all services via <code>docker-compose</code> run the following 
+command:</p>
+<div class="codehilite"><pre><span></span>docker-compose <span class="nb">exec</span> utilitarian_api sh -c <span class="s2">&quot;python manage.py migrate&quot;</span>
+</pre></div>
+
+
+<h3 id="create-superuser">Create Superuser<a class="headerlink" href="#create-superuser" title="Permanent link">#</a></h3>
+<p>Assuming you have started all services via <code>docker-compose</code> you should run the
+following command</p>
+<div class="codehilite"><pre><span></span>docker-compose <span class="nb">exec</span> utilitarian_api sh -c <span class="s2">&quot;python manage.py createsuperuser&quot;</span>
+</pre></div>
                 
                   
                 
