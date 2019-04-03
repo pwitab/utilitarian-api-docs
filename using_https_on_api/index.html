@@ -498,7 +498,14 @@ run it as a stand alone service or run it as docker container.</p>
 <p>We leave it up to the customer to define the way they want to terminate SSL/TLS 
 and handle load balancing but will of course provide help if needed. </p>
 <h2 id="settings-in-utilitarian-api-if-running-under-https">Settings in Utilitarian API if running under HTTPS:<a class="headerlink" href="#settings-in-utilitarian-api-if-running-under-https" title="Permanent link">#</a></h2>
-<p>TODO... </p>
+<p><a href="../component_settings/#session_cookie_secure"><code>SESSION_COOKIE_SECURE</code></a> should be set to <code>true</code></p>
+<p><a href="../component_settings/#csrf_cookie_secure"><code>CSRF_COOKIE_SECURE</code></a> should be set to <code>true</code></p>
+<p>Depending on your proxy settings you should set the <a href="../component_settings/#use_x_forwarded_host"><code>USE_X_FORWARDED_HOST</code></a>,
+<a href="../component_settings/#use_x_forwarded_port"><code>USE_X_FORWARDED_PORT</code></a> and 
+<a href="../component_settings/#use_x_forwarded_proto"><code>USE_X_FORWARDED_PROTO</code></a> to <code>true</code> </p>
+<p><a href="../component_settings/#secure_hsts_seconds"><code>SECURE_HSTS_SECONDS</code></a> should be 
+set to 60 and when you have made sure it works properly it can be increased to a 
+higher value</p>
                 
                   
                 

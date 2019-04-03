@@ -418,13 +418,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#secure_hsts_include_subdomains" title="SECURE_HSTS_INCLUDE_SUBDOMAINS" class="md-nav__link">
-    SECURE_HSTS_INCLUDE_SUBDOMAINS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#secure_content_type_nosniff" title="SECURE_CONTENT_TYPE_NOSNIFF" class="md-nav__link">
     SECURE_CONTENT_TYPE_NOSNIFF
   </a>
@@ -870,13 +863,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#secure_hsts_include_subdomains" title="SECURE_HSTS_INCLUDE_SUBDOMAINS" class="md-nav__link">
-    SECURE_HSTS_INCLUDE_SUBDOMAINS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#secure_content_type_nosniff" title="SECURE_CONTENT_TYPE_NOSNIFF" class="md-nav__link">
     SECURE_CONTENT_TYPE_NOSNIFF
   </a>
@@ -1227,15 +1213,6 @@ before doing any changes.</a> </p>
 </div>
 </dd>
 </dl>
-<h4 id="secure_hsts_include_subdomains"><code>SECURE_HSTS_INCLUDE_SUBDOMAINS</code><a class="headerlink" href="#secure_hsts_include_subdomains" title="Permanent link">#</a></h4>
-<dl>
-<dd>
-<p>Enable if SECURE_HSTS_SECONDS should include all subdomains too. 
-It will not take affect unless the SECURE_HST_SECONDS 
-are set to a non zero value.</p>
-<p>Defaults to<code>False</code>. </p>
-</dd>
-</dl>
 <h4 id="secure_content_type_nosniff"><code>SECURE_CONTENT_TYPE_NOSNIFF</code><a class="headerlink" href="#secure_content_type_nosniff" title="Permanent link">#</a></h4>
 <dl>
 <dd>
@@ -1258,7 +1235,7 @@ on all responses that do not already have it. </p>
 <p>Whether to use a secure cookie for the session cookie. If this is set to 
 True, the cookie will be marked as “secure,” which means browsers may 
 ensure that the cookie is only sent under an HTTPS connection. </p>
-<p>Defaults to <code>True</code>.</p>
+<p>Defaults to <code>False</code>.</p>
 </dd>
 </dl>
 <h4 id="csrf_cookie_secure"><code>CSRF_COOKIE_SECURE</code><a class="headerlink" href="#csrf_cookie_secure" title="Permanent link">#</a></h4>
@@ -1267,7 +1244,7 @@ ensure that the cookie is only sent under an HTTPS connection. </p>
 <p>Whether to use a secure cookie for the CSRF cookie. If this is set to 
 True, the cookie will be marked as “secure,” which means browsers may 
 ensure that the cookie is only sent under an HTTPS connection. </p>
-<p>Defaults to <code>True</code>.</p>
+<p>Defaults to <code>False</code>.</p>
 </dd>
 </dl>
 <h4 id="use_x_forwarded_host"><code>USE_X_FORWARDED_HOST</code><a class="headerlink" href="#use_x_forwarded_host" title="Permanent link">#</a></h4>

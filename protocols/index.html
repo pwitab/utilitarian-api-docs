@@ -259,8 +259,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dlms" title="DLMS" class="md-nav__link">
-    DLMS
+  <a href="#dlmscosem" title="DLMS/COSEM" class="md-nav__link">
+    DLMS/COSEM
   </a>
   
 </li>
@@ -268,6 +268,27 @@
         <li class="md-nav__item">
   <a href="#iec-62056-21" title="IEC 62056-21" class="md-nav__link">
     IEC 62056-21
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#m-bus" title="M-Bus" class="md-nav__link">
+    M-Bus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modbus" title="Modbus" class="md-nav__link">
+    Modbus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansi-c1218" title="ANSI C12.18" class="md-nav__link">
+    ANSI C12.18
   </a>
   
 </li>
@@ -282,20 +303,6 @@
         <li class="md-nav__item">
   <a href="#i-flag" title="I-Flag" class="md-nav__link">
     I-Flag
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mbus" title="MBus" class="md-nav__link">
-    MBus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modbus" title="Modbus" class="md-nav__link">
-    Modbus
   </a>
   
 </li>
@@ -500,8 +507,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dlms" title="DLMS" class="md-nav__link">
-    DLMS
+  <a href="#dlmscosem" title="DLMS/COSEM" class="md-nav__link">
+    DLMS/COSEM
   </a>
   
 </li>
@@ -509,6 +516,27 @@
         <li class="md-nav__item">
   <a href="#iec-62056-21" title="IEC 62056-21" class="md-nav__link">
     IEC 62056-21
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#m-bus" title="M-Bus" class="md-nav__link">
+    M-Bus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modbus" title="Modbus" class="md-nav__link">
+    Modbus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansi-c1218" title="ANSI C12.18" class="md-nav__link">
+    ANSI C12.18
   </a>
   
 </li>
@@ -523,20 +551,6 @@
         <li class="md-nav__item">
   <a href="#i-flag" title="I-Flag" class="md-nav__link">
     I-Flag
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mbus" title="MBus" class="md-nav__link">
-    MBus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modbus" title="Modbus" class="md-nav__link">
-    Modbus
   </a>
   
 </li>
@@ -560,29 +574,39 @@
                 
                 <h1 id="protocols">Protocols<a class="headerlink" href="#protocols" title="Permanent link">#</a></h1>
 <p><em>The different protocols we support</em></p>
-<h2 id="dlms">DLMS<a class="headerlink" href="#dlms" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong></p>
-<p>About dlms</p>
-<p>link to opensorce repo</p>
+<h2 id="dlmscosem">DLMS/COSEM<a class="headerlink" href="#dlmscosem" title="Permanent link">#</a></h2>
+<p>DLMS/COSEM (IEC 62056, EN13757-1) is the global standard for smart energy 
+metering, control and management. It specifies an object-oriented data model,
+an application layer protocol and media-specific communication profiles.</p>
+<p><a href="https://github.com/pwitab/dlms-cosem">PWIT is developing an open source library for DLMS/COSEM</a></p>
 <h2 id="iec-62056-21">IEC 62056-21<a class="headerlink" href="#iec-62056-21" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong></p>
-<p>About IEC 62056-21</p>
-<p>Also used to be called IEC1107</p>
-<p>link to open source code</p>
-<h2 id="lis-200">LIS-200<a class="headerlink" href="#lis-200" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong></p>
-<p>About LIS-200. Based on IEC62056-21 but allows for more freely defined objects.</p>
-<h2 id="i-flag">I-Flag<a class="headerlink" href="#i-flag" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong> </p>
-<p>Protocol from Itron. </p>
-<p>Link to open source repo</p>
-<h2 id="mbus">MBus<a class="headerlink" href="#mbus" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong></p>
-<p>About Mbus</p>
+<p>IEC 62056-21 superseded IEC 61107 (sometimes just called IEC 1107).</p>
+<p>It is used for direct local data exchange. It has been designed to act as the
+protocol used when reading the meter via its optical port. But it is used with 
+several medias, including sending the data over the internet.</p>
+<h2 id="m-bus">M-Bus<a class="headerlink" href="#m-bus" title="Permanent link">#</a></h2>
+<p>M-Bus (Meter-Bus) is a European standard (EN 13757-2 physical and link layer, 
+EN 13757-3 application layer) for the remote reading of gas or electricity 
+meters. M-Bus is also usable for other types of consumption meters. The M-Bus 
+interface is made for communication on two wires, making it cost-effective. 
+A radio variant of M-Bus (Wireless M-Bus) is also specified in EN 13757-4.</p>
 <h2 id="modbus">Modbus<a class="headerlink" href="#modbus" title="Permanent link">#</a></h2>
-<p><strong>TODO</strong></p>
-<p>General communication protocol for industry sector. </p>
-<p>Link to open source repo.</p>
+<p>Modbus is a serial communications protocol originally used with programmable 
+logic controllers (PLCs) but has become a de facto standard communication 
+protocol and is now a commonly available means of connecting industrial 
+electronic devices.</p>
+<p>Many meters that are not focused only on residential measurement are equipped with 
+a Modbus port so that they can easily be used in industrial applications.</p>
+<h2 id="ansi-c1218">ANSI C12.18<a class="headerlink" href="#ansi-c1218" title="Permanent link">#</a></h2>
+<p>ANSI C12.18 is an ANSI standard that describes a protocol used for two-way 
+communications with a meter, mostly used in North American markets. </p>
+<h2 id="lis-200">LIS-200<a class="headerlink" href="#lis-200" title="Permanent link">#</a></h2>
+<p>LIS-200 is a subset of IEC62056-21. It as implemented when the IEC62056-21 didn't 
+have all the functionality needed. It is basically the same as IEC62056-21 in the 
+flow but object identification is done differently.</p>
+<h2 id="i-flag">I-Flag<a class="headerlink" href="#i-flag" title="Permanent link">#</a></h2>
+<p>I-Flag is a proprietary protocol developed by Itron. It is used in many of Itrons 
+products.</p>
                 
                   
                 

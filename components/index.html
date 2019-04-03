@@ -565,7 +565,7 @@
 <p>The main application for Utilitarian. It stores all data and handles all 
 scheduling of reading jobs. 
 We provide a <a href="../api_docs/v_1_0_0.html">REST API</a> to manage the data and jobs.</p>
-<div class="codehilite"><pre><span></span>docker pull quay.io/pwitab/utilitarian:version
+<div class="codehilite"><pre><span></span>docker pull quay.io/pwit/utilitarian:version
 </pre></div>
 
 
@@ -573,7 +573,7 @@ We provide a <a href="../api_docs/v_1_0_0.html">REST API</a> to manage the data 
 configure Utilitarian API</p>
 <h2 id="dlms-udp-server">DLMS UDP Server<a class="headerlink" href="#dlms-udp-server" title="Permanent link">#</a></h2>
 <p>A high throughput UDP server to receive DLMS DataNotifications from meters.</p>
-<div class="codehilite"><pre><span></span>docker pull quay.io/pwitab/utilitarian-dlms-udp-server:version
+<div class="codehilite"><pre><span></span>docker pull quay.io/pwit/utilitarian-dlms-udp-server:version
 </pre></div>
 
 
@@ -583,14 +583,14 @@ receiving server would reduce throughput and we could loose messages if the serv
 is not available to process them. Instead the UDP server sends the DLMS messages
 to the message broker and they are consumed by the DLMS Processor where they get 
 decrypted and parsed into Meter Readings that is published back to the message broker.</p>
-<div class="codehilite"><pre><span></span>docker pull quay.io/pwitab/utilitarian-dlms-processor:version
+<div class="codehilite"><pre><span></span>docker pull quay.io/pwit/utilitarian-dlms-processor:version
 </pre></div>
 
 
 <h2 id="utilitarian-poster">Utilitarian Poster<a class="headerlink" href="#utilitarian-poster" title="Permanent link">#</a></h2>
 <p>The Utilitarian poster is a queue consumer that will receive all data that are to be 
 saved in the Utilitarian API and send it over HTTP to the correct endpoint.</p>
-<div class="codehilite"><pre><span></span>docker pull quay.io/pwitab/utilitarian-poster:version
+<div class="codehilite"><pre><span></span>docker pull quay.io/pwit/utilitarian-poster:version
 </pre></div>
 
 
