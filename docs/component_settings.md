@@ -79,15 +79,7 @@
         Using this setting wrongly can make your application unaccessable for 
         quite some time. [Please see the full documentation of this feature 
         before doing any changes.](https://docs.djangoproject.com/en/2.1/ref/middleware/#http-strict-transport-security) 
-
-
-#### `SECURE_HSTS_INCLUDE_SUBDOMAINS`
-
-:   Enable if SECURE_HSTS_SECONDS should include all subdomains too. 
-    It will not take affect unless the SECURE_HST_SECONDS 
-    are set to a non zero value.
     
-    Defaults to`False`. 
     
 #### `SECURE_CONTENT_TYPE_NOSNIFF`
 
@@ -110,7 +102,7 @@
     True, the cookie will be marked as “secure,” which means browsers may 
     ensure that the cookie is only sent under an HTTPS connection. 
     
-    Defaults to `True`.
+    Defaults to `False`.
     
 #### `CSRF_COOKIE_SECURE`
 
@@ -118,7 +110,7 @@
     True, the cookie will be marked as “secure,” which means browsers may 
     ensure that the cookie is only sent under an HTTPS connection. 
     
-    Defaults to `True`.
+    Defaults to `False`.
     
 #### `USE_X_FORWARDED_HOST`
 

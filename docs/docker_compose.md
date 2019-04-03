@@ -46,7 +46,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
 
   utilitarian_api:
-    image: quay.io/pwitab/utilitarian:vx.x.x
+    image: quay.io/pwit/utilitarian:vx.x.x
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -63,16 +63,18 @@ services:
       - DATABASE_URL=postgres://postgres/dbname
       - SECRET_KEY=verysecretkey  
       - ALLOWED_HOSTS=utilitarian_api
+        
+      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
 
   dlms_processor:
-    image: quay.io/pwitab/utilitarian-dlms-processor:vX.X.X
+    image: quay.io/pwit/utilitarian-dlms-processor:vX.X.X
     restart: unless-stopped
     depends_on: 
       - rabbitmq
       - utilitarian_api
     environment:
       - DLMS_CONSUMER_DEBUG=false
-      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672//
+      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
       - DLMS_CONSUMER_CONSUME_FROM=utilitarian.dlms_push_messages
       - DLMS_CONSUMER_PREFETCH_COUNT=100
       - DLMS_CONSUMER_PUBLISH_TO=utilitarian
@@ -81,7 +83,7 @@ services:
       - UTILITARIAN_REQUEST_TIMEOUT=15
 
   dlms_udp_server:
-    image: quay.io/pwitab/utilitarian-dlms-upd-server:vX.X.X
+    image: quay.io/pwit/utilitarian-dlms-udp-server:vX.X.X
     restart: unless-stopped
     ports:
       # You need to specify that it is an UDP port and not TCP!
@@ -90,21 +92,21 @@ services:
       - rabbitmq
     environment:
       - DLMS_UDP_SERVER_DEBUG=false
-      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672//
+      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
       - AMQP_EXCHANGE_NAME=utilitarian
       - AMQP_DEFAULT_QUEUE_NAME=utilitarian.dlms_push_messages
       - AMQP_DEFAULT_QUEUE_ROUTING_KEY="new_dlms_push_message.#"
       - UTILITARIAN_APPLICATION_CONTEXT=units11291
 
   utilitarian_poster:
-    image: quay.io/pwitab/utilitarian-poster:vX.X.X
+    image: quay.io/pwit/utilitarian-poster:vX.X.X
     restart: unless-stopped
     depends_on: 
       - rabbitmq
       - utilitarian_api
     environment:
       - POSTER_DEBUG=false
-      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672//
+      - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
       - POSTER_CONSUME_FROM=utilitarian.new_meter_readings
       - POSTER_PREFETCH_COUNT=100
       - UTILITARIAN_BASE_URL=http://utilitarian_api:8000

@@ -3,8 +3,8 @@
 Some metering equipment providers have well implemented integrations besides 
 from pure metering protocols. This can involve HTTP Push, SMS or FTP uploads.
 
-To make life simpler we want to be able to provide integrations to provides with
-this kind of functionality and will work to implement as many of these as possible.
+To make life simpler we want to be able to provide integrations with
+this kind of functionality and will work to implement as many as possible.
 
 
 ## Ongoing Development

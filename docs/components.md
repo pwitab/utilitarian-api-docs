@@ -8,7 +8,7 @@ scheduling of reading jobs.
 We provide a [REST API](api_docs/v_1_0_0.html) to manage the data and jobs.
 
 ```
-docker pull quay.io/pwitab/utilitarian:version
+docker pull quay.io/pwit/utilitarian:version
 ```
 
 See [component settings](component_settings.md#utilitarian-api) on how to 
@@ -21,7 +21,7 @@ A high throughput UDP server to receive DLMS DataNotifications from meters.
 
 
 ```
-docker pull quay.io/pwitab/utilitarian-dlms-udp-server:version
+docker pull quay.io/pwit/utilitarian-dlms-udp-server:version
 ```
 
 
@@ -35,7 +35,7 @@ decrypted and parsed into Meter Readings that is published back to the message b
 
 
 ```
-docker pull quay.io/pwitab/utilitarian-dlms-processor:version
+docker pull quay.io/pwit/utilitarian-dlms-processor:version
 ```
 
 ## Utilitarian Poster
@@ -45,7 +45,7 @@ saved in the Utilitarian API and send it over HTTP to the correct endpoint.
 
 
 ```
-docker pull quay.io/pwitab/utilitarian-poster:version
+docker pull quay.io/pwit/utilitarian-poster:version
 ```
 
 ## Database

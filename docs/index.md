@@ -1,7 +1,7 @@
 # Utilitarian Documentation
 
 Welcome to the Utilitarian documentation. Utilitarian is a multi utility AMR 
-(Automatic Meter Reading) tool system that gives you and your organisation 
+(Automatic Meter Reading) system that gives you and your organisation 
 a simple way to manager AMR operations over multiple energy medias, protocol 
 and metering equipment. 
 
@@ -33,7 +33,9 @@ check out the [installation](installation.md) page.
 
 ## Get in contact
 
-Simplest way of getting in contact with us is via email: info@pwit.se
+Simplest way of getting in contact with us is via email: 
+
+    info@pwit.se
 
 
 

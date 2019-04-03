@@ -14,4 +14,14 @@ and handle load balancing but will of course provide help if needed.
 
 ## Settings in Utilitarian API if running under HTTPS:
 
-TODO... 
+[`SESSION_COOKIE_SECURE`](component_settings.md#session_cookie_secure) should be set to `true`
+
+[`CSRF_COOKIE_SECURE`](component_settings.md#csrf_cookie_secure) should be set to `true`
+
+Depending on your proxy settings you should set the [`USE_X_FORWARDED_HOST`](component_settings.md#use_x_forwarded_host),
+[`USE_X_FORWARDED_PORT`](component_settings.md#use_x_forwarded_port) and 
+[`USE_X_FORWARDED_PROTO`](component_settings.md#use_x_forwarded_proto) to `true` 
+
+[`SECURE_HSTS_SECONDS`](component_settings.md#secure_hsts_seconds) should be 
+set to 60 and when you have made sure it works properly it can be increased to a 
+higher value

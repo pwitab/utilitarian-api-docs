@@ -37,7 +37,7 @@ Email: any@example.com
 Once you have logged in you can pull the images.
 
 ```
-docker pull quay.io/pwitab/repo-name:version
+docker pull quay.io/pwit/repo-name:version
 
 ```
 
@@ -165,6 +165,19 @@ following command
 ```bash
 
 docker-compose exec utilitarian_api sh -c "python manage.py createsuperuser"
+
+```
+
+
+### Collect static assets
+
+Assuming you have started all services via `docker-compose` you should run the
+following command
+
+
+```bash
+
+docker-compose exec utilitarian_api sh -c "python manage.py collectstatic --no-input"
 
 ```
 
