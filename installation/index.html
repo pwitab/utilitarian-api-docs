@@ -391,6 +391,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#generate-application-secret_key" title="Generate application SECRET_KEY" class="md-nav__link">
+    Generate application SECRET_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#migrate-the-database" title="Migrate the database" class="md-nav__link">
     Migrate the database
   </a>
@@ -407,6 +414,13 @@
           <li class="md-nav__item">
   <a href="#collect-static-assets" title="Collect static assets" class="md-nav__link">
     Collect static assets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compress-static-assets" title="Compress static assets" class="md-nav__link">
+    Compress static assets
   </a>
   
 </li>
@@ -612,6 +626,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#generate-application-secret_key" title="Generate application SECRET_KEY" class="md-nav__link">
+    Generate application SECRET_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#migrate-the-database" title="Migrate the database" class="md-nav__link">
     Migrate the database
   </a>
@@ -628,6 +649,13 @@
           <li class="md-nav__item">
   <a href="#collect-static-assets" title="Collect static assets" class="md-nav__link">
     Collect static assets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compress-static-assets" title="Compress static assets" class="md-nav__link">
+    Compress static assets
   </a>
   
 </li>
@@ -756,6 +784,18 @@ logging drivers, see the <a href="https://docs.docker.com/config/containers/logg
 Elastic Stack or Splunk. <a href="..#get-in-contact">Contact</a> us if you want help setting this up for your 
 installation.</p>
 <h2 id="initial-setup-utilitarian-api">Initial setup Utilitarian API<a class="headerlink" href="#initial-setup-utilitarian-api" title="Permanent link">#</a></h2>
+<h3 id="generate-application-secret_key">Generate application SECRET_KEY<a class="headerlink" href="#generate-application-secret_key" title="Permanent link">#</a></h3>
+<p>Utilitarian needs a SECRET_KEY for cryptographic algorithms and signing. 
+We recommend at least 50 chars. </p>
+<div class="codehilite"><pre><span></span># Example generating SECRET_KEY with openssl
+
+openssl rand -base64 50
+
+&gt;&gt; CZKcDahINwxy+eYzMItr+NZRqrONvMmJ12g+hF+W/QOMh/A4tRxhQ3onvRjJv47l
+</pre></div>
+
+
+<p>Set the SECRET_KEY environment variable to this key.</p>
 <h3 id="migrate-the-database">Migrate the database<a class="headerlink" href="#migrate-the-database" title="Permanent link">#</a></h3>
 <p>The first time you set up Utilitarian API you will need to migrate the database 
 so all tables are present. </p>
@@ -776,6 +816,13 @@ following command</p>
 <p>Assuming you have started all services via <code>docker-compose</code> you should run the
 following command</p>
 <div class="codehilite"><pre><span></span>docker-compose <span class="nb">exec</span> utilitarian_api sh -c <span class="s2">&quot;python manage.py collectstatic --no-input&quot;</span>
+</pre></div>
+
+
+<h3 id="compress-static-assets">Compress static assets<a class="headerlink" href="#compress-static-assets" title="Permanent link">#</a></h3>
+<p>Assuming you have started all services via <code>docker-compose</code> you should run the
+following command</p>
+<div class="codehilite"><pre><span></span>docker-compose <span class="nb">exec</span> utilitarian_api sh -c <span class="s2">&quot;python manage.py compress&quot;</span>
 </pre></div>
                 
                   

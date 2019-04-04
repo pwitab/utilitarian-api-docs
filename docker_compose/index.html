@@ -543,7 +543,7 @@ just the connection string as input to the other services. </p>
     <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">postgres_data:/var/lib/postgresql/data/</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">utilitarian_api</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">utilitarian-api</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian:vx.x.x</span>
     <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
     <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
@@ -560,27 +560,27 @@ just the connection string as input to the other services. </p>
       <span class="c1"># General settings</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DATABASE_URL=postgres://postgres/dbname</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SECRET_KEY=verysecretkey</span>  
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ALLOWED_HOSTS=utilitarian_api</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ALLOWED_HOSTS=utilitarian-api</span>
 
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">dlms_processor</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">dlms-processor</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian-dlms-processor:vX.X.X</span>
     <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
     <span class="l l-Scalar l-Scalar-Plain">depends_on</span><span class="p p-Indicator">:</span> 
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rabbitmq</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">utilitarian_api</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">utilitarian-api</span>
     <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DLMS_CONSUMER_DEBUG=false</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DLMS_CONSUMER_CONSUME_FROM=utilitarian.dlms_push_messages</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DLMS_CONSUMER_PREFETCH_COUNT=100</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DLMS_CONSUMER_PUBLISH_TO=utilitarian</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_BASE_URL=http://utilitarian_api:8000</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_BASE_URL=http://utilitarian-api:8000</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_AUTH_TOKEN=024281a8c6a12b5fb5a8445439bb9236555975fe</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_REQUEST_TIMEOUT=15</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">dlms_udp_server</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">dlms-udp-server</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian-dlms-udp-server:vX.X.X</span>
     <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
     <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
@@ -596,18 +596,18 @@ just the connection string as input to the other services. </p>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_DEFAULT_QUEUE_ROUTING_KEY=&quot;new_dlms_push_message.#&quot;</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_APPLICATION_CONTEXT=units11291</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">utilitarian_poster</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">utilitarian-poster</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian-poster:vX.X.X</span>
     <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
     <span class="l l-Scalar l-Scalar-Plain">depends_on</span><span class="p p-Indicator">:</span> 
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rabbitmq</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">utilitarian_api</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">utilitarian-api</span>
     <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">POSTER_DEBUG=false</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">POSTER_CONSUME_FROM=utilitarian.new_meter_readings</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">POSTER_PREFETCH_COUNT=100</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_BASE_URL=http://utilitarian_api:8000</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_BASE_URL=http://utilitarian-api:8000</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_AUTH_TOKEN=024281a8c6a12b5fb5a8445439bb9236555975fe</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_REQUEST_TIMEOUT=15</span>
 
@@ -615,6 +615,15 @@ just the connection string as input to the other services. </p>
 <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">postgres_data</span><span class="p p-Indicator">:</span>
 </pre></div>
+
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not name your service names using underscores. For example the host for 
+making HTTP requests will become something_something and having underscore 
+in HTTP_HOST header is not valid according to RFC 1034/1035. It will result 
+in an error. </p>
+</div>
                 
                   
                 
