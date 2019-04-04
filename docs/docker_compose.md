@@ -45,7 +45,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
-  utilitarian_api:
+  utilitarian-api:
     image: quay.io/pwit/utilitarian:vx.x.x
     restart: unless-stopped
     ports:
@@ -62,27 +62,27 @@ services:
       # General settings
       - DATABASE_URL=postgres://postgres/dbname
       - SECRET_KEY=verysecretkey  
-      - ALLOWED_HOSTS=utilitarian_api
+      - ALLOWED_HOSTS=utilitarian-api
         
       - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
 
-  dlms_processor:
+  dlms-processor:
     image: quay.io/pwit/utilitarian-dlms-processor:vX.X.X
     restart: unless-stopped
     depends_on: 
       - rabbitmq
-      - utilitarian_api
+      - utilitarian-api
     environment:
       - DLMS_CONSUMER_DEBUG=false
       - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
       - DLMS_CONSUMER_CONSUME_FROM=utilitarian.dlms_push_messages
       - DLMS_CONSUMER_PREFETCH_COUNT=100
       - DLMS_CONSUMER_PUBLISH_TO=utilitarian
-      - UTILITARIAN_BASE_URL=http://utilitarian_api:8000
+      - UTILITARIAN_BASE_URL=http://utilitarian-api:8000
       - UTILITARIAN_AUTH_TOKEN=024281a8c6a12b5fb5a8445439bb9236555975fe
       - UTILITARIAN_REQUEST_TIMEOUT=15
 
-  dlms_udp_server:
+  dlms-udp-server:
     image: quay.io/pwit/utilitarian-dlms-udp-server:vX.X.X
     restart: unless-stopped
     ports:
@@ -98,18 +98,18 @@ services:
       - AMQP_DEFAULT_QUEUE_ROUTING_KEY="new_dlms_push_message.#"
       - UTILITARIAN_APPLICATION_CONTEXT=units11291
 
-  utilitarian_poster:
+  utilitarian-poster:
     image: quay.io/pwit/utilitarian-poster:vX.X.X
     restart: unless-stopped
     depends_on: 
       - rabbitmq
-      - utilitarian_api
+      - utilitarian-api
     environment:
       - POSTER_DEBUG=false
       - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
       - POSTER_CONSUME_FROM=utilitarian.new_meter_readings
       - POSTER_PREFETCH_COUNT=100
-      - UTILITARIAN_BASE_URL=http://utilitarian_api:8000
+      - UTILITARIAN_BASE_URL=http://utilitarian-api:8000
       - UTILITARIAN_AUTH_TOKEN=024281a8c6a12b5fb5a8445439bb9236555975fe
       - UTILITARIAN_REQUEST_TIMEOUT=15
 
@@ -118,3 +118,9 @@ volumes:
   - postgres_data:
 
 ```
+
+!!! note
+    Do not name your service names using underscores. For example the host for 
+    making HTTP requests will become something_something and having underscore 
+    in HTTP_HOST header is not valid according to RFC 1034/1035. It will result 
+    in an error. 

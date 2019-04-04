@@ -140,6 +140,20 @@ installation.
 
 ## Initial setup Utilitarian API
 
+### Generate application SECRET_KEY
+
+Utilitarian needs a SECRET_KEY for cryptographic algorithms and signing. 
+We recommend at least 50 chars. 
+
+```
+# Example generating SECRET_KEY with openssl
+
+openssl rand -base64 50
+
+>> CZKcDahINwxy+eYzMItr+NZRqrONvMmJ12g+hF+W/QOMh/A4tRxhQ3onvRjJv47l
+```
+
+Set the SECRET_KEY environment variable to this key.
 
 ### Migrate the database
 
@@ -180,6 +194,19 @@ following command
 docker-compose exec utilitarian_api sh -c "python manage.py collectstatic --no-input"
 
 ```
+
+### Compress static assets
+
+Assuming you have started all services via `docker-compose` you should run the
+following command
+
+
+```bash
+
+docker-compose exec utilitarian_api sh -c "python manage.py compress"
+
+```
+
 
 
 
