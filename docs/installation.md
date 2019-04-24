@@ -137,6 +137,10 @@ There are several solutions to application and log monitoring. For example
 Elastic Stack or Splunk. [Contact](index.md#get-in-contact) us if you want help setting this up for your 
 installation.
 
+We are exposing a healthcheck endpoint at `/_health/` that will return 200 OK if 
+the the API is working correctly. The healthcheck can be disabled using the env 
+variable [`HEALTHCHECK_DISABLED`](component_settings.md#healthcheck_disabled) 
+
 
 ## Initial setup Utilitarian API
 

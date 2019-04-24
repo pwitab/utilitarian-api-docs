@@ -160,6 +160,13 @@
         
         If any of those are not true, you should keep this setting set to False. 
         
+        
+#### `HEALTHCHECK_DISABLED`
+
+:   Disables the health check endpoint `/_health/`
+    
+    Defaults to `False`
+        
 #### `UTILITARIAN_TIME_ZONE`
 
 :   Local time zone for this installation. Choices can be found here:
@@ -167,8 +174,12 @@
     although not all choices may be available on all operating systems.
     
     Utilitarian still handles all datetimes as time zone aware internally.
+    This setting should only be changed if you are fully aware of the 
+    implications.
     
     Defaults to `'UTC'`
+    
+
     
 ## DLMS UDP Server
 
