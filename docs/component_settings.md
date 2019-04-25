@@ -166,6 +166,19 @@
 :   Disables the health check endpoint `/_health/`
     
     Defaults to `False`
+    
+#### `DATA_RETENTION_DAYS`
+
+:   Sets the amount of days you want to keep data in Utilitarian. Only affects 
+    time series data as meter readings and meter system events.
+
+    For example:
+    365 days in  a year. If you want to keep all data that is younger than 2 
+    years and discard everything that is older than 2 years you would set 
+    `DATA_RETENTION_DAYS=730`.
+    If the environment variable is not set data is kept forever.
+    
+    Defaults to `None`
         
 #### `UTILITARIAN_TIME_ZONE`
 
