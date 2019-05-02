@@ -179,6 +179,14 @@
     If the environment variable is not set data is kept forever.
     
     Defaults to `None`
+    
+#### `STAGED_DATA_RETENTION_DAYS`
+
+:   Sets the amount of days you want to keep staged data in Utilitarian. 
+    For example staged meter readings. It is assumed that staged data is 
+    short lived so you shouldn't have to long data retention for staged data. 
+    
+    Defaults to `30` days
         
 #### `UTILITARIAN_TIME_ZONE`
 
