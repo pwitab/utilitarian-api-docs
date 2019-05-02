@@ -213,9 +213,73 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Overview
+      </label>
+    
     <a href="./" title="Overview" class="md-nav__link md-nav__link--active">
       Overview
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#multi-utility" title="Multi utility" class="md-nav__link">
+    Multi utility
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalable" title="Scalable" class="md-nav__link">
+    Scalable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliable" title="Reliable" class="md-nav__link">
+    Reliable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secure" title="Secure" class="md-nav__link">
+    Secure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurable" title="Configurable" class="md-nav__link">
+    Configurable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open" title="Open" class="md-nav__link">
+    Open
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -434,6 +498,57 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#multi-utility" title="Multi utility" class="md-nav__link">
+    Multi utility
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalable" title="Scalable" class="md-nav__link">
+    Scalable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliable" title="Reliable" class="md-nav__link">
+    Reliable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secure" title="Secure" class="md-nav__link">
+    Secure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurable" title="Configurable" class="md-nav__link">
+    Configurable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open" title="Open" class="md-nav__link">
+    Open
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -446,8 +561,39 @@
                 
                 
                 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h1>
-<p><em>About architecture</em></p>
-<p><strong>TODO</strong></p>
+<p><em>Utilitarian is a multi utility AMR system built for the Cloud.</em></p>
+<p><img alt="architecture image" src="../images/architecture.svg" /> </p>
+<h2 id="multi-utility">Multi utility<a class="headerlink" href="#multi-utility" title="Permanent link">#</a></h2>
+<p>Utilitarian is built to manage any energy type, meter and  communications 
+protocol.  </p>
+<h2 id="scalable">Scalable<a class="headerlink" href="#scalable" title="Permanent link">#</a></h2>
+<p>Utilitarian is a decentralized system that can be deployed across as many 
+servers as needed to fit your use case.</p>
+<p>By using a message broker workloads are split across asynchronous worker 
+processes for time consuming like polling for meter data. Workers can be 
+scaled independently for fit your load.</p>
+<p>Receiving of push meter data is made in separate services that can all be 
+individually scaled for the needed load. </p>
+<h2 id="reliable">Reliable<a class="headerlink" href="#reliable" title="Permanent link">#</a></h2>
+<p>Several instances can be run of every service and they can be run in different 
+environments, for example if you want to split load between different data 
+centers or availability zones Utilitarian does not limit you.</p>
+<p>Services can be load balanced using standard technologies. </p>
+<p>The main points of failure are the Postgres database and the RabbitMQ message 
+broker, but these risks can be mitigated using High Availability (HA) setups 
+and standard database reliability techniques.</p>
+<h2 id="secure">Secure<a class="headerlink" href="#secure" title="Permanent link">#</a></h2>
+<p>Depending on internal and regulatory requirements you can run Utilitarian with 
+a range of security levels and settings so that you can find the best fit for 
+your organization.</p>
+<h2 id="configurable">Configurable<a class="headerlink" href="#configurable" title="Permanent link">#</a></h2>
+<p>You can just run the services needed for your specific use case.</p>
+<h2 id="open">Open<a class="headerlink" href="#open" title="Permanent link">#</a></h2>
+<p>Utilitarian is designed to enable users to easily build their own integrations 
+and subsystems if needed. It is possbile to hook into the message streams from 
+any application using the message payload documentation.</p>
+<p>Utilitarian is built using open source technologies and libraries. We have also 
+open sourced many of our own libraries that we use within Utilitarian. </p>
                 
                   
                 
