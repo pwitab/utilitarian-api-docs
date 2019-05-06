@@ -18,7 +18,7 @@ If you are interested in what type of communication protocols we support go to
 the [Protocols](protocols.md) page.
 
 We are continuously adding new meters that we support, and even if we haven't 
-tried out your meters yet we might already support them due to out general 
+tried out your meters yet we might already support them due to our general 
 protocol interpreters, or we need to do some work to get them into the system. 
 To get info on the meters we have already verified against Utilitarian go to the 
 [meters](meters.md) page and if you need custom work done please 

@@ -52,8 +52,8 @@ services:
       - "8000:8000"
     depends_on:
       - rabbitmq
-      - postres
-    environment:
+      - postgres
+    environment: &utilitarian_env
       # Debug
       # SECURITY WARNING: Don't use in production
       - UTILITARIAN_DEBUG=false
@@ -65,6 +65,18 @@ services:
       - ALLOWED_HOSTS=utilitarian-api
         
       - AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/
+
+  utilitarian-worker:
+    image: quay.io/pwit/utilitarian:version
+    restart: unless-stopped
+    command: celery -A utilitarian worker --loglevel=INFO
+    environment: *utilitarian_env  # anchor it to api to only define once.
+    
+  utilitarian-beat:
+    image: quay.io/pwit/utilitarian:version
+    restart: unless-stopped
+    command: celery -A utilitarian beat --loglevel=INFO
+    environment: *utilitarian_env  # anchor it to api to only define once.
 
   dlms-processor:
     image: quay.io/pwit/utilitarian-dlms-processor:vX.X.X

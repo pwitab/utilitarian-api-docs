@@ -11,7 +11,7 @@ info:
     name: Dev Team
     url: https://www.pwit.se
     email: info@pwit.se
-  version: 1.0.0
+  version: 1.1.0
   license:
     name: BSD-3-Clause
     url: https://opensource.org/licenses/BSD-3-Clause
@@ -197,6 +197,23 @@ tags:
 
     x-displayName: Meter Reading Series
 
+  - name: staged-meter-readings
+    description: |
+      Operations on Staged Meter Readings
+
+      ### Staged Meter Readings
+
+      Staged Meter Readings are meter readings that when they where received by
+      Utilitarian API did not have a corresponding meter. This might be due to
+      that the meter was set up in the field but was not yet set up in Utilitarian
+      API. To avoid loosing values we save the meter readings for a while and
+      whenever a new meter device is created we will save all staged meter
+      readings as normal meter readings. We also clear the staging table of old
+      values after a set amount of time to make sure the list doesn't grow to
+      large.
+
+    x-displayName: Staged Meter Readings
+
   - name: meter-system-events
     description: |
       Operations on Meter System Events
@@ -329,6 +346,7 @@ x-tagGroups:
       - meter-device-configs
       - meter-reading-series
       - meter-readings
+      - staged-meter-readings
       - new-meter-readings
       - meter-system-events
       - meter-security-keys
@@ -576,12 +594,27 @@ paths:
       operationId: meter-devices_list
       description: Returns a list of MeterDevices
       parameters:
-        - name: type
+        - name: name
           in: query
           description: ''
           required: false
           type: string
-        - name: protocol
+        - name: external_system_reference
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: manufacturer_serial
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: dlms_logical_device_name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: dlms_system_title
           in: query
           description: ''
           required: false
@@ -1266,19 +1299,12 @@ paths:
   /new-meter-readings:
     post:
       operationId: new-meter-readings_create
-      description: Creates a MeterReading via the NewMeterReading serializer taking
-        meter.
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/NewMeterReadingIn'
+      description: "Receives Meter Readings, single and in list and will send them\
+        \ to background\n    workers for processing."
+      parameters: []
       responses:
         '201':
           description: ''
-          schema:
-            $ref: '#/definitions/NewMeterReadingIn'
       tags:
         - new-meter-readings
     parameters: []
@@ -1287,6 +1313,16 @@ paths:
       operationId: sim-cards_list
       description: Returns a list of SimCards
       parameters:
+        - name: iccid
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: imsi
+          in: query
+          description: ''
+          required: false
+          type: string
         - name: limit
           in: query
           description: Number of results to return per page.
@@ -1399,6 +1435,137 @@ paths:
         required: true
         type: string
         format: uuid
+  /staged-meter-readings:
+    get:
+      operationId: staged-meter-readings_list
+      description: Returns list of Staged Meter Readings
+      parameters:
+        - name: meter_device_name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: start_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: end_time
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/StagedMeterReading'
+      tags:
+        - staged-meter-readings
+    post:
+      operationId: staged-meter-readings_create
+      description: Create a new Staged Meter Readings
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      tags:
+        - staged-meter-readings
+    parameters: []
+  /staged-meter-readings/{id}:
+    get:
+      operationId: staged-meter-readings_read
+      description: Returns a single Staged Meter Reading
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      tags:
+        - staged-meter-readings
+    put:
+      operationId: staged-meter-readings_update
+      description: Updates a single Staged Meter Reading
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      tags:
+        - staged-meter-readings
+    patch:
+      operationId: staged-meter-readings_partial_update
+      description: Partially updates a single Staged Meter Reading
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/StagedMeterReading'
+      tags:
+        - staged-meter-readings
+    delete:
+      operationId: staged-meter-readings_delete
+      description: Deletes a single Staged Meter Reading
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - staged-meter-readings
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this staged meter reading.
+        required: true
+        type: integer
 definitions:
   MeterDeviceConfig:
     required:
@@ -1439,7 +1606,6 @@ definitions:
   MeterDeviceType:
     required:
       - name
-      - description
       - manufacturer
       - manufacturer_model
     type: object
@@ -1458,7 +1624,6 @@ definitions:
         title: Description of Meter Device Type
         type: string
         maxLength: 500
-        minLength: 1
       manufacturer:
         title: Manufacturer name
         type: string
@@ -1524,7 +1689,6 @@ definitions:
         title: Meter Address used for IEC62056-21 communication
         type: string
         maxLength: 8
-        minLength: 1
         x-nullable: true
       dlms_logical_device_name:
         title: Logical device name used in DLMS Communication
@@ -1594,7 +1758,6 @@ definitions:
   MeterReadingsSeries:
     required:
       - name
-      - description
       - unit
     type: object
     properties:
@@ -1612,7 +1775,6 @@ definitions:
         title: Description of the series
         type: string
         maxLength: 250
-        minLength: 1
       unit:
         title: 'Unit characters of the series, ex: kWh'
         type: string
@@ -1660,6 +1822,8 @@ definitions:
         format: decimal
   MeterReadings:
     required:
+      - meter_device
+      - series
       - timestamp
       - value
     type: object
@@ -1672,12 +1836,10 @@ definitions:
         title: Meter device
         type: string
         format: uuid
-        x-nullable: true
       series:
         title: Series
         type: string
         format: uuid
-        x-nullable: true
       timestamp:
         title: Time when the reading was registered in the meter.
         type: string
@@ -1703,6 +1865,16 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
       iec62056_21_password:
         title: Password for use in IEC 62056-21 communication
         type: string
@@ -1727,16 +1899,6 @@ definitions:
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         minLength: 1
-      created_at:
-        title: Created at
-        type: string
-        format: date-time
-        readOnly: true
-      updated_at:
-        title: Updated at
-        type: string
-        format: date-time
-        readOnly: true
       meter:
         required:
           - name
@@ -1747,6 +1909,16 @@ definitions:
             title: Primary Key
             type: string
             format: uuid
+            readOnly: true
+          created_at:
+            title: Created at
+            type: string
+            format: date-time
+            readOnly: true
+          updated_at:
+            title: Updated at
+            type: string
+            format: date-time
             readOnly: true
           name:
             title: Unique Name/Identification of Meter
@@ -1777,7 +1949,6 @@ definitions:
             title: Meter Address used for IEC62056-21 communication
             type: string
             maxLength: 8
-            minLength: 1
             x-nullable: true
           dlms_logical_device_name:
             title: Logical device name used in DLMS Communication
@@ -1820,16 +1991,6 @@ definitions:
               - 1
               - 2
             x-nullable: true
-          created_at:
-            title: Created at
-            type: string
-            format: date-time
-            readOnly: true
-          updated_at:
-            title: Updated at
-            type: string
-            format: date-time
-            readOnly: true
           type:
             title: Type
             type: string
@@ -1901,6 +2062,7 @@ definitions:
         readOnly: true
   MeterSystemEvent:
     required:
+      - meter_device
       - timestamp
       - title
       - content
@@ -1914,7 +2076,6 @@ definitions:
         title: Meter device
         type: string
         format: uuid
-        x-nullable: true
       timestamp:
         title: Timestamp
         type: string
@@ -1994,32 +2155,6 @@ definitions:
         type: string
         format: date-time
         readOnly: true
-  NewMeterReadingIn:
-    required:
-      - meter_device_name
-      - series_name
-      - timestamp
-      - value
-    type: object
-    properties:
-      meter_device_name:
-        title: Meter device name
-        type: string
-        maxLength: 50
-        minLength: 1
-      series_name:
-        title: Series name
-        type: string
-        maxLength: 50
-        minLength: 1
-      timestamp:
-        title: Timestamp
-        type: string
-        format: date-time
-      value:
-        title: Value
-        type: string
-        format: decimal
   SimCard:
     required:
       - iccid
@@ -2061,6 +2196,46 @@ definitions:
         maxLength: 200
         minLength: 1
         x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  StagedMeterReading:
+    required:
+      - meter_device_name
+      - series_name
+      - timestamp
+      - value
+    type: object
+    properties:
+      id:
+        title: Id
+        type: integer
+        readOnly: true
+      meter_device_name:
+        title: Name of Meter Device
+        type: string
+        maxLength: 50
+        minLength: 1
+      series_name:
+        title: Name of Meter Reading Series
+        type: string
+        maxLength: 50
+        minLength: 1
+      timestamp:
+        title: Time when the reading was registered in the meter.
+        type: string
+        format: date-time
+      value:
+        title: Value of the reading
+        type: string
+        format: decimal
       created_at:
         title: Created at
         type: string

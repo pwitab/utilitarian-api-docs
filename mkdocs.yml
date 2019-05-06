@@ -16,8 +16,10 @@ nav:
     - Component Configuration: 'component_settings.md'
     - Setup using Docker Compose: 'docker_compose.md'
     - Use HTTPS: 'using_https_on_api.md'
+    - Async Workers: 'async_workers.md'
     - Messaging: 'amr_um.md'
   - 'Utilitarian API Reference':
+    - 'v1.1.0': 'api_docs/v_1_1_0.html'
     - 'v1.0.0': 'api_docs/v_1_0_0.html'
   - PWIT AB: 'pwit.md'
 
