@@ -394,6 +394,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../async_workers/" title="Async Workers" class="md-nav__link">
+      Async Workers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../amr_um/" title="Messaging" class="md-nav__link">
       Messaging
     </a>
@@ -423,6 +435,18 @@
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api_docs/v_1_1_0.html" title="v1.1.0" class="md-nav__link">
+      v1.1.0
+    </a>
+  </li>
+
         
           
           
@@ -550,8 +574,8 @@ just the connection string as input to the other services. </p>
       <span class="p p-Indicator">-</span> <span class="s">&quot;8000:8000&quot;</span>
     <span class="l l-Scalar l-Scalar-Plain">depends_on</span><span class="p p-Indicator">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rabbitmq</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">postres</span>
-    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span> <span class="nl">&amp;utilitarian_env</span>
       <span class="c1"># Debug</span>
       <span class="c1"># SECURITY WARNING: Don&#39;t use in production</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">UTILITARIAN_DEBUG=false</span>
@@ -563,6 +587,18 @@ just the connection string as input to the other services. </p>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ALLOWED_HOSTS=utilitarian-api</span>
 
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">AMQP_CONNECTION_STRING=amqp://guest:guest@rabbitmq:5672/</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">utilitarian-worker</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian:version</span>
+    <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">celery -A utilitarian worker --loglevel=INFO</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span> <span class="nv">*utilitarian_env</span>  <span class="c1"># anchor it to api to only define once.</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">utilitarian-beat</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian:version</span>
+    <span class="l l-Scalar l-Scalar-Plain">restart</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">celery -A utilitarian beat --loglevel=INFO</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span> <span class="nv">*utilitarian_env</span>  <span class="c1"># anchor it to api to only define once.</span>
 
   <span class="l l-Scalar l-Scalar-Plain">dlms-processor</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">quay.io/pwit/utilitarian-dlms-processor:vX.X.X</span>

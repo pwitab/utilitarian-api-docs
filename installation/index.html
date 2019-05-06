@@ -483,6 +483,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../async_workers/" title="Async Workers" class="md-nav__link">
+      Async Workers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../amr_um/" title="Messaging" class="md-nav__link">
       Messaging
     </a>
@@ -512,6 +524,18 @@
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api_docs/v_1_1_0.html" title="v1.1.0" class="md-nav__link">
+      v1.1.0
+    </a>
+  </li>
+
         
           
           
@@ -783,6 +807,9 @@ logging drivers, see the <a href="https://docs.docker.com/config/containers/logg
 <p>There are several solutions to application and log monitoring. For example 
 Elastic Stack or Splunk. <a href="..#get-in-contact">Contact</a> us if you want help setting this up for your 
 installation.</p>
+<p>We are exposing a healthcheck endpoint at <code>/_health/</code> that will return 200 OK if 
+the the API is working correctly. The healthcheck can be disabled using the env 
+variable <a href="../component_settings/#healthcheck_disabled"><code>HEALTHCHECK_DISABLED</code></a> </p>
 <h2 id="initial-setup-utilitarian-api">Initial setup Utilitarian API<a class="headerlink" href="#initial-setup-utilitarian-api" title="Permanent link">#</a></h2>
 <h3 id="generate-application-secret_key">Generate application SECRET_KEY<a class="headerlink" href="#generate-application-secret_key" title="Permanent link">#</a></h3>
 <p>Utilitarian needs a SECRET_KEY for cryptographic algorithms and signing. 

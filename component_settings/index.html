@@ -467,6 +467,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#healthcheck_disabled" title="HEALTHCHECK_DISABLED" class="md-nav__link">
+    HEALTHCHECK_DISABLED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_retention_days" title="DATA_RETENTION_DAYS" class="md-nav__link">
+    DATA_RETENTION_DAYS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staged_data_retention_days" title="STAGED_DATA_RETENTION_DAYS" class="md-nav__link">
+    STAGED_DATA_RETENTION_DAYS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#utilitarian_time_zone" title="UTILITARIAN_TIME_ZONE" class="md-nav__link">
     UTILITARIAN_TIME_ZONE
   </a>
@@ -705,6 +726,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../async_workers/" title="Async Workers" class="md-nav__link">
+      Async Workers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../amr_um/" title="Messaging" class="md-nav__link">
       Messaging
     </a>
@@ -734,6 +767,18 @@
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api_docs/v_1_1_0.html" title="v1.1.0" class="md-nav__link">
+      v1.1.0
+    </a>
+  </li>
+
         
           
           
@@ -907,6 +952,27 @@
           <li class="md-nav__item">
   <a href="#use_x_forwarded_proto" title="USE_X_FORWARDED_PROTO" class="md-nav__link">
     USE_X_FORWARDED_PROTO
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#healthcheck_disabled" title="HEALTHCHECK_DISABLED" class="md-nav__link">
+    HEALTHCHECK_DISABLED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_retention_days" title="DATA_RETENTION_DAYS" class="md-nav__link">
+    DATA_RETENTION_DAYS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staged_data_retention_days" title="STAGED_DATA_RETENTION_DAYS" class="md-nav__link">
+    STAGED_DATA_RETENTION_DAYS
   </a>
   
 </li>
@@ -1295,13 +1361,44 @@ the values from the example above):</p>
 </div>
 </dd>
 </dl>
+<h4 id="healthcheck_disabled"><code>HEALTHCHECK_DISABLED</code><a class="headerlink" href="#healthcheck_disabled" title="Permanent link">#</a></h4>
+<dl>
+<dd>
+<p>Disables the health check endpoint <code>/_health/</code></p>
+<p>Defaults to <code>False</code></p>
+</dd>
+</dl>
+<h4 id="data_retention_days"><code>DATA_RETENTION_DAYS</code><a class="headerlink" href="#data_retention_days" title="Permanent link">#</a></h4>
+<dl>
+<dd>
+<p>Sets the amount of days you want to keep data in Utilitarian. Only affects 
+time series data as meter readings and meter system events.</p>
+<p>For example:
+365 days in  a year. If you want to keep all data that is younger than 2 
+years and discard everything that is older than 2 years you would set 
+<code>DATA_RETENTION_DAYS=730</code>.
+If the environment variable is not set data is kept forever.</p>
+<p>Defaults to <code>None</code></p>
+</dd>
+</dl>
+<h4 id="staged_data_retention_days"><code>STAGED_DATA_RETENTION_DAYS</code><a class="headerlink" href="#staged_data_retention_days" title="Permanent link">#</a></h4>
+<dl>
+<dd>
+<p>Sets the amount of days you want to keep staged data in Utilitarian. 
+For example staged meter readings. It is assumed that staged data is 
+short lived so you shouldn't have to long data retention for staged data. </p>
+<p>Defaults to <code>30</code> days</p>
+</dd>
+</dl>
 <h4 id="utilitarian_time_zone"><code>UTILITARIAN_TIME_ZONE</code><a class="headerlink" href="#utilitarian_time_zone" title="Permanent link">#</a></h4>
 <dl>
 <dd>
 <p>Local time zone for this installation. Choices can be found here:
 <a href="http://en.wikipedia.org/wiki/List_of_tz_zones_by_name">http://en.wikipedia.org/wiki/List_of_tz_zones_by_name</a>
 although not all choices may be available on all operating systems.</p>
-<p>Utilitarian still handles all datetimes as time zone aware internally.</p>
+<p>Utilitarian still handles all datetimes as time zone aware internally.
+This setting should only be changed if you are fully aware of the 
+implications.</p>
 <p>Defaults to <code>'UTC'</code></p>
 </dd>
 </dl>
