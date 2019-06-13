@@ -230,6 +230,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../amr/" title="Automatic Meter Readings" class="md-nav__link">
+      Automatic Meter Readings
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -273,36 +285,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#m-bus" title="M-Bus" class="md-nav__link">
-    M-Bus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modbus" title="Modbus" class="md-nav__link">
-    Modbus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ansi-c1218" title="ANSI C12.18" class="md-nav__link">
-    ANSI C12.18
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#lis-200" title="LIS-200" class="md-nav__link">
     LIS-200
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#i-flag" title="I-Flag" class="md-nav__link">
-    I-Flag
   </a>
   
 </li>
@@ -361,13 +345,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
     
-    <label class="md-nav__link" for="nav-7">
+    <label class="md-nav__link" for="nav-8">
       On Premise
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-7">
+      <label class="md-nav__title" for="nav-8">
         On Premise
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -457,13 +441,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
     
-    <label class="md-nav__link" for="nav-8">
+    <label class="md-nav__link" for="nav-9">
       Utilitarian API Reference
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-8">
+      <label class="md-nav__title" for="nav-9">
         Utilitarian API Reference
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -545,36 +529,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#m-bus" title="M-Bus" class="md-nav__link">
-    M-Bus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modbus" title="Modbus" class="md-nav__link">
-    Modbus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ansi-c1218" title="ANSI C12.18" class="md-nav__link">
-    ANSI C12.18
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#lis-200" title="LIS-200" class="md-nav__link">
     LIS-200
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#i-flag" title="I-Flag" class="md-nav__link">
-    I-Flag
   </a>
   
 </li>
@@ -602,35 +558,48 @@
 <p>DLMS/COSEM (IEC 62056, EN13757-1) is the global standard for smart energy 
 metering, control and management. It specifies an object-oriented data model,
 an application layer protocol and media-specific communication profiles.</p>
-<p><a href="https://github.com/pwitab/dlms-cosem">PWIT is developing an open source library for DLMS/COSEM</a></p>
+<p><a href="https://github.com/pwitab/dlms-cosem">We are developing an open source library for DLMS/COSEM</a></p>
 <h2 id="iec-62056-21">IEC 62056-21<a class="headerlink" href="#iec-62056-21" title="Permanent link">#</a></h2>
 <p>IEC 62056-21 superseded IEC 61107 (sometimes just called IEC 1107).</p>
 <p>It is used for direct local data exchange. It has been designed to act as the
 protocol used when reading the meter via its optical port. But it is used with 
 several medias, including sending the data over the internet.</p>
-<h2 id="m-bus">M-Bus<a class="headerlink" href="#m-bus" title="Permanent link">#</a></h2>
-<p>M-Bus (Meter-Bus) is a European standard (EN 13757-2 physical and link layer, 
+<p><a href="https://github.com/pwitab/iec62056-21">We are developing an open source library for IEC 62056-21</a></p>
+<!--
+## M-Bus
+
+M-Bus (Meter-Bus) is a European standard (EN 13757-2 physical and link layer, 
 EN 13757-3 application layer) for the remote reading of gas or electricity 
 meters. M-Bus is also usable for other types of consumption meters. The M-Bus 
 interface is made for communication on two wires, making it cost-effective. 
-A radio variant of M-Bus (Wireless M-Bus) is also specified in EN 13757-4.</p>
-<h2 id="modbus">Modbus<a class="headerlink" href="#modbus" title="Permanent link">#</a></h2>
-<p>Modbus is a serial communications protocol originally used with programmable 
+A radio variant of M-Bus (Wireless M-Bus) is also specified in EN 13757-4.
+
+## Modbus
+
+Modbus is a serial communications protocol originally used with programmable 
 logic controllers (PLCs) but has become a de facto standard communication 
 protocol and is now a commonly available means of connecting industrial 
-electronic devices.</p>
-<p>Many meters that are not focused only on residential measurement are equipped with 
-a Modbus port so that they can easily be used in industrial applications.</p>
-<h2 id="ansi-c1218">ANSI C12.18<a class="headerlink" href="#ansi-c1218" title="Permanent link">#</a></h2>
-<p>ANSI C12.18 is an ANSI standard that describes a protocol used for two-way 
-communications with a meter, mostly used in North American markets. </p>
+electronic devices.
+
+Many meters that are not focused only on residential measurement are equipped with 
+a Modbus port so that they can easily be used in industrial applications.
+
+## ANSI C12.18
+
+ANSI C12.18 is an ANSI standard that describes a protocol used for two-way 
+communications with a meter, mostly used in North American markets. 
+-->
+
 <h2 id="lis-200">LIS-200<a class="headerlink" href="#lis-200" title="Permanent link">#</a></h2>
 <p>LIS-200 is a subset of IEC62056-21. It as implemented when the IEC62056-21 didn't 
 have all the functionality needed. It is basically the same as IEC62056-21 in the 
 flow but object identification is done differently.</p>
-<h2 id="i-flag">I-Flag<a class="headerlink" href="#i-flag" title="Permanent link">#</a></h2>
-<p>I-Flag is a proprietary protocol developed by Itron. It is used in many of Itrons 
-products.</p>
+<!--
+## I-Flag
+
+I-Flag is a proprietary protocol developed by Itron. It is used in many of Itrons 
+products.
+-->
                 
                   
                 
@@ -651,7 +620,7 @@ products.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../components/" title="Components" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../amr/" title="Automatic Meter Readings" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -660,7 +629,7 @@ products.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Components
+                Automatic Meter Readings
               </span>
             </div>
           </a>

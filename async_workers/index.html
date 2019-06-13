@@ -232,6 +232,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../amr/" title="Automatic Meter Readings" class="md-nav__link">
+      Automatic Meter Readings
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../protocols/" title="Protocols" class="md-nav__link">
       Protocols
     </a>
@@ -283,13 +295,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8" checked>
     
-    <label class="md-nav__link" for="nav-7">
+    <label class="md-nav__link" for="nav-8">
       On Premise
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-7">
+      <label class="md-nav__title" for="nav-8">
         On Premise
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -380,6 +392,19 @@
     Queues
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-of-queues" title="List of queues." class="md-nav__link">
+    List of queues.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -394,6 +419,33 @@
   <a href="#run-a-worker" title="Run a worker" class="md-nav__link">
     Run a worker
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizing-workers" title="Optimizing workers" class="md-nav__link">
+    Optimizing workers
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-worker-for-specific-queues" title="Start worker for specific queues" class="md-nav__link">
+    Start worker for specific queues
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-concurrency" title="Worker concurrency" class="md-nav__link">
+    Worker concurrency
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -457,13 +509,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
     
-    <label class="md-nav__link" for="nav-8">
+    <label class="md-nav__link" for="nav-9">
       Utilitarian API Reference
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-8">
+      <label class="md-nav__title" for="nav-9">
         Utilitarian API Reference
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -535,6 +587,19 @@
     Queues
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-of-queues" title="List of queues." class="md-nav__link">
+    List of queues.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -549,6 +614,33 @@
   <a href="#run-a-worker" title="Run a worker" class="md-nav__link">
     Run a worker
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizing-workers" title="Optimizing workers" class="md-nav__link">
+    Optimizing workers
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-worker-for-specific-queues" title="Start worker for specific queues" class="md-nav__link">
+    Start worker for specific queues
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-concurrency" title="Worker concurrency" class="md-nav__link">
+    Worker concurrency
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -605,8 +697,29 @@ documentation on how to run and monitor tasks and workers.</p>
 </div>
 <h2 id="queues">Queues<a class="headerlink" href="#queues" title="Permanent link">#</a></h2>
 <p>We separate different types of tasks on different queues. This makes you able to spin 
-up more workers dedicated to certain queues depending on your load.</p>
+up more workers dedicated to certain queues depending on your load. It also enables you 
+to lower your infrastructure bill since some queues used for AMR Tasks are only used 
+daily or monthly depending on your AMR requirements. For example: you could just spin 
+up the monthly amr task workers for the first day of the month to handle all the work. 
+When all values have been collected you can shut it donw until next month.</p>
 <p>If you start a worker without dedicated queues it will consume from all queues.</p>
+<h3 id="list-of-queues">List of queues.<a class="headerlink" href="#list-of-queues" title="Permanent link">#</a></h3>
+<ul>
+<li>utilitarian.tasks.default</li>
+<li>utilitarian.tasks.amr</li>
+<li>utilitarian.tasks.amr.scheduled.quarterly</li>
+<li>utilitarian.tasks.amr.scheduled.hourly</li>
+<li>utilitarian.tasks.amr.scheduled.daily</li>
+<li>utilitarian.tasks.amr.scheduled.monthly</li>
+<li>utilitarian.tasks.amr.scheduled.yearly</li>
+<li>utilitarian.tasks.amr.on_demand</li>
+<li>utilitarian.tasks.commits</li>
+<li>utilitarian.tasks.commits.meter_readings</li>
+<li>utilitarian.tasks.commits.meter_system_events</li>
+<li>utilitarian.tasks.external</li>
+<li>utilitarian.tasks.external.publish</li>
+<li>utilitarian.tasks.cleanup</li>
+</ul>
 <h2 id="workers">Workers<a class="headerlink" href="#workers" title="Permanent link">#</a></h2>
 <p>A worker is a process that consumes tasks and execute them. Since the tasks are 
 delivered via RabbitMQ you can split the processes up over several servers if you need 
@@ -630,6 +743,35 @@ If you are using docker-compose you define </p>
 </pre></div>
 
 
+<h3 id="optimizing-workers">Optimizing workers<a class="headerlink" href="#optimizing-workers" title="Permanent link">#</a></h3>
+<p>Depending on how you run Utilitarian, ie. what type of meter you use, how many etc, the 
+load can look very different. That is why we split the work on separate queues so that 
+it is possible to start more workers that just handle the high load queues </p>
+<h4 id="start-worker-for-specific-queues">Start worker for specific queues<a class="headerlink" href="#start-worker-for-specific-queues" title="Permanent link">#</a></h4>
+<p>Your can specify which queues the worker should consumer from at start-up by using the 
+<code>-Q</code> option and give a comma separated list with queue names.</p>
+<div class="codehilite"><pre><span></span>celery -A utilitarian worker -l info -Q utilitarian.tasks.amr.scheduled.quarterly,utilitarian.tasks.amr.on_demand
+</pre></div>
+
+
+<h4 id="worker-concurrency">Worker concurrency<a class="headerlink" href="#worker-concurrency" title="Permanent link">#</a></h4>
+<p>Workers start up child processes to handle tasks concurrently. This defaults to the 
+number of CPUs available on the system. But since most AMR task are I/O bound we could 
+start up even more to process more tasks concurrently. </p>
+<p>Exactly how many workers to run and how high the concurrency should be is something 
+that is highly dependant on exacly how you use Utilitarian and you will have to 
+experiment to find the best utilization of your resources. It is generally seen to be 
+better to start more workers than keep on increasing concurrency.</p>
+<p>You start a worker with specific concurrency using the <code>--concurrency</code> option</p>
+<div class="codehilite"><pre><span></span>celery -A utilitarian worker -l info --concurrency=10
+</pre></div>
+
+
+<p>How high concurrency and the amount of workers is something you will have to weigh 
+against yor need and budget (more workers might need more servers). It might be 
+fine for you that daily polling tasks take a couple of hours to poll all meter. But if 
+not start up more workers and increase concurrency higher concurrency. Just keep track 
+of your memory and CPU utilization. </p>
 <h2 id="beat">Beat<a class="headerlink" href="#beat" title="Permanent link">#</a></h2>
 <p>The beat process is the scheduler for scheduled or periodic tasks. Utilitarian has a 
 number of maintenance tasks that needs to be run at certain intervals. The beat process 
