@@ -7,6 +7,7 @@ nav:
   - Architecture:
     - Overview: 'architecture.md'
     - Components: 'components.md'
+  - Automatic Meter Readings: 'amr.md'
   - Protocols: 'protocols.md'
   - Meters: 'meters.md'
   - Providers: 'providers.md'
