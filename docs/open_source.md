@@ -49,6 +49,17 @@ metering, control and management. It specifies an object-oriented data model,
 an application layer protocol and media-specific communication profiles.
 
 
+### IEC 62056-21
+
+[Check it out on GitHub: https://github.com/pwitab/iec62056-21]( https://github.com/pwitab/iec62056-21)
+
+
+IEC 62056-21 (earlier IEC 61107 or sometimes just IEC 1107, is an international 
+standard for a computer protocol to read utility meters. It is designed to operate over 
+any media, including the Internet. A meter sends ASCII (in modes A..D) or HDLC (mode E)
+data to a nearby hand-held unit (HHU) using a serial port. The physical media are 
+usually either modulated light, sent with an LED and received with a photodiode, or a 
+pair of wires, usually modulated by a 20mA current loop. The protocol is usually 
+half-duplex.
 
  
-  

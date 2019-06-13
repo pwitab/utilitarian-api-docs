@@ -11,9 +11,31 @@ workers using RabbitMQ.
 ## Queues
 
 We separate different types of tasks on different queues. This makes you able to spin 
-up more workers dedicated to certain queues depending on your load.
+up more workers dedicated to certain queues depending on your load. It also enables you 
+to lower your infrastructure bill since some queues used for AMR Tasks are only used 
+daily or monthly depending on your AMR requirements. For example: you could just spin 
+up the monthly amr task workers for the first day of the month to handle all the work. 
+When all values have been collected you can shut it donw until next month.
 
 If you start a worker without dedicated queues it will consume from all queues.
+
+### List of queues.
+
+* utilitarian.tasks.default
+* utilitarian.tasks.amr
+* utilitarian.tasks.amr.scheduled.quarterly
+* utilitarian.tasks.amr.scheduled.hourly
+* utilitarian.tasks.amr.scheduled.daily
+* utilitarian.tasks.amr.scheduled.monthly
+* utilitarian.tasks.amr.scheduled.yearly
+* utilitarian.tasks.amr.on_demand
+* utilitarian.tasks.commits
+* utilitarian.tasks.commits.meter_readings
+* utilitarian.tasks.commits.meter_system_events
+* utilitarian.tasks.external
+* utilitarian.tasks.external.publish
+* utilitarian.tasks.cleanup
+
 
 ## Workers
 
@@ -42,6 +64,45 @@ utilitarian-worker:
     environment: *common_environment  # unpacks settings so you only have to define it once in the docker-compose
     
 ```
+
+### Optimizing workers
+
+Depending on how you run Utilitarian, ie. what type of meter you use, how many etc, the 
+load can look very different. That is why we split the work on separate queues so that 
+it is possible to start more workers that just handle the high load queues 
+
+#### Start worker for specific queues
+
+Your can specify which queues the worker should consumer from at start-up by using the 
+`-Q` option and give a comma separated list with queue names.
+
+```
+celery -A utilitarian worker -l info -Q utilitarian.tasks.amr.scheduled.quarterly,utilitarian.tasks.amr.on_demand
+```
+
+#### Worker concurrency
+
+Workers start up child processes to handle tasks concurrently. This defaults to the 
+number of CPUs available on the system. But since most AMR task are I/O bound we could 
+start up even more to process more tasks concurrently. 
+
+Exactly how many workers to run and how high the concurrency should be is something 
+that is highly dependant on exacly how you use Utilitarian and you will have to 
+experiment to find the best utilization of your resources. It is generally seen to be 
+better to start more workers than keep on increasing concurrency.
+
+
+You start a worker with specific concurrency using the `--concurrency` option
+
+```
+celery -A utilitarian worker -l info --concurrency=10
+```
+
+How high concurrency and the amount of workers is something you will have to weigh 
+against yor need and budget (more workers might need more servers). It might be 
+fine for you that daily polling tasks take a couple of hours to poll all meter. But if 
+not start up more workers and increase concurrency higher concurrency. Just keep track 
+of your memory and CPU utilization. 
 
 ## Beat
 

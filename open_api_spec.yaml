@@ -260,6 +260,49 @@ tags:
 
     x-displayName: Network Interfaces
 
+  - name: amr-task-groups
+    description: |
+      Operations on Amr Task Groups.
+
+      ### Amr Task Groups
+
+      Amr Task Groups are used for managing AMR Task that should be set on Meter
+      Devices together.
+
+      One good use is to have certain "AMR Profiles" as Amr Task Groups. For example if
+      you have a group of meter that should be collected hourly and another daily you
+      could set up two groups: 'Hourly' and 'Daily' then set the Amr Task Group on
+      specified meter devices. If you then need to make adjustments in the daily jobs
+      you can do this in one place, the Amr Task Group, and not on every individual
+      meter device.
+
+    x-displayName: Amr Task Groups
+
+  - name: amr-tasks
+    description: |
+      Operations on Amr Tasks.
+
+      ### Amr Tasks
+
+      Amr Task are object containing information on how and when to run a AMR job.
+      Amr Tasks are added to meter or Amr Task Groups. If added to a meter the task
+      will run for that particular meter. If you need to manage a collection of tasks
+      used for several meter, use an AmrTask Group.
+
+    x-displayName: Amr Tasks
+
+  - name: amr-tasks-invoke
+    description: |
+      Direct invocation of task on demand
+
+      ### Invoke Amr Task
+
+      It is possible to invoke the an AMR Task on demand by using this endpoint.
+      It takes a meter device id and task info and will send the task directly to the
+      async workerk.
+
+    x-displayName: Invoke Amr Task
+
 
 
 
@@ -350,11 +393,260 @@ x-tagGroups:
       - new-meter-readings
       - meter-system-events
       - meter-security-keys
+      - amr-task-groups
+      - amr-tasks
+      - amr-tasks-invoke
 
 
 
 
 paths:
+  /amr-task-groups/:
+    get:
+      operationId: amr-task-groups_list
+      description: Returns list of Amr Task Groups
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/AmrTaskGroup'
+      tags:
+        - amr-task-groups
+    post:
+      operationId: amr-task-groups_create
+      description: Create a new Amr Task Groups
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      tags:
+        - amr-task-groups
+    parameters: []
+  /amr-task-groups/{id}:
+    get:
+      operationId: amr-task-groups_read
+      description: Returns a single Amr Task Group
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      tags:
+        - amr-task-groups
+    put:
+      operationId: amr-task-groups_update
+      description: Updates a single Amr Task Group
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      tags:
+        - amr-task-groups
+    patch:
+      operationId: amr-task-groups_partial_update
+      description: Partially updates a single Amr Task Group
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTaskGroup'
+      tags:
+        - amr-task-groups
+    delete:
+      operationId: amr-task-groups_delete
+      description: Deletes a single Amr Task Group
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - amr-task-groups
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this amr task group.
+        required: true
+        type: string
+        format: uuid
+  /amr-tasks/:
+    get:
+      operationId: amr-tasks_list
+      description: Returns list of Amr Task
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/AmrTask'
+      tags:
+        - amr-tasks
+    post:
+      operationId: amr-tasks_create
+      description: Create a new Amr Task
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTask'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTask'
+      tags:
+        - amr-tasks
+    parameters: []
+  /amr-tasks/invoke:
+    post:
+      operationId: amr-tasks_invoke_create
+      description: Invokes a task.
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - amr-tasks
+        - amr-tasks-invoke
+    parameters: []
+  /amr-tasks/{id}:
+    get:
+      operationId: amr-tasks_read
+      description: Returns a single Amr Task
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTask'
+      tags:
+        - amr-tasks
+    put:
+      operationId: amr-tasks_update
+      description: Updates a single Amr Task
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTask'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTask'
+      tags:
+        - amr-tasks
+    patch:
+      operationId: amr-tasks_partial_update
+      description: Partially updates a single Amr Task
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmrTask'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AmrTask'
+      tags:
+        - amr-tasks
+    delete:
+      operationId: amr-tasks_delete
+      description: Deletes a single Amr Task
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - amr-tasks
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this amr task.
+        required: true
+        type: string
+        format: uuid
   /meter-device-configs:
     get:
       operationId: meter-device-configs_list
@@ -1567,6 +1859,111 @@ paths:
         required: true
         type: integer
 definitions:
+  AmrTaskGroup:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Name of AmrTaskGroup
+        type: string
+        maxLength: 150
+        minLength: 1
+      description:
+        title: Task Group Description
+        type: string
+        maxLength: 500
+      tasks:
+        type: array
+        items:
+          title: Amr Tasks
+          type: string
+          format: uuid
+        uniqueItems: true
+      tasks_info:
+        title: Tasks info
+        type: string
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  AmrTask:
+    required:
+      - name
+      - schedule
+      - meter_execution_type
+      - task_call
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Task Name
+        type: string
+        maxLength: 150
+        minLength: 1
+      description:
+        title: Task Description
+        type: string
+        maxLength: 500
+      is_active:
+        title: Indicates if the task is active
+        type: boolean
+      schedule:
+        title: AMR Schedule
+        type: string
+        enum:
+          - quarterly
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          - yearly
+      run_offset_seconds:
+        title: Run offset in seconds
+        type: integer
+        maximum: 2147483647
+        minimum: -2147483648
+      meter_execution_type:
+        title: Type of AMR meter interface to use for execution of the task
+        type: string
+        enum:
+          - generic_lis200
+          - generic_iec6205621
+      task_call:
+        title: Name of the function to call on the amr meter type
+        type: string
+        maxLength: 50
+        minLength: 1
+      task_kwargs:
+        title: Keyword arguments for task. In JSON
+        type: string
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
   MeterDeviceConfig:
     required:
       - name
@@ -1695,14 +2092,12 @@ definitions:
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 32
-        minLength: 1
         x-nullable: true
       dlms_system_title:
         title: System title of meter used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 16
-        minLength: 1
         x-nullable: true
       type:
         title: Type
@@ -1854,10 +2249,6 @@ definitions:
         format: date-time
         readOnly: true
   MeterSecurityKeyCollectionOut:
-    required:
-      - dlms_global_unicast_encryption_key
-      - dlms_global_broadcast_encryption_key
-      - dlms_global_authentication_key
     type: object
     properties:
       id:
@@ -1886,19 +2277,19 @@ definitions:
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       dlms_global_broadcast_encryption_key:
         title: Global Broadcast Encryption Key, GBEK
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       dlms_global_authentication_key:
         title: Global Authentication Key, GAK
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       meter:
         required:
           - name
@@ -1955,14 +2346,12 @@ definitions:
             type: string
             pattern: ^[abcdefABCDEF1234567890]*$
             maxLength: 32
-            minLength: 1
             x-nullable: true
           dlms_system_title:
             title: System title of meter used in DLMS communication
             type: string
             pattern: ^[abcdefABCDEF1234567890]*$
             maxLength: 16
-            minLength: 1
             x-nullable: true
           has_current_transformer:
             title: Meter has a current transformer in its measurement loop
@@ -2001,14 +2390,24 @@ definitions:
             type: string
             format: uuid
             x-nullable: true
+          task_groups:
+            type: array
+            items:
+              title: Amr Task Groups the meter should be member of
+              type: string
+              format: uuid
+            uniqueItems: true
+          meter_tasks:
+            type: array
+            items:
+              title: Amr Task just for this meter device
+              type: string
+              format: uuid
+            uniqueItems: true
         readOnly: true
   MeterSecurityKeyCollectionIn:
     required:
       - meter
-      - dlms_global_unicast_encryption_key
-      - dlms_global_broadcast_encryption_key
-      - dlms_master_key
-      - dlms_global_authentication_key
     type: object
     properties:
       id:
@@ -2031,25 +2430,25 @@ definitions:
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       dlms_global_broadcast_encryption_key:
         title: Global Broadcast Encryption Key, GBEK
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       dlms_master_key:
         title: Master Key or Key Encrypting Key, KEK
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       dlms_global_authentication_key:
         title: Global Authentication Key, GAK
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
-        minLength: 1
+        x-nullable: true
       created_at:
         title: Created at
         type: string

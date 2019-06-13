@@ -55,3 +55,9 @@ any application using the message payload documentation.
 
 Utilitarian is built using open source technologies and libraries. We have also 
 open sourced many of our own libraries that we use within Utilitarian. 
+
+## Cloud Native
+
+Utilitarian is built for the cloud. We deliver all services via docker containers so
+you can decide how and where to run the application. You can run it on a single machine 
+or deploy using Kubernetes in a hybrid cloud with multiple data centers.
