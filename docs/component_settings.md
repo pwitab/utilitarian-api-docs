@@ -200,7 +200,24 @@
     
     Defaults to `'UTC'`
     
+#### `CORS_WHITELIST`
 
+:   A list of origins that are authorized to make cross-site HTTP requests. 
+
+    An Origin is defined by the CORS RFC Section 3.2 as a URI scheme + hostname + port, 
+    or the special value 'null'. Default ports (HTTPS = 443, HTTP = 80) are optional here.
+    
+    Defaults to [].
+    
+    Example: `https://example.com,https://sub.example.com,http://localhost:8080,http://127.0.0.1:9000`
+    
+#### `CORS_ALLOW_ALL`
+
+:   If True, the whitelist will not be used and all origins will be accepted. 
+
+    Defaults to False. Useful for testing but should not be used in production.
+    
+    
     
 ## DLMS UDP Server
 
