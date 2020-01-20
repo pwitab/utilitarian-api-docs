@@ -4,7 +4,7 @@ info:
 
   termsOfService: https://www.pwit.se
   x-logo:
-    url: "https://utilitarian-io-prod-static.s3.amazonaws.com/images/utilitarian_logo_on_dark.svg"
+    url: "https://docs.utilitarian.io/images/utilitarian_logo_on_light.svg"
     backgroundColor: "#FFFFFF"
     altText: "Utilitarian logo"
   contact:

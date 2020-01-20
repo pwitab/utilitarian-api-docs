@@ -186,19 +186,7 @@
     For example staged meter readings. It is assumed that staged data is 
     short lived so you shouldn't have to long data retention for staged data. 
     
-    Defaults to `30` days
-        
-#### `UTILITARIAN_TIME_ZONE`
-
-:   Local time zone for this installation. Choices can be found here:
-    [http://en.wikipedia.org/wiki/List_of_tz_zones_by_name](http://en.wikipedia.org/wiki/List_of_tz_zones_by_name)
-    although not all choices may be available on all operating systems.
-    
-    Utilitarian still handles all datetimes as time zone aware internally.
-    This setting should only be changed if you are fully aware of the 
-    implications.
-    
-    Defaults to `'UTC'`
+    Defaults to `30` days        
     
 #### `CORS_WHITELIST`
 
@@ -217,7 +205,36 @@
 
     Defaults to False. Useful for testing but should not be used in production.
     
+#### `JWT_SIGNING_KEY`
+
+:  Holds the value of the JWT_SINGING_KEY that is used to sign JSON Web Tokens. 
+
+    Defaults to value of `SECRET_KEY`. It is useful to have a separate key if you want 
+    the possibility to invalidate all current tokens. It is recomended to set up a 
+    key rotation schedule. 
     
+#### `JWT_EXPIRATION_TIME_SECONDS`
+
+:  How long a JWT should be valid in seconds. 
+
+    Defaults to 1200 seconds (20 min)
+    
+    
+#### `ALLOW_TOKEN_AUTH`
+
+:   If True, token authentication will be allowed on the API.  
+
+    Defaults to True. It is recomended if you expose the API to "normal" users via JWT 
+    Auth to disallow Token Auth so that no endpoints are not exposed. Instead you run 
+    septarate instances for your internal applications that allows TokenAuth.  
+    
+#### `DEFAULT_METER_TIMEZONE`
+
+:   Sets the default meter timezone that is used for MeterDeviceConfig. 
+
+    Deaults to "UTC". For possible values see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    All values might not be available on your system.
+   
     
 ## DLMS UDP Server
 

@@ -62,4 +62,12 @@ usually either modulated light, sent with an LED and received with a photodiode,
 pair of wires, usually modulated by a 20mA current loop. The protocol is usually 
 half-duplex.
 
+### I-FLAG / Corus
+
+[Check it out on GitHub: https://github.com/pwitab/iflag]( https://github.com/pwitab/iflag)
+
+The Corus / I-FLAG protocol is used in Actaris / Itron meters. It is a propriotary protocol that 
+have some elements from IEC-62056-21 but is using binary data of special formats to 
+read out data. 
+
  

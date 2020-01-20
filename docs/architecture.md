@@ -23,6 +23,11 @@ scaled independently for fit your load.
 Receiving of push meter data is made in separate services that can all be 
 individually scaled for the needed load. 
 
+## Multi tenant
+
+Utilitarian is built with multi tenancy using a same schema approach. We organize 
+meters and meter information around the concept of Organizations. A User can be part of 
+several Organizations. 
 
 ## Reliable
 
@@ -50,7 +55,7 @@ You can just run the services needed for your specific use case.
 ## Open
 
 Utilitarian is designed to enable users to easily build their own integrations 
-and subsystems if needed. It is possbile to hook into the message streams from 
+and subsystems if needed. It is possible to hook into the message streams from 
 any application using the message payload documentation.
 
 Utilitarian is built using open source technologies and libraries. We have also 
