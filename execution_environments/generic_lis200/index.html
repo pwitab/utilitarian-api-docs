@@ -1,0 +1,981 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Utilitarian Documentation">
+      
+      
+      
+        <meta name="author" content="Henrik Palmlund Wahlgren">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Generic LIS200 - Utilitarian Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#generic-lis200" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Utilitarian Docs" aria-label="Utilitarian Docs" class="md-header-nav__button md-logo">
+          
+            <img alt="logo" src="../../images/u9n_badge_on_light.svg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Utilitarian Docs
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Generic LIS200
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Utilitarian Docs" class="md-nav__button md-logo">
+      
+        <img alt="logo" src="../../images/u9n_badge_on_light.svg" width="48" height="48">
+      
+    </a>
+    Utilitarian Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Architecture
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Architecture
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../architecture/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../components/" title="Components" class="md-nav__link">
+      Components
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Automatic Meter Readings
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Automatic Meter Readings
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../amr/" title="AMR in Utilitarian" class="md-nav__link">
+      AMR in Utilitarian
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2" checked>
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Execution Environments
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Execution Environments
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../execution_environments/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Generic LIS200
+      </label>
+    
+    <a href="./" title="Generic LIS200" class="md-nav__link md-nav__link--active">
+      Generic LIS200
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-calls" class="md-nav__link">
+    Function Calls
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read-single-value" class="md-nav__link">
+    Read Single Value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-archive-by-date" class="md-nav__link">
+    Read archive by date
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-archive-by-offset" class="md-nav__link">
+    Read archive by offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-time" class="md-nav__link">
+    Set time
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../generic_corus/" title="Generic Corus" class="md-nav__link">
+      Generic Corus
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../time/" title="Time in Utilitarian" class="md-nav__link">
+      Time in Utilitarian
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../protocols/" title="Protocols" class="md-nav__link">
+      Protocols
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      On Premise
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        On Premise
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../installation/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../component_settings/" title="Component Configuration" class="md-nav__link">
+      Component Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../docker_compose/" title="Setup using Docker Compose" class="md-nav__link">
+      Setup using Docker Compose
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../using_https_on_api/" title="Use HTTPS" class="md-nav__link">
+      Use HTTPS
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../async_workers/" title="Async Workers" class="md-nav__link">
+      Async Workers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../amr_um/" title="Messaging" class="md-nav__link">
+      Messaging
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Utilitarian API Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Utilitarian API Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api_docs/v_1_3_0.html" title="v1.3.0" class="md-nav__link">
+      v1.3.0
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api_docs/v_1_2_0.html" title="v1.2.0" class="md-nav__link">
+      v1.2.0
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api_docs/v_1_1_0.html" title="v1.1.0" class="md-nav__link">
+      v1.1.0
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api_docs/v_1_0_0.html" title="v1.0.0" class="md-nav__link">
+      v1.0.0
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../pwit/" title="About Utilitarian" class="md-nav__link">
+      About Utilitarian
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../open_source/" title="Open Source" class="md-nav__link">
+      Open Source
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-calls" class="md-nav__link">
+    Function Calls
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read-single-value" class="md-nav__link">
+    Read Single Value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-archive-by-date" class="md-nav__link">
+    Read archive by date
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-archive-by-offset" class="md-nav__link">
+    Read archive by offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-time" class="md-nav__link">
+    Set time
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="generic-lis200">Generic LIS200<a class="headerlink" href="#generic-lis200" title="Permanent link">#</a></h1>
+<p>Execution environment name: <em>generic_lis200</em></p>
+<h2 id="function-calls">Function Calls<a class="headerlink" href="#function-calls" title="Permanent link">#</a></h2>
+<ul>
+<li>Read Single Value: read_single_value</li>
+<li>Read Archive By Date: read_archive_by_date</li>
+<li>Read Archive By Offset Seconds: read_archive_by_offset_seconds</li>
+<li>Set Time: set_time</li>
+</ul>
+<h3 id="read-single-value">Read Single Value<a class="headerlink" href="#read-single-value" title="Permanent link">#</a></h3>
+<p><em>read_single_value</em></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>yes</td>
+<td>The LIS-200 address to read</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span> <span class="err">example</span> <span class="err">issuing</span> <span class="err">an</span> <span class="err">on</span> <span class="err">demand</span> <span class="err">amr</span> <span class="err">task</span> <span class="err">via</span> <span class="err">the</span> <span class="err">API</span>
+<span class="p">{</span>
+    <span class="nt">&quot;meter_device&quot;</span><span class="p">:</span> <span class="s2">&quot;890b61bb-6594-48db-ad90-584d56754455&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_call&quot;</span><span class="p">:</span> <span class="s2">&quot;read_single_value&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="err">&#39;</span><span class="mf">2.301</span><span class="err">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;run_offset_seconds&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;meter_execution_type&quot;</span><span class="p">:</span> <span class="s2">&quot;generic_lis200&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h3 id="read-archive-by-date">Read archive by date<a class="headerlink" href="#read-archive-by-date" title="Permanent link">#</a></h3>
+<p><em>read_archive_by_date</em></p>
+<p>In LIS200 saved data are stored archives and you need to specify which one you need 
+to read. The archives can have different structures and the important thing to know is 
+the control position of the archive, ie. which data entry in an archive row represents 
+the timestamp that you want to use as reference for the read.
+Archives are read from the oldest data to new newest data, so start_data represents 
+the oldest data in the database</p>
+<p>Reading by date is useful to re-read old data. Maybe a task failed to collect them or 
+there was a network error or device error. </p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start_dat</td>
+<td>datetime</td>
+<td>yes</td>
+<td>The date for the oldest data to start reading from.</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>datetime</td>
+<td>no</td>
+<td>The date to stop reading. If not proved all data from the start date will be read up until the latest entry</td>
+</tr>
+<tr>
+<td>archive_number</td>
+<td>int</td>
+<td>yes</td>
+<td>The number of the archive you wish to read</td>
+</tr>
+<tr>
+<td>control_position</td>
+<td>int</td>
+<td>yes</td>
+<td>The position of the timestamp in the archive</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span> <span class="err">example</span> <span class="err">issuing</span> <span class="err">an</span> <span class="err">on</span> <span class="err">demand</span> <span class="err">amr</span> <span class="err">task</span> <span class="err">via</span> <span class="err">the</span> <span class="err">API</span>
+<span class="p">{</span>
+    <span class="nt">&quot;meter_device&quot;</span><span class="p">:</span> <span class="s2">&quot;890b61bb-6594-48db-ad90-584d56754455&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_call&quot;</span><span class="p">:</span> <span class="s2">&quot;read_archive_by_date&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;start_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-15T06:00:00+0100&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;end_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-16T06:00:00+0100&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;archive_number&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="nt">&quot;control_position&quot;</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;run_offset_seconds&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;meter_execution_type&quot;</span><span class="p">:</span> <span class="s2">&quot;generic_lis200&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h3 id="read-archive-by-offset">Read archive by offset<a class="headerlink" href="#read-archive-by-offset" title="Permanent link">#</a></h3>
+<p><em>read_archive_by_offset_seconds</em></p>
+<p>Similar to reading by date but instead you use the current time and read backwards 
+by the offset seconds. For example <code>offset_seconds=900</code> would read the last 15 min in 
+an archive. Best used with a scheduled AmrTask.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>offset_seconds</td>
+<td>int</td>
+<td>yes</td>
+<td>Number of seconds to read by.</td>
+</tr>
+<tr>
+<td>archive_number</td>
+<td>int</td>
+<td>yes</td>
+<td>The number of the archive you wish to read</td>
+</tr>
+<tr>
+<td>control_position</td>
+<td>int</td>
+<td>yes</td>
+<td>The position of the timestamp in the archive</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using with a scheduled AmrTask that also is put in an offset schedule you 
+might need to increase the offset to get all requested values. </p>
+</div>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span> <span class="err">example</span> <span class="err">issuing</span> <span class="err">an</span> <span class="err">on</span> <span class="err">demand</span> <span class="err">amr</span> <span class="err">task</span> <span class="err">via</span> <span class="err">the</span> <span class="err">API</span>
+<span class="p">{</span>
+    <span class="nt">&quot;meter_device&quot;</span><span class="p">:</span> <span class="s2">&quot;890b61bb-6594-48db-ad90-584d56754455&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_call&quot;</span><span class="p">:</span> <span class="s2">&quot;read_archive_by_offset_seconds&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;offset_seconds&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="nt">&quot;archive_number&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="nt">&quot;control_position&quot;</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;run_offset_seconds&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;meter_execution_type&quot;</span><span class="p">:</span> <span class="s2">&quot;generic_lis200&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h3 id="set-time">Set time<a class="headerlink" href="#set-time" title="Permanent link">#</a></h3>
+<p><em>set_time</em></p>
+<p>Will sync the time in the meter with the server. No parameters needed.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span> <span class="err">example</span> <span class="err">issuing</span> <span class="err">an</span> <span class="err">on</span> <span class="err">demand</span> <span class="err">amr</span> <span class="err">task</span> <span class="err">via</span> <span class="err">the</span> <span class="err">API</span>
+<span class="p">{</span>
+    <span class="nt">&quot;meter_device&quot;</span><span class="p">:</span> <span class="s2">&quot;890b61bb-6594-48db-ad90-584d56754455&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_call&quot;</span><span class="p">:</span> <span class="s2">&quot;set_time&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_kwargs&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;run_offset_seconds&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;meter_execution_type&quot;</span><span class="p">:</span> <span class="s2">&quot;generic_lis200&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../execution_environments/" title="Overview" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../generic_corus/" title="Generic Corus" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Generic Corus
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019 Palmlund Wahlgren Innovative Technology AB
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/pwitab" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+    
+  </body>
+</html>
