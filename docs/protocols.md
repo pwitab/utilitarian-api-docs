@@ -52,9 +52,11 @@ have all the functionality needed. It is basically the same as IEC62056-21 in th
 flow but object identification is done differently.
 
 
-<!--
-## I-Flag
 
-I-Flag is a proprietary protocol developed by Itron. It is used in many of Itrons 
-products.
--->
+## Corus protocol / I-FLAG
+
+The Corus protocol is used in Actaris / Itron meters. It is a propriotary protocol that 
+have some elements from IEC-62056-21 but is using binary data of special formats to 
+read out data. 
+
+[We are developing an open source library for I-FLAG](https://github.com/pwitab/iflag)

@@ -186,21 +186,55 @@
     For example staged meter readings. It is assumed that staged data is 
     short lived so you shouldn't have to long data retention for staged data. 
     
-    Defaults to `30` days
-        
-#### `UTILITARIAN_TIME_ZONE`
+    Defaults to `30` days        
+    
+#### `CORS_WHITELIST`
 
-:   Local time zone for this installation. Choices can be found here:
-    [http://en.wikipedia.org/wiki/List_of_tz_zones_by_name](http://en.wikipedia.org/wiki/List_of_tz_zones_by_name)
-    although not all choices may be available on all operating systems.
-    
-    Utilitarian still handles all datetimes as time zone aware internally.
-    This setting should only be changed if you are fully aware of the 
-    implications.
-    
-    Defaults to `'UTC'`
-    
+:   A list of origins that are authorized to make cross-site HTTP requests. 
 
+    An Origin is defined by the CORS RFC Section 3.2 as a URI scheme + hostname + port, 
+    or the special value 'null'. Default ports (HTTPS = 443, HTTP = 80) are optional here.
+    
+    Defaults to [].
+    
+    Example: `https://example.com,https://sub.example.com,http://localhost:8080,http://127.0.0.1:9000`
+    
+#### `CORS_ALLOW_ALL`
+
+:   If True, the whitelist will not be used and all origins will be accepted. 
+
+    Defaults to False. Useful for testing but should not be used in production.
+    
+#### `JWT_SIGNING_KEY`
+
+:  Holds the value of the JWT_SINGING_KEY that is used to sign JSON Web Tokens. 
+
+    Defaults to value of `SECRET_KEY`. It is useful to have a separate key if you want 
+    the possibility to invalidate all current tokens. It is recomended to set up a 
+    key rotation schedule. 
+    
+#### `JWT_EXPIRATION_TIME_SECONDS`
+
+:  How long a JWT should be valid in seconds. 
+
+    Defaults to 1200 seconds (20 min)
+    
+    
+#### `ALLOW_TOKEN_AUTH`
+
+:   If True, token authentication will be allowed on the API.  
+
+    Defaults to True. It is recomended if you expose the API to "normal" users via JWT 
+    Auth to disallow Token Auth so that no endpoints are not exposed. Instead you run 
+    septarate instances for your internal applications that allows TokenAuth.  
+    
+#### `DEFAULT_METER_TIMEZONE`
+
+:   Sets the default meter timezone that is used for MeterDeviceConfig. 
+
+    Deaults to "UTC". For possible values see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    All values might not be available on your system.
+   
     
 ## DLMS UDP Server
 

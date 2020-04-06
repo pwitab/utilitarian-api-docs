@@ -4,14 +4,14 @@ info:
 
   termsOfService: https://www.pwit.se
   x-logo:
-    url: "https://pwit.se/static/images/logo_optimized.svg"
+    url: "https://docs.utilitarian.io/images/utilitarian_logo_on_light.svg"
     backgroundColor: "#FFFFFF"
-    altText: "PWIT logo"
+    altText: "Utilitarian logo"
   contact:
     name: Dev Team
-    url: https://www.pwit.se
+    url: https://www.utilitarian.io
     email: info@pwit.se
-  version: 1.1.0
+  version: 1.3.0
   license:
     name: BSD-3-Clause
     url: https://opensource.org/licenses/BSD-3-Clause
@@ -29,14 +29,6 @@ info:
     # Introduction
 
     Utilitarian API is a RESTful API that exposes endpoint for AMR Operations.
-
-    The common part deals with general aspects of the API.
-
-    Under the Metering part all endpoints for the management of Meter Devices
-    and Meter Readings are gathered.
-
-    Under the Jobs part all endpoint for managing the pulling meter data and
-    communication to with Meter Devices are gathered. (Ongoing work)
 
 
 host: localhost
@@ -303,6 +295,25 @@ tags:
 
     x-displayName: Invoke Amr Task
 
+  - name: organizations-main
+    description: |
+      Operations on an Organization
+
+      ### Organizations
+
+      Organizationas are used to group entites to a single customer / organization.
+
+    x-displayName: Organizations
+
+  - name: organizations-memberships
+    description: |
+      Managing users membership in an organization.
+
+      ### Organizations Membershitp
+
+      Organizationas are used to group entites to a single customer / organization.
+
+    x-displayName: Organizations Memebership
 
 
 
@@ -345,8 +356,16 @@ tags:
   - name: Authentication
     x-traitTag: true
     description: |
-      Each user is given a unique API Key Token to interact with the API. It is also
-      possible to use basic auth but not recomended.
+
+      # Token Authentication
+      Each user with `is_staff=True` is given a unique API Key Token to interact with
+      the API.
+
+      Token Authentication is made for programatical high level access of the API.
+      To make other services use the API via a Token make a sepatate user for them and
+      use the token in all authentications.
+
+      Users with Token Authentication access to all actions in the API.
 
       For clients to authenticate, the token key should be included in the
       `Authorization` HTTP header. The key should be prefixed by the string
@@ -362,6 +381,43 @@ tags:
 
       ```
       WWW-Authenticate: Token
+      ```
+
+
+      > Note: If you are running an instance of Utilitarian API that is
+      > accessable over the Internet you need to make sure that the API is
+      > only served under `https`.
+
+
+
+      # User JWT Auth
+      Users with `is_staff=False` are able to request a JSON Web Token (JWT) via the
+      `/auth/jwt` endpoints.
+
+      The JWT endpoint issues a JWT with only read access to the API and will filter all
+      results to the entites the users organization has access to. When using User JWT Auth
+      the `organization` field of all request bodys an be omittted and if you add it in
+      the request body it will be cleaned and the correct organization ID will be added.
+      For users that are part of several organizations it is possible to switch
+      organization by requesting a new JWT for another organization.
+
+      User JWT Auth is used for client applications using the API. Mobile apps,
+      single page application etc.
+
+      For clients to authenticate, the JWT key should be included in the
+      `Authorization` HTTP header. The key should be prefixed by the string
+      literal "JWT", with whitespace separating the two strings. For example:
+
+      ```
+      Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      ```
+
+      Unauthenticated responses that are denied permission will result in an
+      `HTTP 401 Unauthorized` response with an appropriate
+       WWW-Authenticate header. For example:
+
+      ```
+      WWW-Authenticate: JWT
       ```
 
       > Note: If you are running an instance of Utilitarian API that is
@@ -397,13 +453,95 @@ x-tagGroups:
       - amr-tasks
       - amr-tasks-invoke
 
+  - name: Organizations
+    tags:
+      - organizations-main
+      - organizations-memberships
+
+  - name: Auth
+    tags:
+      - auth
+
 
 
 
 paths:
-  /amr-task-groups/:
+  /auth/jwt/change-organization/:
+    post:
+      operationId: auth_jwt_change-organization_create
+      description: "Will issue a new token to an already \"logged in\" UserJwt User\
+        \ for another\norganization"
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TokenChangeOrg'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenChangeOrg'
+      tags:
+        - auth
+        - auth-jwt
+        - auth-jwt-change-organization
+        - jwt
+        - change-organization
+    parameters: []
+  /auth/jwt/renew/:
     get:
-      operationId: amr-task-groups_list
+      operationId: auth_jwt_renew_list
+      description: Will issue a new JWT if the user has a valid JWT.
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+      tags:
+        - auth
+        - auth-jwt
+        - auth-jwt-renew
+        - jwt
+        - renew
+    parameters: []
+  /auth/jwt/token/:
+    post:
+      operationId: auth_jwt_token_create
+      description: "Providing username, password return token with access to first\n\
+        available organization.\nIf an organization_id is provided return that organization\
+        \ id if the user has\naccess to it.\n\n:param request:\n:param args:\n:param\
+        \ kwargs:\n:return:"
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GetTokenAuth'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/GetTokenAuth'
+      tags:
+        - auth
+        - auth-jwt
+        - auth-jwt-token
+        - jwt
+        - token
+    parameters: []
+  /metering/amr-task-groups/:
+    get:
+      operationId: metering_amr-task-groups_list
       description: Returns list of Amr Task Groups
       parameters:
         - name: limit
@@ -440,9 +578,11 @@ paths:
                 items:
                   $ref: '#/definitions/AmrTaskGroup'
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     post:
-      operationId: amr-task-groups_create
+      operationId: metering_amr-task-groups_create
       description: Create a new Amr Task Groups
       parameters:
         - name: data
@@ -456,11 +596,13 @@ paths:
           schema:
             $ref: '#/definitions/AmrTaskGroup'
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     parameters: []
-  /amr-task-groups/{id}:
+  /metering/amr-task-groups/{id}:
     get:
-      operationId: amr-task-groups_read
+      operationId: metering_amr-task-groups_read
       description: Returns a single Amr Task Group
       parameters: []
       responses:
@@ -469,9 +611,11 @@ paths:
           schema:
             $ref: '#/definitions/AmrTaskGroup'
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     put:
-      operationId: amr-task-groups_update
+      operationId: metering_amr-task-groups_update
       description: Updates a single Amr Task Group
       parameters:
         - name: data
@@ -485,9 +629,11 @@ paths:
           schema:
             $ref: '#/definitions/AmrTaskGroup'
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     patch:
-      operationId: amr-task-groups_partial_update
+      operationId: metering_amr-task-groups_partial_update
       description: Partially updates a single Amr Task Group
       parameters:
         - name: data
@@ -501,15 +647,19 @@ paths:
           schema:
             $ref: '#/definitions/AmrTaskGroup'
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     delete:
-      operationId: amr-task-groups_delete
+      operationId: metering_amr-task-groups_delete
       description: Deletes a single Amr Task Group
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-amr-task-groups
         - amr-task-groups
     parameters:
       - name: id
@@ -518,9 +668,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /amr-tasks/:
+  /metering/amr-tasks/:
     get:
-      operationId: amr-tasks_list
+      operationId: metering_amr-tasks_list
       description: Returns list of Amr Task
       parameters:
         - name: limit
@@ -557,9 +707,11 @@ paths:
                 items:
                   $ref: '#/definitions/AmrTask'
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     post:
-      operationId: amr-tasks_create
+      operationId: metering_amr-tasks_create
       description: Create a new Amr Task
       parameters:
         - name: data
@@ -573,23 +725,28 @@ paths:
           schema:
             $ref: '#/definitions/AmrTask'
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     parameters: []
-  /amr-tasks/invoke:
+  /metering/amr-tasks/invoke:
     post:
-      operationId: amr-tasks_invoke_create
+      operationId: metering_amr-tasks_invoke_create
       description: Invokes a task.
       parameters: []
       responses:
         '201':
           description: ''
       tags:
+        - metering
+        - metering-amr-tasks
+        - metering-amr-tasks-invoke
         - amr-tasks
-        - amr-tasks-invoke
+        - invoke
     parameters: []
-  /amr-tasks/{id}:
+  /metering/amr-tasks/{id}:
     get:
-      operationId: amr-tasks_read
+      operationId: metering_amr-tasks_read
       description: Returns a single Amr Task
       parameters: []
       responses:
@@ -598,9 +755,11 @@ paths:
           schema:
             $ref: '#/definitions/AmrTask'
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     put:
-      operationId: amr-tasks_update
+      operationId: metering_amr-tasks_update
       description: Updates a single Amr Task
       parameters:
         - name: data
@@ -614,9 +773,11 @@ paths:
           schema:
             $ref: '#/definitions/AmrTask'
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     patch:
-      operationId: amr-tasks_partial_update
+      operationId: metering_amr-tasks_partial_update
       description: Partially updates a single Amr Task
       parameters:
         - name: data
@@ -630,15 +791,19 @@ paths:
           schema:
             $ref: '#/definitions/AmrTask'
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     delete:
-      operationId: amr-tasks_delete
+      operationId: metering_amr-tasks_delete
       description: Deletes a single Amr Task
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-amr-tasks
         - amr-tasks
     parameters:
       - name: id
@@ -647,9 +812,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-device-configs:
+  /metering/meter-device-configs:
     get:
-      operationId: meter-device-configs_list
+      operationId: metering_meter-device-configs_list
       description: Returns a list of MeterDeviceConfigs
       parameters:
         - name: limit
@@ -686,9 +851,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterDeviceConfig'
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     post:
-      operationId: meter-device-configs_create
+      operationId: metering_meter-device-configs_create
       description: Creates a MeterDeviceConfig
       parameters:
         - name: data
@@ -702,11 +869,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceConfig'
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     parameters: []
-  /meter-device-configs/{id}:
+  /metering/meter-device-configs/{id}:
     get:
-      operationId: meter-device-configs_read
+      operationId: metering_meter-device-configs_read
       description: Returns a single MeterDeviceConfig
       parameters: []
       responses:
@@ -715,9 +884,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceConfig'
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     put:
-      operationId: meter-device-configs_update
+      operationId: metering_meter-device-configs_update
       description: Updates a single MeterDeviceConfig
       parameters:
         - name: data
@@ -731,9 +902,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceConfig'
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     patch:
-      operationId: meter-device-configs_partial_update
+      operationId: metering_meter-device-configs_partial_update
       description: Partially updates a single MeterDeviceConfig
       parameters:
         - name: data
@@ -747,15 +920,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceConfig'
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     delete:
-      operationId: meter-device-configs_delete
+      operationId: metering_meter-device-configs_delete
       description: Deletes a single MeterDeviceConfig
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-device-configs
         - meter-device-configs
     parameters:
       - name: id
@@ -764,9 +941,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-device-types:
+  /metering/meter-device-types:
     get:
-      operationId: meter-device-types_list
+      operationId: metering_meter-device-types_list
       description: Returns a list of MeterDeviceTypess
       parameters:
         - name: limit
@@ -803,9 +980,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterDeviceType'
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     post:
-      operationId: meter-device-types_create
+      operationId: metering_meter-device-types_create
       description: Creates a MeterDeviceType
       parameters:
         - name: data
@@ -819,11 +998,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceType'
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     parameters: []
-  /meter-device-types/{id}:
+  /metering/meter-device-types/{id}:
     get:
-      operationId: meter-device-types_read
+      operationId: metering_meter-device-types_read
       description: Returns a single MeterDeviceType
       parameters: []
       responses:
@@ -832,9 +1013,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceType'
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     put:
-      operationId: meter-device-types_update
+      operationId: metering_meter-device-types_update
       description: Updates a single MeterDeviceType
       parameters:
         - name: data
@@ -848,9 +1031,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceType'
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     patch:
-      operationId: meter-device-types_partial_update
+      operationId: metering_meter-device-types_partial_update
       description: Partially updates a single MeterDeviceType
       parameters:
         - name: data
@@ -864,15 +1049,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterDeviceType'
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     delete:
-      operationId: meter-device-types_delete
+      operationId: metering_meter-device-types_delete
       description: Deletes a single MeterDeviceType
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-device-types
         - meter-device-types
     parameters:
       - name: id
@@ -881,9 +1070,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-devices:
+  /metering/meter-devices:
     get:
-      operationId: meter-devices_list
+      operationId: metering_meter-devices_list
       description: Returns a list of MeterDevices
       parameters:
         - name: name
@@ -945,9 +1134,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterDevice'
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     post:
-      operationId: meter-devices_create
+      operationId: metering_meter-devices_create
       description: Creates a MeterDevice
       parameters:
         - name: data
@@ -961,11 +1152,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterDevice'
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     parameters: []
-  /meter-devices/{id}:
+  /metering/meter-devices/{id}:
     get:
-      operationId: meter-devices_read
+      operationId: metering_meter-devices_read
       description: Returns a single MeterDevice
       parameters: []
       responses:
@@ -974,9 +1167,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDevice'
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     put:
-      operationId: meter-devices_update
+      operationId: metering_meter-devices_update
       description: Updates a single MeterDevice
       parameters:
         - name: data
@@ -990,9 +1185,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterDevice'
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     patch:
-      operationId: meter-devices_partial_update
+      operationId: metering_meter-devices_partial_update
       description: Partially updates a single MeterDevice
       parameters:
         - name: data
@@ -1006,15 +1203,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterDevice'
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     delete:
-      operationId: meter-devices_delete
+      operationId: metering_meter-devices_delete
       description: Deletes a single MeterDevice
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-devices
         - meter-devices
     parameters:
       - name: id
@@ -1023,9 +1224,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-reading-series:
+  /metering/meter-reading-series:
     get:
-      operationId: meter-reading-series_list
+      operationId: metering_meter-reading-series_list
       description: Returns a list of MeterReadingSeries
       parameters:
         - name: name
@@ -1072,9 +1273,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterReadingsSeries'
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     post:
-      operationId: meter-reading-series_create
+      operationId: metering_meter-reading-series_create
       description: Create a MeterReadingSeries
       parameters:
         - name: data
@@ -1088,11 +1291,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadingsSeries'
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     parameters: []
-  /meter-reading-series/{id}:
+  /metering/meter-reading-series/{id}:
     get:
-      operationId: meter-reading-series_read
+      operationId: metering_meter-reading-series_read
       description: Returns a single MeterReadingSeries
       parameters: []
       responses:
@@ -1101,9 +1306,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadingsSeries'
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     put:
-      operationId: meter-reading-series_update
+      operationId: metering_meter-reading-series_update
       description: Updates a single MeterReadingSeries
       parameters:
         - name: data
@@ -1117,9 +1324,11 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadingsSeries'
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     patch:
-      operationId: meter-reading-series_partial_update
+      operationId: metering_meter-reading-series_partial_update
       description: Partially updates a single MeterReadingSeries
       parameters:
         - name: data
@@ -1133,15 +1342,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadingsSeries'
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     delete:
-      operationId: meter-reading-series_delete
+      operationId: metering_meter-reading-series_delete
       description: Deletes a single MeterReadingsSeries
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-reading-series
         - meter-reading-series
     parameters:
       - name: id
@@ -1150,9 +1363,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-readings:
+  /metering/meter-readings:
     get:
-      operationId: meter-readings_list
+      operationId: metering_meter-readings_list
       description: "Returns a list of MeterReadings. Supply both meter_id and series_id\
         \ in\n    query parameters to get a complete series. Returns a list of only\n\
         \    values and timestamps. If the series and meter is omitted the values\n\
@@ -1212,9 +1425,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterReadingsOut'
       tags:
+        - metering
+        - metering-meter-readings
         - meter-readings
     post:
-      operationId: meter-readings_create
+      operationId: metering_meter-readings_create
       description: Creates a MeterReading
       parameters:
         - name: data
@@ -1228,11 +1443,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadings'
       tags:
+        - metering
+        - metering-meter-readings
         - meter-readings
     parameters: []
-  /meter-readings/{id}:
+  /metering/meter-readings/{id}:
     get:
-      operationId: meter-readings_read
+      operationId: metering_meter-readings_read
       description: Returns a single MeterReading
       parameters: []
       responses:
@@ -1241,15 +1458,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterReadings'
       tags:
+        - metering
+        - metering-meter-readings
         - meter-readings
     delete:
-      operationId: meter-readings_delete
+      operationId: metering_meter-readings_delete
       description: Deletes a single MeterReading
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-readings
         - meter-readings
     parameters:
       - name: id
@@ -1257,9 +1478,9 @@ paths:
         description: A unique integer value identifying this meter reading.
         required: true
         type: integer
-  /meter-security-keys:
+  /metering/meter-security-keys:
     get:
-      operationId: meter-security-keys_list
+      operationId: metering_meter-security-keys_list
       description: Returns list of MeterSecurityCollections
       parameters:
         - name: meter
@@ -1326,9 +1547,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterSecurityKeyCollectionOut'
       tags:
+        - metering
+        - metering-meter-security-keys
         - meter-security-keys
     post:
-      operationId: meter-security-keys_create
+      operationId: metering_meter-security-keys_create
       description: Creates a MeterSecurityKeyCollection
       parameters:
         - name: data
@@ -1342,11 +1565,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterSecurityKeyCollectionIn'
       tags:
+        - metering
+        - metering-meter-security-keys
         - meter-security-keys
     parameters: []
-  /meter-security-keys/{id}:
+  /metering/meter-security-keys/{id}:
     get:
-      operationId: meter-security-keys_read
+      operationId: metering_meter-security-keys_read
       description: Returns a single MeterSecurityKeyCollection
       parameters: []
       responses:
@@ -1355,15 +1580,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterSecurityKeyCollectionOut'
       tags:
+        - metering
+        - metering-meter-security-keys
         - meter-security-keys
     delete:
-      operationId: meter-security-keys_delete
+      operationId: metering_meter-security-keys_delete
       description: Deletes a single MeterSecurityKeyCollection
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-security-keys
         - meter-security-keys
     parameters:
       - name: id
@@ -1372,9 +1601,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /meter-system-events:
+  /metering/meter-system-events:
     get:
-      operationId: meter-system-events_list
+      operationId: metering_meter-system-events_list
       description: Returns a list of MeterSystemEvents
       parameters:
         - name: meter_device
@@ -1426,9 +1655,11 @@ paths:
                 items:
                   $ref: '#/definitions/MeterSystemEvent'
       tags:
+        - metering
+        - metering-meter-system-events
         - meter-system-events
     post:
-      operationId: meter-system-events_create
+      operationId: metering_meter-system-events_create
       description: Creates a MeterSystemEvents
       parameters:
         - name: data
@@ -1442,11 +1673,13 @@ paths:
           schema:
             $ref: '#/definitions/MeterSystemEvent'
       tags:
+        - metering
+        - metering-meter-system-events
         - meter-system-events
     parameters: []
-  /meter-system-events/{id}:
+  /metering/meter-system-events/{id}:
     get:
-      operationId: meter-system-events_read
+      operationId: metering_meter-system-events_read
       description: Returns a single MeterSystemEvent
       parameters: []
       responses:
@@ -1455,15 +1688,19 @@ paths:
           schema:
             $ref: '#/definitions/MeterSystemEvent'
       tags:
+        - metering
+        - metering-meter-system-events
         - meter-system-events
     delete:
-      operationId: meter-system-events_delete
+      operationId: metering_meter-system-events_delete
       description: Deletes a single MeterSystemEvent
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-meter-system-events
         - meter-system-events
     parameters:
       - name: id
@@ -1471,9 +1708,9 @@ paths:
         description: A unique integer value identifying this meter system event.
         required: true
         type: integer
-  /network-interfaces:
+  /metering/network-interfaces:
     get:
-      operationId: network-interfaces_list
+      operationId: metering_network-interfaces_list
       description: returns list of NetworkInterfaces
       parameters:
         - name: limit
@@ -1510,9 +1747,11 @@ paths:
                 items:
                   $ref: '#/definitions/NetworkInterface'
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     post:
-      operationId: network-interfaces_create
+      operationId: metering_network-interfaces_create
       description: Create a new Network Interface
       parameters:
         - name: data
@@ -1526,11 +1765,13 @@ paths:
           schema:
             $ref: '#/definitions/NetworkInterface'
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     parameters: []
-  /network-interfaces/{id}:
+  /metering/network-interfaces/{id}:
     get:
-      operationId: network-interfaces_read
+      operationId: metering_network-interfaces_read
       description: Returns a single NetworkInterface
       parameters: []
       responses:
@@ -1539,9 +1780,11 @@ paths:
           schema:
             $ref: '#/definitions/NetworkInterface'
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     put:
-      operationId: network-interfaces_update
+      operationId: metering_network-interfaces_update
       description: Updates a single Network Interface
       parameters:
         - name: data
@@ -1555,9 +1798,11 @@ paths:
           schema:
             $ref: '#/definitions/NetworkInterface'
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     patch:
-      operationId: network-interfaces_partial_update
+      operationId: metering_network-interfaces_partial_update
       description: Partially updates a single Network Interface
       parameters:
         - name: data
@@ -1571,15 +1816,19 @@ paths:
           schema:
             $ref: '#/definitions/NetworkInterface'
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     delete:
-      operationId: network-interfaces_delete
+      operationId: metering_network-interfaces_delete
       description: Deletes a single Network Interface
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-network-interfaces
         - network-interfaces
     parameters:
       - name: id
@@ -1588,9 +1837,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /new-meter-readings:
+  /metering/new-meter-readings:
     post:
-      operationId: new-meter-readings_create
+      operationId: metering_new-meter-readings_create
       description: "Receives Meter Readings, single and in list and will send them\
         \ to background\n    workers for processing."
       parameters: []
@@ -1598,11 +1847,13 @@ paths:
         '201':
           description: ''
       tags:
+        - metering
+        - metering-new-meter-readings
         - new-meter-readings
     parameters: []
-  /sim-cards:
+  /metering/sim-cards:
     get:
-      operationId: sim-cards_list
+      operationId: metering_sim-cards_list
       description: Returns a list of SimCards
       parameters:
         - name: iccid
@@ -1649,9 +1900,11 @@ paths:
                 items:
                   $ref: '#/definitions/SimCard'
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     post:
-      operationId: sim-cards_create
+      operationId: metering_sim-cards_create
       description: Creates a new SimCard
       parameters:
         - name: data
@@ -1665,11 +1918,13 @@ paths:
           schema:
             $ref: '#/definitions/SimCard'
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     parameters: []
-  /sim-cards/{id}:
+  /metering/sim-cards/{id}:
     get:
-      operationId: sim-cards_read
+      operationId: metering_sim-cards_read
       description: Returns a single SimCard
       parameters: []
       responses:
@@ -1678,9 +1933,11 @@ paths:
           schema:
             $ref: '#/definitions/SimCard'
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     put:
-      operationId: sim-cards_update
+      operationId: metering_sim-cards_update
       description: Updates a single SimCard
       parameters:
         - name: data
@@ -1694,9 +1951,11 @@ paths:
           schema:
             $ref: '#/definitions/SimCard'
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     patch:
-      operationId: sim-cards_partial_update
+      operationId: metering_sim-cards_partial_update
       description: Partially updates a single SimCard
       parameters:
         - name: data
@@ -1710,15 +1969,19 @@ paths:
           schema:
             $ref: '#/definitions/SimCard'
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     delete:
-      operationId: sim-cards_delete
+      operationId: metering_sim-cards_delete
       description: Deletes a single SimCard
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-sim-cards
         - sim-cards
     parameters:
       - name: id
@@ -1727,9 +1990,9 @@ paths:
         required: true
         type: string
         format: uuid
-  /staged-meter-readings:
+  /metering/staged-meter-readings:
     get:
-      operationId: staged-meter-readings_list
+      operationId: metering_staged-meter-readings_list
       description: Returns list of Staged Meter Readings
       parameters:
         - name: meter_device_name
@@ -1781,9 +2044,11 @@ paths:
                 items:
                   $ref: '#/definitions/StagedMeterReading'
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     post:
-      operationId: staged-meter-readings_create
+      operationId: metering_staged-meter-readings_create
       description: Create a new Staged Meter Readings
       parameters:
         - name: data
@@ -1797,11 +2062,13 @@ paths:
           schema:
             $ref: '#/definitions/StagedMeterReading'
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     parameters: []
-  /staged-meter-readings/{id}:
+  /metering/staged-meter-readings/{id}:
     get:
-      operationId: staged-meter-readings_read
+      operationId: metering_staged-meter-readings_read
       description: Returns a single Staged Meter Reading
       parameters: []
       responses:
@@ -1810,9 +2077,11 @@ paths:
           schema:
             $ref: '#/definitions/StagedMeterReading'
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     put:
-      operationId: staged-meter-readings_update
+      operationId: metering_staged-meter-readings_update
       description: Updates a single Staged Meter Reading
       parameters:
         - name: data
@@ -1826,9 +2095,11 @@ paths:
           schema:
             $ref: '#/definitions/StagedMeterReading'
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     patch:
-      operationId: staged-meter-readings_partial_update
+      operationId: metering_staged-meter-readings_partial_update
       description: Partially updates a single Staged Meter Reading
       parameters:
         - name: data
@@ -1842,15 +2113,19 @@ paths:
           schema:
             $ref: '#/definitions/StagedMeterReading'
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     delete:
-      operationId: staged-meter-readings_delete
+      operationId: metering_staged-meter-readings_delete
       description: Deletes a single Staged Meter Reading
       parameters: []
       responses:
         '204':
           description: ''
       tags:
+        - metering
+        - metering-staged-meter-readings
         - staged-meter-readings
     parameters:
       - name: id
@@ -1858,10 +2133,296 @@ paths:
         description: A unique integer value identifying this staged meter reading.
         required: true
         type: integer
+  /organizations/:
+    get:
+      operationId: organizations_list
+      description: returns list of Organizations
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Organization'
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    post:
+      operationId: organizations_create
+      description: Create a new Organization
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Organization'
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    parameters: []
+  /organizations/memberships/:
+    get:
+      operationId: organizations_memberships_list
+      description: returns list of Organization Memberships
+      parameters:
+        - name: limit
+          in: query
+          description: Number of results to return per page.
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          description: The initial index from which to return the results.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+              - count
+              - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/OrganizationMember'
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    post:
+      operationId: organizations_memberships_create
+      description: Create a new Organization Membership
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    parameters: []
+  /organizations/memberships/{id}:
+    get:
+      operationId: organizations_memberships_read
+      description: Returns a single Organization Membership
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    put:
+      operationId: organizations_memberships_update
+      description: Updates a single Organization Membership
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    patch:
+      operationId: organizations_memberships_partial_update
+      description: Partially updates a single Organization Membership
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/OrganizationMember'
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    delete:
+      operationId: organizations_memberships_delete
+      description: Deletes a single Organization Membership
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - organizations
+        - organizations-memberships
+        - memberships
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this organization member.
+        required: true
+        type: integer
+  /organizations/{id}:
+    get:
+      operationId: organizations_read
+      description: Returns a single Organization
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Organization'
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    put:
+      operationId: organizations_update
+      description: Updates a single Organization
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Organization'
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    patch:
+      operationId: organizations_partial_update
+      description: Partially updates a single Organization
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Organization'
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    delete:
+      operationId: organizations_delete
+      description: Deletes a single Organization
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - organizations
+        - organizations-main
+        - main
+    parameters:
+      - name: id
+        in: path
+        description: A UUID string identifying this organization.
+        required: true
+        type: string
+        format: uuid
 definitions:
+  TokenChangeOrg:
+    required:
+      - organization
+    type: object
+    properties:
+      organization:
+        type: string
+        format: uuid
+        title: Organization
+  GetTokenAuth:
+    required:
+      - username
+      - password
+    type: object
+    properties:
+      username:
+        title: Username
+        type: string
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+      organization:
+        title: Organization
+        type: string
+        format: uuid
+        x-nullable: true
   AmrTaskGroup:
     required:
       - name
+      - organization
     type: object
     properties:
       id:
@@ -1870,18 +2431,24 @@ definitions:
         format: uuid
         readOnly: true
       name:
-        title: Name of AmrTaskGroup
+        title: Name
         type: string
         maxLength: 150
         minLength: 1
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       description:
-        title: Task Group Description
+        title: Description
         type: string
         maxLength: 500
       tasks:
+        description: Choose AMR Tasks that should be a part of this group.
         type: array
         items:
-          title: Amr Tasks
+          title: AMR Tasks
+          description: Choose AMR Tasks that should be a part of this group.
           type: string
           format: uuid
         uniqueItems: true
@@ -1901,6 +2468,7 @@ definitions:
         readOnly: true
   AmrTask:
     required:
+      - organization
       - name
       - schedule
       - meter_execution_type
@@ -1912,20 +2480,25 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       name:
-        title: Task Name
+        title: Name
         type: string
         maxLength: 150
         minLength: 1
       description:
-        title: Task Description
+        title: Description
         type: string
         maxLength: 500
       is_active:
-        title: Indicates if the task is active
+        title: Is active
         type: boolean
       schedule:
         title: AMR Schedule
+        description: How often to run the task
         type: string
         enum:
           - quarterly
@@ -1935,24 +2508,29 @@ definitions:
           - monthly
           - yearly
       run_offset_seconds:
-        title: Run offset in seconds
+        title: Run offset
+        description: Value in seconds
         type: integer
         maximum: 2147483647
         minimum: -2147483648
       meter_execution_type:
-        title: Type of AMR meter interface to use for execution of the task
+        title: Meter execution type
+        description: The execution interface for this task
         type: string
         enum:
           - generic_lis200
           - generic_iec6205621
+          - generic_corus_meter
       task_call:
-        title: Name of the function to call on the amr meter type
+        title: Task function call
+        description: The function to call on the execution interface
         type: string
         maxLength: 50
         minLength: 1
       task_kwargs:
-        title: Keyword arguments for task. In JSON
-        type: string
+        title: Keyword arguments
+        description: Keyword arguments for task. In JSON
+        type: object
         x-nullable: true
       created_at:
         title: Created at
@@ -1966,6 +2544,7 @@ definitions:
         readOnly: true
   MeterDeviceConfig:
     required:
+      - organization
       - name
       - series
     type: object
@@ -1975,14 +2554,23 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       name:
-        title: Device Config Name
+        title: Device config name
         type: string
         maxLength: 50
         minLength: 1
       series:
+        description: Choose meter readings series that will be allowed for this meter
+          device config.
         type: array
         items:
+          title: Meter Reading Series
+          description: Choose meter readings series that will be allowed for this
+            meter device config.
           type: string
           format: uuid
         uniqueItems: true
@@ -1990,6 +2578,608 @@ definitions:
         title: Series info
         type: string
         readOnly: true
+      timezone:
+        title: Meter timezone
+        description: Name of timezone the meter operates in. For fixed offset constructed
+          zones (ex. 'Etc/GMT-1') take notise that we are following standard conventions
+          and the sign is inverted. See more at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        type: string
+        enum:
+          - Africa/Abidjan
+          - Africa/Accra
+          - Africa/Addis_Ababa
+          - Africa/Algiers
+          - Africa/Asmara
+          - Africa/Asmera
+          - Africa/Bamako
+          - Africa/Bangui
+          - Africa/Banjul
+          - Africa/Bissau
+          - Africa/Blantyre
+          - Africa/Brazzaville
+          - Africa/Bujumbura
+          - Africa/Cairo
+          - Africa/Casablanca
+          - Africa/Ceuta
+          - Africa/Conakry
+          - Africa/Dakar
+          - Africa/Dar_es_Salaam
+          - Africa/Djibouti
+          - Africa/Douala
+          - Africa/El_Aaiun
+          - Africa/Freetown
+          - Africa/Gaborone
+          - Africa/Harare
+          - Africa/Johannesburg
+          - Africa/Juba
+          - Africa/Kampala
+          - Africa/Khartoum
+          - Africa/Kigali
+          - Africa/Kinshasa
+          - Africa/Lagos
+          - Africa/Libreville
+          - Africa/Lome
+          - Africa/Luanda
+          - Africa/Lubumbashi
+          - Africa/Lusaka
+          - Africa/Malabo
+          - Africa/Maputo
+          - Africa/Maseru
+          - Africa/Mbabane
+          - Africa/Mogadishu
+          - Africa/Monrovia
+          - Africa/Nairobi
+          - Africa/Ndjamena
+          - Africa/Niamey
+          - Africa/Nouakchott
+          - Africa/Ouagadougou
+          - Africa/Porto-Novo
+          - Africa/Sao_Tome
+          - Africa/Timbuktu
+          - Africa/Tripoli
+          - Africa/Tunis
+          - Africa/Windhoek
+          - America/Adak
+          - America/Anchorage
+          - America/Anguilla
+          - America/Antigua
+          - America/Araguaina
+          - America/Argentina/Buenos_Aires
+          - America/Argentina/Catamarca
+          - America/Argentina/ComodRivadavia
+          - America/Argentina/Cordoba
+          - America/Argentina/Jujuy
+          - America/Argentina/La_Rioja
+          - America/Argentina/Mendoza
+          - America/Argentina/Rio_Gallegos
+          - America/Argentina/Salta
+          - America/Argentina/San_Juan
+          - America/Argentina/San_Luis
+          - America/Argentina/Tucuman
+          - America/Argentina/Ushuaia
+          - America/Aruba
+          - America/Asuncion
+          - America/Atikokan
+          - America/Atka
+          - America/Bahia
+          - America/Bahia_Banderas
+          - America/Barbados
+          - America/Belem
+          - America/Belize
+          - America/Blanc-Sablon
+          - America/Boa_Vista
+          - America/Bogota
+          - America/Boise
+          - America/Buenos_Aires
+          - America/Cambridge_Bay
+          - America/Campo_Grande
+          - America/Cancun
+          - America/Caracas
+          - America/Catamarca
+          - America/Cayenne
+          - America/Cayman
+          - America/Chicago
+          - America/Chihuahua
+          - America/Coral_Harbour
+          - America/Cordoba
+          - America/Costa_Rica
+          - America/Creston
+          - America/Cuiaba
+          - America/Curacao
+          - America/Danmarkshavn
+          - America/Dawson
+          - America/Dawson_Creek
+          - America/Denver
+          - America/Detroit
+          - America/Dominica
+          - America/Edmonton
+          - America/Eirunepe
+          - America/El_Salvador
+          - America/Ensenada
+          - America/Fort_Nelson
+          - America/Fort_Wayne
+          - America/Fortaleza
+          - America/Glace_Bay
+          - America/Godthab
+          - America/Goose_Bay
+          - America/Grand_Turk
+          - America/Grenada
+          - America/Guadeloupe
+          - America/Guatemala
+          - America/Guayaquil
+          - America/Guyana
+          - America/Halifax
+          - America/Havana
+          - America/Hermosillo
+          - America/Indiana/Indianapolis
+          - America/Indiana/Knox
+          - America/Indiana/Marengo
+          - America/Indiana/Petersburg
+          - America/Indiana/Tell_City
+          - America/Indiana/Vevay
+          - America/Indiana/Vincennes
+          - America/Indiana/Winamac
+          - America/Indianapolis
+          - America/Inuvik
+          - America/Iqaluit
+          - America/Jamaica
+          - America/Jujuy
+          - America/Juneau
+          - America/Kentucky/Louisville
+          - America/Kentucky/Monticello
+          - America/Knox_IN
+          - America/Kralendijk
+          - America/La_Paz
+          - America/Lima
+          - America/Los_Angeles
+          - America/Louisville
+          - America/Lower_Princes
+          - America/Maceio
+          - America/Managua
+          - America/Manaus
+          - America/Marigot
+          - America/Martinique
+          - America/Matamoros
+          - America/Mazatlan
+          - America/Mendoza
+          - America/Menominee
+          - America/Merida
+          - America/Metlakatla
+          - America/Mexico_City
+          - America/Miquelon
+          - America/Moncton
+          - America/Monterrey
+          - America/Montevideo
+          - America/Montreal
+          - America/Montserrat
+          - America/Nassau
+          - America/New_York
+          - America/Nipigon
+          - America/Nome
+          - America/Noronha
+          - America/North_Dakota/Beulah
+          - America/North_Dakota/Center
+          - America/North_Dakota/New_Salem
+          - America/Ojinaga
+          - America/Panama
+          - America/Pangnirtung
+          - America/Paramaribo
+          - America/Phoenix
+          - America/Port-au-Prince
+          - America/Port_of_Spain
+          - America/Porto_Acre
+          - America/Porto_Velho
+          - America/Puerto_Rico
+          - America/Punta_Arenas
+          - America/Rainy_River
+          - America/Rankin_Inlet
+          - America/Recife
+          - America/Regina
+          - America/Resolute
+          - America/Rio_Branco
+          - America/Rosario
+          - America/Santa_Isabel
+          - America/Santarem
+          - America/Santiago
+          - America/Santo_Domingo
+          - America/Sao_Paulo
+          - America/Scoresbysund
+          - America/Shiprock
+          - America/Sitka
+          - America/St_Barthelemy
+          - America/St_Johns
+          - America/St_Kitts
+          - America/St_Lucia
+          - America/St_Thomas
+          - America/St_Vincent
+          - America/Swift_Current
+          - America/Tegucigalpa
+          - America/Thule
+          - America/Thunder_Bay
+          - America/Tijuana
+          - America/Toronto
+          - America/Tortola
+          - America/Vancouver
+          - America/Virgin
+          - America/Whitehorse
+          - America/Winnipeg
+          - America/Yakutat
+          - America/Yellowknife
+          - Antarctica/Casey
+          - Antarctica/Davis
+          - Antarctica/DumontDUrville
+          - Antarctica/Macquarie
+          - Antarctica/Mawson
+          - Antarctica/McMurdo
+          - Antarctica/Palmer
+          - Antarctica/Rothera
+          - Antarctica/South_Pole
+          - Antarctica/Syowa
+          - Antarctica/Troll
+          - Antarctica/Vostok
+          - Arctic/Longyearbyen
+          - Asia/Aden
+          - Asia/Almaty
+          - Asia/Amman
+          - Asia/Anadyr
+          - Asia/Aqtau
+          - Asia/Aqtobe
+          - Asia/Ashgabat
+          - Asia/Ashkhabad
+          - Asia/Atyrau
+          - Asia/Baghdad
+          - Asia/Bahrain
+          - Asia/Baku
+          - Asia/Bangkok
+          - Asia/Barnaul
+          - Asia/Beirut
+          - Asia/Bishkek
+          - Asia/Brunei
+          - Asia/Calcutta
+          - Asia/Chita
+          - Asia/Choibalsan
+          - Asia/Chongqing
+          - Asia/Chungking
+          - Asia/Colombo
+          - Asia/Dacca
+          - Asia/Damascus
+          - Asia/Dhaka
+          - Asia/Dili
+          - Asia/Dubai
+          - Asia/Dushanbe
+          - Asia/Famagusta
+          - Asia/Gaza
+          - Asia/Hanoi
+          - Asia/Harbin
+          - Asia/Hebron
+          - Asia/Ho_Chi_Minh
+          - Asia/Hong_Kong
+          - Asia/Hovd
+          - Asia/Irkutsk
+          - Asia/Istanbul
+          - Asia/Jakarta
+          - Asia/Jayapura
+          - Asia/Jerusalem
+          - Asia/Kabul
+          - Asia/Kamchatka
+          - Asia/Karachi
+          - Asia/Kashgar
+          - Asia/Kathmandu
+          - Asia/Katmandu
+          - Asia/Khandyga
+          - Asia/Kolkata
+          - Asia/Krasnoyarsk
+          - Asia/Kuala_Lumpur
+          - Asia/Kuching
+          - Asia/Kuwait
+          - Asia/Macao
+          - Asia/Macau
+          - Asia/Magadan
+          - Asia/Makassar
+          - Asia/Manila
+          - Asia/Muscat
+          - Asia/Nicosia
+          - Asia/Novokuznetsk
+          - Asia/Novosibirsk
+          - Asia/Omsk
+          - Asia/Oral
+          - Asia/Phnom_Penh
+          - Asia/Pontianak
+          - Asia/Pyongyang
+          - Asia/Qatar
+          - Asia/Qostanay
+          - Asia/Qyzylorda
+          - Asia/Rangoon
+          - Asia/Riyadh
+          - Asia/Saigon
+          - Asia/Sakhalin
+          - Asia/Samarkand
+          - Asia/Seoul
+          - Asia/Shanghai
+          - Asia/Singapore
+          - Asia/Srednekolymsk
+          - Asia/Taipei
+          - Asia/Tashkent
+          - Asia/Tbilisi
+          - Asia/Tehran
+          - Asia/Tel_Aviv
+          - Asia/Thimbu
+          - Asia/Thimphu
+          - Asia/Tokyo
+          - Asia/Tomsk
+          - Asia/Ujung_Pandang
+          - Asia/Ulaanbaatar
+          - Asia/Ulan_Bator
+          - Asia/Urumqi
+          - Asia/Ust-Nera
+          - Asia/Vientiane
+          - Asia/Vladivostok
+          - Asia/Yakutsk
+          - Asia/Yangon
+          - Asia/Yekaterinburg
+          - Asia/Yerevan
+          - Atlantic/Azores
+          - Atlantic/Bermuda
+          - Atlantic/Canary
+          - Atlantic/Cape_Verde
+          - Atlantic/Faeroe
+          - Atlantic/Faroe
+          - Atlantic/Jan_Mayen
+          - Atlantic/Madeira
+          - Atlantic/Reykjavik
+          - Atlantic/South_Georgia
+          - Atlantic/St_Helena
+          - Atlantic/Stanley
+          - Australia/ACT
+          - Australia/Adelaide
+          - Australia/Brisbane
+          - Australia/Broken_Hill
+          - Australia/Canberra
+          - Australia/Currie
+          - Australia/Darwin
+          - Australia/Eucla
+          - Australia/Hobart
+          - Australia/LHI
+          - Australia/Lindeman
+          - Australia/Lord_Howe
+          - Australia/Melbourne
+          - Australia/NSW
+          - Australia/North
+          - Australia/Perth
+          - Australia/Queensland
+          - Australia/South
+          - Australia/Sydney
+          - Australia/Tasmania
+          - Australia/Victoria
+          - Australia/West
+          - Australia/Yancowinna
+          - Brazil/Acre
+          - Brazil/DeNoronha
+          - Brazil/East
+          - Brazil/West
+          - CET
+          - CST6CDT
+          - Canada/Atlantic
+          - Canada/Central
+          - Canada/Eastern
+          - Canada/Mountain
+          - Canada/Newfoundland
+          - Canada/Pacific
+          - Canada/Saskatchewan
+          - Canada/Yukon
+          - Chile/Continental
+          - Chile/EasterIsland
+          - Cuba
+          - EET
+          - EST
+          - EST5EDT
+          - Egypt
+          - Eire
+          - Etc/GMT
+          - Etc/GMT+0
+          - Etc/GMT+1
+          - Etc/GMT+10
+          - Etc/GMT+11
+          - Etc/GMT+12
+          - Etc/GMT+2
+          - Etc/GMT+3
+          - Etc/GMT+4
+          - Etc/GMT+5
+          - Etc/GMT+6
+          - Etc/GMT+7
+          - Etc/GMT+8
+          - Etc/GMT+9
+          - Etc/GMT-0
+          - Etc/GMT-1
+          - Etc/GMT-10
+          - Etc/GMT-11
+          - Etc/GMT-12
+          - Etc/GMT-13
+          - Etc/GMT-14
+          - Etc/GMT-2
+          - Etc/GMT-3
+          - Etc/GMT-4
+          - Etc/GMT-5
+          - Etc/GMT-6
+          - Etc/GMT-7
+          - Etc/GMT-8
+          - Etc/GMT-9
+          - Etc/GMT0
+          - Etc/Greenwich
+          - Etc/UCT
+          - Etc/UTC
+          - Etc/Universal
+          - Etc/Zulu
+          - Europe/Amsterdam
+          - Europe/Andorra
+          - Europe/Astrakhan
+          - Europe/Athens
+          - Europe/Belfast
+          - Europe/Belgrade
+          - Europe/Berlin
+          - Europe/Bratislava
+          - Europe/Brussels
+          - Europe/Bucharest
+          - Europe/Budapest
+          - Europe/Busingen
+          - Europe/Chisinau
+          - Europe/Copenhagen
+          - Europe/Dublin
+          - Europe/Gibraltar
+          - Europe/Guernsey
+          - Europe/Helsinki
+          - Europe/Isle_of_Man
+          - Europe/Istanbul
+          - Europe/Jersey
+          - Europe/Kaliningrad
+          - Europe/Kiev
+          - Europe/Kirov
+          - Europe/Lisbon
+          - Europe/Ljubljana
+          - Europe/London
+          - Europe/Luxembourg
+          - Europe/Madrid
+          - Europe/Malta
+          - Europe/Mariehamn
+          - Europe/Minsk
+          - Europe/Monaco
+          - Europe/Moscow
+          - Europe/Nicosia
+          - Europe/Oslo
+          - Europe/Paris
+          - Europe/Podgorica
+          - Europe/Prague
+          - Europe/Riga
+          - Europe/Rome
+          - Europe/Samara
+          - Europe/San_Marino
+          - Europe/Sarajevo
+          - Europe/Saratov
+          - Europe/Simferopol
+          - Europe/Skopje
+          - Europe/Sofia
+          - Europe/Stockholm
+          - Europe/Tallinn
+          - Europe/Tirane
+          - Europe/Tiraspol
+          - Europe/Ulyanovsk
+          - Europe/Uzhgorod
+          - Europe/Vaduz
+          - Europe/Vatican
+          - Europe/Vienna
+          - Europe/Vilnius
+          - Europe/Volgograd
+          - Europe/Warsaw
+          - Europe/Zagreb
+          - Europe/Zaporozhye
+          - Europe/Zurich
+          - Factory
+          - GB
+          - GB-Eire
+          - GMT
+          - GMT+0
+          - GMT-0
+          - GMT0
+          - Greenwich
+          - HST
+          - Hongkong
+          - Iceland
+          - Indian/Antananarivo
+          - Indian/Chagos
+          - Indian/Christmas
+          - Indian/Cocos
+          - Indian/Comoro
+          - Indian/Kerguelen
+          - Indian/Mahe
+          - Indian/Maldives
+          - Indian/Mauritius
+          - Indian/Mayotte
+          - Indian/Reunion
+          - Iran
+          - Israel
+          - Jamaica
+          - Japan
+          - Kwajalein
+          - Libya
+          - MET
+          - MST
+          - MST7MDT
+          - Mexico/BajaNorte
+          - Mexico/BajaSur
+          - Mexico/General
+          - NZ
+          - NZ-CHAT
+          - Navajo
+          - PRC
+          - PST8PDT
+          - Pacific/Apia
+          - Pacific/Auckland
+          - Pacific/Bougainville
+          - Pacific/Chatham
+          - Pacific/Chuuk
+          - Pacific/Easter
+          - Pacific/Efate
+          - Pacific/Enderbury
+          - Pacific/Fakaofo
+          - Pacific/Fiji
+          - Pacific/Funafuti
+          - Pacific/Galapagos
+          - Pacific/Gambier
+          - Pacific/Guadalcanal
+          - Pacific/Guam
+          - Pacific/Honolulu
+          - Pacific/Johnston
+          - Pacific/Kiritimati
+          - Pacific/Kosrae
+          - Pacific/Kwajalein
+          - Pacific/Majuro
+          - Pacific/Marquesas
+          - Pacific/Midway
+          - Pacific/Nauru
+          - Pacific/Niue
+          - Pacific/Norfolk
+          - Pacific/Noumea
+          - Pacific/Pago_Pago
+          - Pacific/Palau
+          - Pacific/Pitcairn
+          - Pacific/Pohnpei
+          - Pacific/Ponape
+          - Pacific/Port_Moresby
+          - Pacific/Rarotonga
+          - Pacific/Saipan
+          - Pacific/Samoa
+          - Pacific/Tahiti
+          - Pacific/Tarawa
+          - Pacific/Tongatapu
+          - Pacific/Truk
+          - Pacific/Wake
+          - Pacific/Wallis
+          - Pacific/Yap
+          - Poland
+          - Portugal
+          - ROC
+          - ROK
+          - Singapore
+          - Turkey
+          - UCT
+          - US/Alaska
+          - US/Aleutian
+          - US/Arizona
+          - US/Central
+          - US/East-Indiana
+          - US/Eastern
+          - US/Hawaii
+          - US/Indiana-Starke
+          - US/Michigan
+          - US/Mountain
+          - US/Pacific
+          - US/Pacific-New
+          - US/Samoa
+          - UTC
+          - Universal
+          - W-SU
+          - WET
+          - Zulu
       created_at:
         title: Created at
         type: string
@@ -2002,6 +3192,7 @@ definitions:
         readOnly: true
   MeterDeviceType:
     required:
+      - organization
       - name
       - manufacturer
       - manufacturer_model
@@ -2012,13 +3203,17 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       name:
-        title: Type name of Meter
+        title: Name
         type: string
         maxLength: 50
         minLength: 1
       description:
-        title: Description of Meter Device Type
+        title: Description
         type: string
         maxLength: 500
       manufacturer:
@@ -2057,23 +3252,28 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
+        x-nullable: true
       name:
-        title: Unique Name/Identification of Meter
+        title: Unique name or identification
         type: string
         maxLength: 50
         minLength: 1
       external_system_reference:
-        title: Reference in external systems. Used for export
+        title: External system reference
         type: string
         maxLength: 50
         x-nullable: true
       manufacturer_serial:
-        title: Meter Serial Number from manufacturer
+        title: Serial number from manufacturer
         type: string
         maxLength: 50
         x-nullable: true
       protocol:
-        title: The communication protocol used by the meter device
+        title: Communication protocol
         type: string
         enum:
           - dlms-cosem
@@ -2083,18 +3283,21 @@ definitions:
           - modbus
           - lis-200
       iec62056_21_address:
-        title: Meter Address used for IEC62056-21 communication
+        title: IEC62056-21 meter address
+        description: Only used for IEC62056-21 communication
         type: string
         maxLength: 8
         x-nullable: true
       dlms_logical_device_name:
-        title: Logical device name used in DLMS Communication
+        title: DLMS Logical Device Name
+        description: Only used for DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 32
         x-nullable: true
       dlms_system_title:
-        title: System title of meter used in DLMS communication
+        title: DLMS System Title
+        description: Only used for DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 16
@@ -2104,6 +3307,24 @@ definitions:
         type: string
         format: uuid
         x-nullable: true
+      task_groups:
+        description: Choose AMR Task Groups the meter device should be a part of.
+        type: array
+        items:
+          title: AMR Task Groups
+          description: Choose AMR Task Groups the meter device should be a part of.
+          type: string
+          format: uuid
+        uniqueItems: true
+      meter_tasks:
+        description: Choose AMR Tasks that are just for this meter device.
+        type: array
+        items:
+          title: AMR Tasks
+          description: Choose AMR Tasks that are just for this meter device.
+          type: string
+          format: uuid
+        uniqueItems: true
       network_interface:
         title: Network interface
         type: string
@@ -2114,23 +3335,30 @@ definitions:
         type: string
         readOnly: true
       has_current_transformer:
-        title: Meter has a current transformer in its measurement loop
+        title: Has current transformer
+        description: Indicates if the meter has a current transformer in its measurement
+          loop.
         type: boolean
       current_transformer_ratio:
-        title: Ratio of current transformer
+        title: Current transformer ratio
+        description: 'The ratio of the current transformer, Ex: 150/5 = 30'
         type: integer
         maximum: 2147483647
         minimum: -2147483648
       has_voltage_transformer:
-        title: Meter has a voltage transformer in its measurement loop
+        title: Has voltage transformer
+        description: Indicates if the meter has a voltage transformer in its measurement
+          loop.
         type: boolean
       voltage_transformer_ratio:
-        title: Ratio of voltage transformer
+        title: Voltage transformer ratio
+        description: 'The ratio of the voltage transformer, Ex: 150/5 = 30'
         type: integer
         maximum: 2147483647
         minimum: -2147483648
       has_disconnector:
         title: Has disconnector
+        description: indicates if the meter device has a disconnector
         type: boolean
       disconnector_status:
         title: Disconnector status
@@ -2152,6 +3380,7 @@ definitions:
         readOnly: true
   MeterReadingsSeries:
     required:
+      - organization
       - name
       - unit
     type: object
@@ -2161,35 +3390,49 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       name:
-        title: Name of the series. Used to group meter readings.
+        title: Name
+        description: Used to group meter readings.
         type: string
         maxLength: 50
         minLength: 1
       description:
-        title: Description of the series
+        title: Description
         type: string
         maxLength: 250
       unit:
-        title: 'Unit characters of the series, ex: kWh'
+        title: Unit
+        description: 'Unit characters of the series, ex: kWh'
         type: string
         maxLength: 10
         minLength: 1
       unit_description:
-        title: Longer description of unit
+        title: Unit description
+        description: Longer name of unit or more info about the unit, Ex Celsius or
+          Bar, Atmospheric.
         type: string
         maxLength: 250
         minLength: 1
         x-nullable: true
       si_multiplier:
-        title: Multiplier to get series unit in SI unit.
+        title: SI Multiplier
+        description: Multiplier to get series unit in SI unit. Ex  1 kPa = 1000 *
+          1 Pa.
         type: string
         format: decimal
       affected_by_ct_ratio:
-        title: Series is affected by the current transformer of the meter
+        title: Affected by current transformer ratio
+        description: Indicates if series is affected by the current transformer of
+          the meter. Is used for calculations.
         type: boolean
       affected_by_vt_ratio:
-        title: Series is affected by the voltage transformer of the meter
+        title: Affected by voltage transformer ratio
+        description: Indicates if series is affected by the voltage transformer of
+          the meter. Is used in calculations.
         type: boolean
       created_at:
         title: Created at
@@ -2208,15 +3451,17 @@ definitions:
     type: object
     properties:
       timestamp:
-        title: Time when the reading was registered in the meter.
+        title: Timestamp
+        description: Time when the reading was registered in the meter.
         type: string
         format: date-time
       value:
-        title: Value of the reading
+        title: Value
         type: string
         format: decimal
   MeterReadings:
     required:
+      - organization
       - meter_device
       - series
       - timestamp
@@ -2227,6 +3472,10 @@ definitions:
         title: Id
         type: integer
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       meter_device:
         title: Meter device
         type: string
@@ -2236,11 +3485,12 @@ definitions:
         type: string
         format: uuid
       timestamp:
-        title: Time when the reading was registered in the meter.
+        title: Timestamp
+        description: Time when the reading was registered in the meter.
         type: string
         format: date-time
       value:
-        title: Value of the reading
+        title: Value
         type: string
         format: decimal
       created_at:
@@ -2267,25 +3517,29 @@ definitions:
         format: date-time
         readOnly: true
       iec62056_21_password:
-        title: Password for use in IEC 62056-21 communication
+        title: IEC62056-21 Password
+        description: Used in IEC 62056-21 communication
         type: string
         maxLength: 8
         minLength: 1
         x-nullable: true
       dlms_global_unicast_encryption_key:
         title: Global Unicast Encryption Key, GUEK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         x-nullable: true
       dlms_global_broadcast_encryption_key:
         title: Global Broadcast Encryption Key, GBEK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         x-nullable: true
       dlms_global_authentication_key:
         title: Global Authentication Key, GAK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
@@ -2312,22 +3566,22 @@ definitions:
             format: date-time
             readOnly: true
           name:
-            title: Unique Name/Identification of Meter
+            title: Unique name or identification
             type: string
             maxLength: 50
             minLength: 1
           external_system_reference:
-            title: Reference in external systems. Used for export
+            title: External system reference
             type: string
             maxLength: 50
             x-nullable: true
           manufacturer_serial:
-            title: Meter Serial Number from manufacturer
+            title: Serial number from manufacturer
             type: string
             maxLength: 50
             x-nullable: true
           protocol:
-            title: The communication protocol used by the meter device
+            title: Communication protocol
             type: string
             enum:
               - dlms-cosem
@@ -2337,40 +3591,50 @@ definitions:
               - modbus
               - lis-200
           iec62056_21_address:
-            title: Meter Address used for IEC62056-21 communication
+            title: IEC62056-21 meter address
+            description: Only used for IEC62056-21 communication
             type: string
             maxLength: 8
             x-nullable: true
           dlms_logical_device_name:
-            title: Logical device name used in DLMS Communication
+            title: DLMS Logical Device Name
+            description: Only used for DLMS communication
             type: string
             pattern: ^[abcdefABCDEF1234567890]*$
             maxLength: 32
             x-nullable: true
           dlms_system_title:
-            title: System title of meter used in DLMS communication
+            title: DLMS System Title
+            description: Only used for DLMS communication
             type: string
             pattern: ^[abcdefABCDEF1234567890]*$
             maxLength: 16
             x-nullable: true
           has_current_transformer:
-            title: Meter has a current transformer in its measurement loop
+            title: Has current transformer
+            description: Indicates if the meter has a current transformer in its measurement
+              loop.
             type: boolean
           current_transformer_ratio:
-            title: Ratio of current transformer
+            title: Current transformer ratio
+            description: 'The ratio of the current transformer, Ex: 150/5 = 30'
             type: integer
             maximum: 2147483647
             minimum: -2147483648
           has_voltage_transformer:
-            title: Meter has a voltage transformer in its measurement loop
+            title: Has voltage transformer
+            description: Indicates if the meter has a voltage transformer in its measurement
+              loop.
             type: boolean
           voltage_transformer_ratio:
-            title: Ratio of voltage transformer
+            title: Voltage transformer ratio
+            description: 'The ratio of the voltage transformer, Ex: 150/5 = 30'
             type: integer
             maximum: 2147483647
             minimum: -2147483648
           has_disconnector:
             title: Has disconnector
+            description: indicates if the meter device has a disconnector
             type: boolean
           disconnector_status:
             title: Disconnector status
@@ -2379,6 +3643,11 @@ definitions:
               - 0
               - 1
               - 2
+            x-nullable: true
+          organization:
+            title: Organization
+            type: string
+            format: uuid
             x-nullable: true
           type:
             title: Type
@@ -2391,16 +3660,22 @@ definitions:
             format: uuid
             x-nullable: true
           task_groups:
+            description: Choose AMR Task Groups the meter device should be a part
+              of.
             type: array
             items:
-              title: Amr Task Groups the meter should be member of
+              title: AMR Task Groups
+              description: Choose AMR Task Groups the meter device should be a part
+                of.
               type: string
               format: uuid
             uniqueItems: true
           meter_tasks:
+            description: Choose AMR Tasks that are just for this meter device.
             type: array
             items:
-              title: Amr Task just for this meter device
+              title: AMR Tasks
+              description: Choose AMR Tasks that are just for this meter device.
               type: string
               format: uuid
             uniqueItems: true
@@ -2420,31 +3695,36 @@ definitions:
         type: string
         format: uuid
       iec62056_21_password:
-        title: Password for use in IEC 62056-21 communication
+        title: IEC62056-21 Password
+        description: Used in IEC 62056-21 communication
         type: string
         maxLength: 8
         minLength: 1
         x-nullable: true
       dlms_global_unicast_encryption_key:
         title: Global Unicast Encryption Key, GUEK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         x-nullable: true
       dlms_global_broadcast_encryption_key:
         title: Global Broadcast Encryption Key, GBEK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         x-nullable: true
       dlms_master_key:
         title: Master Key or Key Encrypting Key, KEK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
         x-nullable: true
       dlms_global_authentication_key:
         title: Global Authentication Key, GAK
+        description: Used in DLMS communication
         type: string
         pattern: ^[abcdefABCDEF1234567890]*$
         maxLength: 64
@@ -2461,6 +3741,7 @@ definitions:
         readOnly: true
   MeterSystemEvent:
     required:
+      - organization
       - meter_device
       - timestamp
       - title
@@ -2471,21 +3752,27 @@ definitions:
         title: Id
         type: integer
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       meter_device:
         title: Meter device
         type: string
         format: uuid
       timestamp:
         title: Timestamp
+        description: Time when the event was registered in the meter device
         type: string
         format: date-time
       title:
-        title: Title of the event
+        title: Event title
         type: string
         maxLength: 50
         minLength: 1
       content:
-        title: Additional information about the meter system event.
+        title: Event content
+        description: Additional information about the meter system event.
         type: string
         maxLength: 500
         minLength: 1
@@ -2500,6 +3787,8 @@ definitions:
         format: date-time
         readOnly: true
   NetworkInterface:
+    required:
+      - organization
     type: object
     properties:
       id:
@@ -2507,8 +3796,14 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
       static_ip_address:
-        title: IP Address of meter that is not bound to SIM
+        title: Static IP address
+        description: Will override any IP that might be incurred from SIM. Could be
+          used on physical connections such as LAN or when not storing SIMs in Utilitarian.
         type: string
         minLength: 1
         x-nullable: true
@@ -2517,12 +3812,15 @@ definitions:
         type: string
         readOnly: true
       fqdn:
-        title: FQDN, if you are using DNS to lookup IP of meters
+        title: FQDN
+        description: 'Will override any set IP and use DNS to lookup IP of meters.
+          Ex: meter098765.mydomain.com .'
         type: string
         maxLength: 200
         x-nullable: true
       port:
-        title: Port used for IP communication
+        title: Port
+        description: Port used for IP communication.
         type: integer
         maximum: 2147483647
         minimum: 0
@@ -2533,14 +3831,17 @@ definitions:
         format: uuid
         x-nullable: true
       can_block:
-        title: It is possible to block the network interface
+        title: Can block
+        description: It is possible to block the network interface.
         type: boolean
       is_blocked:
-        title: Indicates if the network interface is currently blocked
+        title: Is blocked
+        description: Indicates if the network interface is currently blocked
         type: boolean
         readOnly: true
       block_time:
-        title: Time when block was initiated
+        title: Block time
+        description: Time when block was initiated
         type: string
         format: date-time
         readOnly: true
@@ -2565,31 +3866,37 @@ definitions:
         type: string
         format: uuid
         readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
+        x-nullable: true
       iccid:
-        title: ICCID of the SIM
+        title: ICCID
         type: string
         pattern: ^[0123456789]*$
         maxLength: 20
         minLength: 1
       imsi:
-        title: IMSI of the SIM
+        title: IMSI
         type: string
         pattern: ^[0123456789]*$
         maxLength: 15
         minLength: 1
       ip_address:
-        title: IP Address associated with the SIM
+        title: IP address
         type: string
         minLength: 1
         x-nullable: true
       phone_number:
-        title: Telephone number associated with the SIM
+        title: Telephone number
         type: string
         maxLength: 30
         minLength: 1
         x-nullable: true
       external_system_link:
-        title: Link to external system for management of the SIM
+        title: External system link
+        description: Link to external system for management of the SIM
         type: string
         format: uri
         maxLength: 200
@@ -2618,23 +3925,87 @@ definitions:
         type: integer
         readOnly: true
       meter_device_name:
-        title: Name of Meter Device
+        title: Name of meter device
         type: string
         maxLength: 50
         minLength: 1
       series_name:
-        title: Name of Meter Reading Series
+        title: Name of meter reading series
         type: string
         maxLength: 50
         minLength: 1
       timestamp:
-        title: Time when the reading was registered in the meter.
+        title: Timestamp
+        description: Time when the reading was registered in the meter.
         type: string
         format: date-time
       value:
-        title: Value of the reading
+        title: Value
         type: string
         format: decimal
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  Organization:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: Primary Key
+        type: string
+        format: uuid
+        readOnly: true
+      name:
+        title: Name of organization
+        type: string
+        maxLength: 64
+        minLength: 1
+      is_active:
+        title: Indicates if organization is active
+        type: boolean
+      members:
+        type: array
+        items:
+          type: string
+          format: uuid
+        readOnly: true
+        uniqueItems: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+  OrganizationMember:
+    required:
+      - organization
+      - user
+    type: object
+    properties:
+      id:
+        title: Id
+        type: integer
+        readOnly: true
+      organization:
+        title: Organization
+        type: string
+        format: uuid
+      user:
+        title: User
+        type: string
+        format: uuid
       created_at:
         title: Created at
         type: string

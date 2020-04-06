@@ -10,7 +10,10 @@ is a good general approach that simplifies AMR operations.
 In a polling architecture Utilitarian is responsible for contacting the meter and 
 reading out the needed values. Many older meters operate using this method. The 
 challenging part is to handle the process of reading out meters when the meter 
-population is very large.  
+population is very large. 
+
+Utilitarian allows you to scale up the number of asynchronous 
+worker process over many servers/datacenters so that it can handle the desired load.
 
 
 ## Mixed architecture
@@ -117,7 +120,7 @@ for that meter.
 
 It is possible to invoke a task directly via the API. No AmrTask is saved in the 
 database but the same arguments are used. There tasks will be sent to the amr.on_demand 
-queue and it is recomended to run a separate worker for this queue if you want the 
+queue and it is recommended to run a separate worker for this queue if you want the 
 results fast.
 
 Example:

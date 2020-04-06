@@ -3,27 +3,32 @@ site_description: 'Utilitarian Documentation'
 site_author: 'Henrik Palmlund Wahlgren'
 
 nav:
-  - 'Home': 'index.md'
+  - Home: index.md
   - Architecture:
-      - Overview: 'architecture.md'
-      - Components: 'components.md'
-  - Automatic Meter Readings: 'amr.md'
-  - Protocols: 'protocols.md'
-  - Meters: 'meters.md'
-  - Providers: 'providers.md'
-  - Open Source: 'open_source.md'
+    - Overview: architecture.md
+    - Components: components.md
+  - Automatic Meter Readings:
+    - AMR in Utilitarian: amr.md
+    - Execution Environments:
+      - Overview: execution_environments/execution_environments.md
+      - Generic LIS200: execution_environments/generic_lis200.md
+      - Generic Corus: execution_environments/generic_corus.md
+    - Time in Utilitarian: time.md
+  - Protocols: protocols.md
   - On Premise:
-      - Installation: 'installation.md'
-      - Component Configuration: 'component_settings.md'
-      - Setup using Docker Compose: 'docker_compose.md'
-      - Use HTTPS: 'using_https_on_api.md'
-      - Async Workers: 'async_workers.md'
-      - Messaging: 'amr_um.md'
-  - 'Utilitarian API Reference':
-      - 'v1.2.0': 'api_docs/v_1_2_0.html'
-      - 'v1.1.0': 'api_docs/v_1_1_0.html'
-      - 'v1.0.0': 'api_docs/v_1_0_0.html'
-  - PWIT AB: 'pwit.md'
+    - Installation: installation.md
+    - Component Configuration: component_settings.md
+    - Setup using Docker Compose: docker_compose.md
+    - Use HTTPS: using_https_on_api.md
+    - Async Workers: async_workers.md
+    - Messaging: amr_um.md
+  - Utilitarian API Reference:
+    - v1.3.0: api_docs/v_1_3_0.html
+    - v1.2.0: api_docs/v_1_2_0.html
+    - v1.1.0: api_docs/v_1_1_0.html
+    - v1.0.0: api_docs/v_1_0_0.html
+  - About Utilitarian: pwit.md
+  - Open Source: open_source.md
 
 theme:
   palette:
