@@ -13,6 +13,7 @@ nav:
       - Overview: execution_environments/execution_environments.md
       - Generic LIS200: execution_environments/generic_lis200.md
       - Generic Corus: execution_environments/generic_corus.md
+    - Time in Utilitarian: time.md
   - Protocols: protocols.md
   - On Premise:
     - Installation: installation.md
