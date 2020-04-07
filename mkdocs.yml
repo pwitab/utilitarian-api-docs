@@ -22,6 +22,7 @@ nav:
     - Use HTTPS: using_https_on_api.md
     - Async Workers: async_workers.md
     - Messaging: amr_um.md
+    - Upgrading: upgrade_instructions.md
   - Utilitarian API Reference:
     - v1.3.0: api_docs/v_1_3_0.html
     - v1.2.0: api_docs/v_1_2_0.html
