@@ -40,7 +40,7 @@
     
     
       
-        <title>About Utilitarian - Utilitarian Docs</title>
+        <title>Upgrading - Utilitarian Docs</title>
       
     
     
@@ -87,7 +87,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#about-utilitarian" tabindex="0" class="md-skip">
+      <a href="#upgrade-instructions" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -113,7 +113,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                About Utilitarian
+                Upgrading
               
             </span>
           
@@ -360,10 +360,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
     <label class="md-nav__link" for="nav-5">
       On Premise
@@ -451,11 +453,112 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../upgrade_instructions/" title="Upgrading" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Upgrading
+      </label>
+    
+    <a href="./" title="Upgrading" class="md-nav__link md-nav__link--active">
       Upgrading
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-backup" class="md-nav__link">
+    1. Backup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-close-down-services" class="md-nav__link">
+    2. Close down services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-close-down-utilitarian-api" class="md-nav__link">
+    3. Close down Utilitarian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pull-new-versions" class="md-nav__link">
+    4. Pull new versions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-upgrade-docker-config" class="md-nav__link">
+    5. Upgrade docker config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-start-utilitarian-api" class="md-nav__link">
+    6. Start Utilitarian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-run-migrations" class="md-nav__link">
+    7. Run migrations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-compress-static-assets" class="md-nav__link">
+    8. Compress static assets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-start-up-all-services" class="md-nav__link">
+    9. Start up all services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-verify-upgrade" class="md-nav__link">
+    10. Verify upgrade
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -540,20 +643,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-    <a href="./" title="About Utilitarian" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../pwit/" title="About Utilitarian" class="md-nav__link">
       About Utilitarian
     </a>
-    
   </li>
 
     
@@ -586,6 +680,85 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-backup" class="md-nav__link">
+    1. Backup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-close-down-services" class="md-nav__link">
+    2. Close down services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-close-down-utilitarian-api" class="md-nav__link">
+    3. Close down Utilitarian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pull-new-versions" class="md-nav__link">
+    4. Pull new versions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-upgrade-docker-config" class="md-nav__link">
+    5. Upgrade docker config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-start-utilitarian-api" class="md-nav__link">
+    6. Start Utilitarian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-run-migrations" class="md-nav__link">
+    7. Run migrations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-compress-static-assets" class="md-nav__link">
+    8. Compress static assets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-start-up-all-services" class="md-nav__link">
+    9. Start up all services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-verify-upgrade" class="md-nav__link">
+    10. Verify upgrade
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -597,30 +770,85 @@
               
                 
                 
-                <h1 id="about-utilitarian">About Utilitarian<a class="headerlink" href="#about-utilitarian" title="Permanent link">#</a></h1>
-<p>Utilitarian is regitered secondary business name of Palmlund Wahlgren Innovative 
-Technology AB. Under the name of Utilitarian we are marketing our Smart Metering and 
-Smart Grid products and services.</p>
-<p>Utilitarian is the result of our desire to make AMR  simpler for the end 
-user and put the data in focus instead of the means to collect the data.
-We have used all our experience in the Smart Metering and Smart Grid field to deliver 
-a solution that can fit any size and type of utility company. </p>
-<h1 id="palmlund-wahlgren-innovative-technology-ab">Palmlund Wahlgren Innovative Technology AB<a class="headerlink" href="#palmlund-wahlgren-innovative-technology-ab" title="Permanent link">#</a></h1>
-<p>Palmlund Wahlgren Innovative Technology AB (PWIT AB) is an engineering firm 
-focused on delivering solutions and consultation services within the fields 
-of automation, measurement technology and IT. </p>
-<p>By combining our strengths we have landed in the field of Internet of Things 
-where we have been able to manage projects and build devices and software 
-within the smart metering segment.</p>
-<p>We have been working with Swedish utility companies in local projects and 
-EU-level projects where we have designed and implemented solutions for Real 
-Time AMR (Automatic Meter Readings) and Next Generation MDM (Meter Data 
-Management) using NoSQL-databases.</p>
-<p>We have taken full responsibility for the whole metering chain. From 
-implementing protocol interpreters on embedded devices and in the Cloud to 
-enable real-time metering on older energy meters to meter data management and 
-integration to legacy Enterprise systems such as SAP for billing.</p>
-<p><a href="https://www.pwit.se">Learn more about us</a></p>
+                <h1 id="upgrade-instructions">Upgrade instructions<a class="headerlink" href="#upgrade-instructions" title="Permanent link">#</a></h1>
+<p>How to upgrade Utilitarian to a newer version.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These instructions assume that you are able to take Utilitarian down for 
+   maintenance and allow time for the migrations to run.
+   If you need you Utilitarian instance to be up during the migration please contact
+   us and we will create an upgrade strategy together.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When upgrading Utilitarian API you might need to upgrade other Utilitarian 
+   services. If you are unsure of which services that need upgrading, please 
+   contact us.</p>
+</div>
+<h2 id="1-backup">1. Backup<a class="headerlink" href="#1-backup" title="Permanent link">#</a></h2>
+<p>Take a backup of your database and verify the backup. This can be done using <code>pg_dump</code>.
+<a href="https://www.postgresql.org/docs/10/app-pgdump.html">pg_dump documentation</a></p>
+<p>If you have the ability to take a snapshot of your database server it is also recommended.</p>
+<h2 id="2-close-down-services">2. Close down services<a class="headerlink" href="#2-close-down-services" title="Permanent link">#</a></h2>
+<p>Close down all services that depend on the API. Most edge services will keep handling 
+messages and they will be queued up in RabbitMQ for when the services come online again.</p>
+<p>Example:</p>
+<ul>
+<li>Utilitarian DLMS Parser</li>
+<li>Utilitarian Poster</li>
+</ul>
+<h2 id="3-close-down-utilitarian-api">3. Close down Utilitarian API<a class="headerlink" href="#3-close-down-utilitarian-api" title="Permanent link">#</a></h2>
+<p>Close down Utilitarian API, beat process and all worker processes.</p>
+<h2 id="4-pull-new-versions">4. Pull new versions<a class="headerlink" href="#4-pull-new-versions" title="Permanent link">#</a></h2>
+<p>Pull down new image version of Utilitarian from the docker repository</p>
+<div class="codehilite"><pre><span></span><code>docker pull quay.io/pwit/utilitarian:{version}
+</code></pre></div>
+
+
+<h2 id="5-upgrade-docker-config">5. Upgrade docker config<a class="headerlink" href="#5-upgrade-docker-config" title="Permanent link">#</a></h2>
+<p>Upgrade run config, for example <code>docker-compose</code> files with the new image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You also have to remember to update the beat-process and all worker processes since 
+they are based on the utilitarian image.</p>
+</div>
+<h2 id="6-start-utilitarian-api">6. Start Utilitarian API<a class="headerlink" href="#6-start-utilitarian-api" title="Permanent link">#</a></h2>
+<p>Start only the Utilitarian API processes.</p>
+<h2 id="7-run-migrations">7. Run migrations<a class="headerlink" href="#7-run-migrations" title="Permanent link">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This command can take a long time</p>
+</div>
+<p>Depending on how you are running Utilitarian how you initiate the command to run 
+migrations can be a bit different.</p>
+<p>The command is:</p>
+<div class="codehilite"><pre><span></span><code>python manage.py migrate
+</code></pre></div>
+
+
+<p>if you are using docker-compose you should run it like:</p>
+<div class="codehilite"><pre><span></span><code>docker-compose <span class="nb">exec</span> utilitarian-api sh -c <span class="s2">&quot;python manage.py migrate&quot;</span>
+</code></pre></div>
+
+
+<h2 id="8-compress-static-assets">8. Compress static assets<a class="headerlink" href="#8-compress-static-assets" title="Permanent link">#</a></h2>
+<p>Some upgrades might have changes to the static assets. It is good to run the compression 
+again.</p>
+<p>The command is:</p>
+<div class="codehilite"><pre><span></span><code>python manage.py compress
+</code></pre></div>
+
+
+<p>if you are using docker-compose you should run it like:</p>
+<div class="codehilite"><pre><span></span><code>docker-compose <span class="nb">exec</span> utilitarian-api sh -c <span class="s2">&quot;python manage.py compress&quot;</span>
+</code></pre></div>
+
+
+<h2 id="9-start-up-all-services">9. Start up all services<a class="headerlink" href="#9-start-up-all-services" title="Permanent link">#</a></h2>
+<p>Now start up all remaining services to get back all functionality to Utilitarian.</p>
+<h2 id="10-verify-upgrade">10. Verify upgrade<a class="headerlink" href="#10-verify-upgrade" title="Permanent link">#</a></h2>
+<p>Verify that everything seems to be correct in the application. If you find an issue 
+please contact us.</p>
                 
                   
                 
@@ -642,7 +870,7 @@ integration to legacy Enterprise systems such as SAP for billing.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../api_docs/v_1_0_0.html" title="v1.0.0" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../amr_um/" title="Messaging" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -651,19 +879,19 @@ integration to legacy Enterprise systems such as SAP for billing.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                v1.0.0
+                Messaging
               </span>
             </div>
           </a>
         
         
-          <a href="../open_source/" title="Open Source" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../api_docs/v_1_3_0.html" title="v1.3.0" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Open Source
+                v1.3.0
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
