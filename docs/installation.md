@@ -169,7 +169,7 @@ command:
 
 ```bash
 
-docker-compose exec utilitarian_api sh -c "python manage.py migrate"
+docker-compose exec utilitarian-api sh -c "python manage.py migrate"
 
 ```
 
@@ -182,7 +182,7 @@ following command
 
 ```bash
 
-docker-compose exec utilitarian_api sh -c "python manage.py createsuperuser"
+docker-compose exec utilitarian-api sh -c "python manage.py createsuperuser"
 
 ```
 
@@ -195,7 +195,7 @@ following command
 
 ```bash
 
-docker-compose exec utilitarian_api sh -c "python manage.py collectstatic --no-input"
+docker-compose exec utilitarian-api sh -c "python manage.py collectstatic --no-input"
 
 ```
 
@@ -207,7 +207,7 @@ following command
 
 ```bash
 
-docker-compose exec utilitarian_api sh -c "python manage.py compress"
+docker-compose exec utilitarian-api sh -c "python manage.py compress"
 
 ```
 
