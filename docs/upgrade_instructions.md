@@ -74,20 +74,22 @@ if you are using docker-compose you should run it like:
 docker-compose exec utilitarian-api sh -c "python manage.py migrate"
 ```
 
-## 8. Compress static assets
+## 8. Update static assets
 
-Some upgrades might have changes to the static assets. It is good to run the compression 
-again.
+Some upgrades might have changes to the static assets. It is good to run the collection 
+and compression of static assets again.
 
 The command is:
 
 ```bash
+python manage.py collectstatic --no-input
 python manage.py compress
 ```
 
 if you are using docker-compose you should run it like:
 
 ```bash
+docker-compose exec utilitarian-api sh -c "python manage.py collectstatic --no-input"
 docker-compose exec utilitarian-api sh -c "python manage.py compress"
 ```
 
