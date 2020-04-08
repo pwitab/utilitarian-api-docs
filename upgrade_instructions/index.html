@@ -531,8 +531,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-compress-static-assets" class="md-nav__link">
-    8. Compress static assets
+  <a href="#8-update-static-assets" class="md-nav__link">
+    8. Update static assets
   </a>
   
 </li>
@@ -733,8 +733,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-compress-static-assets" class="md-nav__link">
-    8. Compress static assets
+  <a href="#8-update-static-assets" class="md-nav__link">
+    8. Update static assets
   </a>
   
 </li>
@@ -831,16 +831,18 @@ migrations can be a bit different.</p>
 </code></pre></div>
 
 
-<h2 id="8-compress-static-assets">8. Compress static assets<a class="headerlink" href="#8-compress-static-assets" title="Permanent link">#</a></h2>
-<p>Some upgrades might have changes to the static assets. It is good to run the compression 
-again.</p>
+<h2 id="8-update-static-assets">8. Update static assets<a class="headerlink" href="#8-update-static-assets" title="Permanent link">#</a></h2>
+<p>Some upgrades might have changes to the static assets. It is good to run the collection 
+and compression of static assets again.</p>
 <p>The command is:</p>
-<div class="codehilite"><pre><span></span><code>python manage.py compress
+<div class="codehilite"><pre><span></span><code>python manage.py collectstatic --no-input
+python manage.py compress
 </code></pre></div>
 
 
 <p>if you are using docker-compose you should run it like:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose <span class="nb">exec</span> utilitarian-api sh -c <span class="s2">&quot;python manage.py compress&quot;</span>
+<div class="codehilite"><pre><span></span><code>docker-compose <span class="nb">exec</span> utilitarian-api sh -c <span class="s2">&quot;python manage.py collectstatic --no-input&quot;</span>
+docker-compose <span class="nb">exec</span> utilitarian-api sh -c <span class="s2">&quot;python manage.py compress&quot;</span>
 </code></pre></div>
 
 
